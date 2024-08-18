@@ -1,6 +1,6 @@
 # The Bookstore Whimsibooks
 ## About this project
------------
+For edu 
 
 ## General information
 - Lecturer: Mrs. Đặng Thị Thu Hà.
