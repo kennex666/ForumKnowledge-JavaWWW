@@ -15,7 +15,7 @@ For edu (Test)
 - Summary purpose about project: For education.
 
 ## Config/Run project
--Updatingggggg....!!!
+- Updatingggggg....!!!
 
 ## The technologies, applications, libraries used whole project)
 1. Java Language
