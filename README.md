@@ -15,20 +15,7 @@
 - Summary purpose about project: For education.
 
 ## Config/Run project
-- Before all:
-    Check config in `JPA Content\persistence.xml`
-  
-    Check config in `src\ultilities\EnviromentConfigs.java` (If you need the send email functional)
-
-Alright, here we go:
-
-- Step 1: Looking for the newest SQL File in `data\NSWhimsibooks_DB_vx.x.sql` and open in Microsoft SQL Server  
-- Step 2: Run the first script in comment `RUN THIS IF THIS IS THE FIRST TIME` to create Database
-- Step 3: Import project in Eclipse, then run the `src\test\GenerateSQL.java` to test if everything works well
-- Step 4: After done the step 3, let's run everything in `data\NSWhimsibooks_DB_vx.x.sql` to import data
-- Step 4: If your project is setup everything correctly, you run the `src\test\TestGetSanPham.java` to get result about product table
-
-Done! Your project is ready to run!
+-Updatingggggg....!!!
 
 ## The technologies, applications, libraries used whole project)
 1. Java Language
