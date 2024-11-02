@@ -1,9 +1,11 @@
 package com.fit.iuh.entites;
 
+import java.util.Date;
+
 public class BookMark {
 
     private int id;
-    private DateTime createdAt;
-    private DateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
 }

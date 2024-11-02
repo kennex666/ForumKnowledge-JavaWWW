@@ -1,9 +1,11 @@
 package com.fit.iuh.entites;
 
+import java.util.Date;
+
 public class Following {
 
     private int followId;
-    private DateTime createdAt;
-    private DateTime updatedAt;
+    private Date createdAt;
+    private Date updatedAt;
 
 }

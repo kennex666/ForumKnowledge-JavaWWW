@@ -1,9 +1,11 @@
 package com.fit.iuh.entites;
 
+import java.util.Date;
+
 public class PostReport {
 	private int id;
 	private String state;
 	private String reason;
-	private DateTime createAt;
-	private DateTime updateAt;
+	private Date createAt;
+	private Date updateAt;
 }
