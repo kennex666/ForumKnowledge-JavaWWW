@@ -1,26 +1,25 @@
 package com.fit.iuh.entites;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
-public class BookMark {
-	private int id;
+public class Following {
+	private int followId;
 
 	private Date createdAt;
 
 	private Date updatedAt;
 
-	private User user;
+	private User follower;
 
-	private Post post;
+	private User followed;
 
-	public int getId() {
-		return id;
+	public int getFollowId() {
+		return followId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setFollowId(int followId) {
+		this.followId = followId;
 	}
 
 	public Date getCreatedAt() {
@@ -39,51 +38,51 @@ public class BookMark {
 		this.updatedAt = updatedAt;
 	}
 
-	public User getUser() {
-		return user;
+	public User getFollower() {
+		return follower;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setFollower(User follower) {
+		this.follower = follower;
 	}
 
-	public Post getPost() {
-		return post;
+	public User getFollowed() {
+		return followed;
 	}
 
-	public void setPost(Post post) {
-		this.post = post;
+	public void setFollowed(User followed) {
+		this.followed = followed;
 	}
 
-	public BookMark(int id, Date createdAt, Date updatedAt, User uses, Post post) {
+	public Following(int followId, Date createdAt, Date updatedAt, User follower, User followed) {
 		super();
-		this.id = id;
+		this.followId = followId;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
-		this.user = user;
-		this.post = post;
+		this.follower = follower;
+		this.followed = followed;
 	}
 
-	public BookMark(int id, Date createdAt, Date updatedAt) {
+	public Following(int followId, Date createdAt, Date updatedAt) {
 		super();
-		this.id = id;
+		this.followId = followId;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 	}
 
-	public BookMark() {
+	public Following() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String toString() {
-		return id + "";
+		return followId + "";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(followId);
 	}
 
 	@Override
@@ -94,8 +93,8 @@ public class BookMark {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BookMark other = (BookMark) obj;
-		return id == other.id;
+		Following other = (Following) obj;
+		return followId == other.followId;
 	}
 
 }

@@ -4,8 +4,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
-public class BookMark {
-	private int id;
+public class Comment {
+	private int commentId;
+
+	private String content;
 
 	private Date createdAt;
 
@@ -15,12 +17,20 @@ public class BookMark {
 
 	private Post post;
 
-	public int getId() {
-		return id;
+	public int getCommentId() {
+		return commentId;
 	}
 
-	public void setId(int id) {
-		this.id = id;
+	public void setCommentId(int commentId) {
+		this.commentId = commentId;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
 	}
 
 	public Date getCreatedAt() {
@@ -43,7 +53,7 @@ public class BookMark {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUsers(User user) {
 		this.user = user;
 	}
 
@@ -55,35 +65,37 @@ public class BookMark {
 		this.post = post;
 	}
 
-	public BookMark(int id, Date createdAt, Date updatedAt, User uses, Post post) {
+	public Comment(int commentId, String content, Date createdAt, Date updatedAt) {
 		super();
-		this.id = id;
+		this.commentId = commentId;
+		this.content = content;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+	}
+
+	public Comment(int commentId, String content, Date createdAt, Date updatedAt, User user, Post post) {
+		super();
+		this.commentId = commentId;
+		this.content = content;
 		this.createdAt = createdAt;
 		this.updatedAt = updatedAt;
 		this.user = user;
 		this.post = post;
 	}
 
-	public BookMark(int id, Date createdAt, Date updatedAt) {
-		super();
-		this.id = id;
-		this.createdAt = createdAt;
-		this.updatedAt = updatedAt;
-	}
-
-	public BookMark() {
+	public Comment() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public String toString() {
-		return id + "";
+		return content;
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(id);
+		return Objects.hash(commentId);
 	}
 
 	@Override
@@ -94,8 +106,8 @@ public class BookMark {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		BookMark other = (BookMark) obj;
-		return id == other.id;
+		Comment other = (Comment) obj;
+		return commentId == other.commentId;
 	}
 
 }
