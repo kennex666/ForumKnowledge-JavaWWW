@@ -1,20 +1,35 @@
 package com.fit.iuh.entites;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+
+@Entity
+@Table(name="comment")
 public class Comment {
+
+	@Id
+	@Column(name="comment_id", nullable = false, unique = true, columnDefinition = "")
 	private int commentId;
 
+	@Column(name="content", nullable = false, unique = false, columnDefinition = "")
 	private String content;
 
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createdAt;
 
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updatedAt;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id")
 	private User user;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="post_id")
 	private Post post;
 
 	public int getCommentId() {

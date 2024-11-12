@@ -1,47 +1,76 @@
 package com.fit.iuh.entites;
 
+import com.fit.iuh.enums.PostState;
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name="post")
 public class Post {
+
+	@Id
+	@Column(name="post_id", nullable = false, unique = true, columnDefinition = "")
 	private int postId;
 
+	@Column(name="title", nullable = false, unique = false, columnDefinition = "")
 	private String title;
 
+	@Column(name="description", nullable = false, unique = false, columnDefinition = "")
 	private String description;
 
+	@Column(name="content", nullable = false, unique = false, columnDefinition = "")
 	private String content;
 
+	@Column(name="url", nullable = false, unique = false, columnDefinition = "")
 	private String url;
 
-	private String state;
+	@Enumerated(EnumType.STRING)
+	@Column(name="state", nullable = false, unique = false, columnDefinition = "")
+	private PostState state;
 
+	@Column(name="total_comments", nullable = false, unique = false, columnDefinition = "")
 	private int totalComments;
 
+	@Column(name="total_up_vote", nullable = false, unique = false, columnDefinition = "")
 	private int totalUpVote;
 
+	@Column(name="total_down_vote", nullable = false, unique = false, columnDefinition = "")
 	private int totalDownVote;
 
+	@Column(name="total_share", nullable = false, unique = false, columnDefinition = "")
 	private int totalShare;
 
+	@Column(name="total_view", nullable = false, unique = false, columnDefinition = "")
 	private int totalView;
 
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createdAt;
 
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updatedAt;
 
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<PostReport> postReports;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="author_id", nullable = false)
 	private User author;
 
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<Reaction> reactions;
 
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<Comment> comments;
 
+	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<BookMark> bookMarks;
 
-	private List<Topic> topics;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="topic_id", nullable = false)
+	private Topic topic;
 
 	public int getPostId() {
 		return postId;
@@ -83,11 +112,11 @@ public class Post {
 		this.url = url;
 	}
 
-	public String getState() {
+	public PostState getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(PostState state) {
 		this.state = state;
 	}
 
@@ -187,17 +216,17 @@ public class Post {
 		this.bookMarks = bookMarks;
 	}
 
-	public List<Topic> getTopics() {
-		return topics;
+	public Topic getTopic() {
+		return topic;
 	}
 
-	public void setTopics(List<Topic> topics) {
-		this.topics = topics;
+	public void setTopic(Topic topics) {
+		this.topic = topics;
 	}
 
-	public Post(int postId, String title, String description, String content, String url, String state,
-			int totalComments, int totalUpVote, int totalDownVote, int totalShare, int totalView, Date createdAt,
-			Date updatedAt) {
+	public Post(int postId, String title, String description, String content, String url, PostState state,
+				int totalComments, int totalUpVote, int totalDownVote, int totalShare, int totalView, Date createdAt,
+				Date updatedAt) {
 		super();
 		this.postId = postId;
 		this.title = title;
@@ -214,10 +243,10 @@ public class Post {
 		this.updatedAt = updatedAt;
 	}
 
-	public Post(int postId, String title, String description, String content, String url, String state,
-			int totalComments, int totalUpVote, int totalDownVote, int totalShare, int totalView, Date createdAt,
-			Date updatedAt, List<PostReport> postReports, User author, List<Reaction> reactions, List<Comment> comments,
-			List<BookMark> bookMarks, List<Topic> topics) {
+	public Post(int postId, String title, String description, String content, String url, PostState state,
+				int totalComments, int totalUpVote, int totalDownVote, int totalShare, int totalView, Date createdAt,
+				Date updatedAt, List<PostReport> postReports, User author, List<Reaction> reactions, List<Comment> comments,
+				List<BookMark> bookMarks, Topic topic) {
 		super();
 		this.postId = postId;
 		this.title = title;
@@ -237,7 +266,7 @@ public class Post {
 		this.reactions = reactions;
 		this.comments = comments;
 		this.bookMarks = bookMarks;
-		this.topics = topics;
+		this.topic = topic;
 	}
 
 	public Post() {
