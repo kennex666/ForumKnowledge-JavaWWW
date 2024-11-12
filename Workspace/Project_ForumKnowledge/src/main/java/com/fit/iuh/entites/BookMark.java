@@ -3,7 +3,6 @@ package com.fit.iuh.entites;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -68,7 +67,7 @@ public class BookMark {
 		this.post = post;
 	}
 
-	public BookMark(int id, Date createdAt, Date updatedAt, User uses, Post post) {
+	public BookMark(int id, Date createdAt, Date updatedAt, User user, Post post) {
 		super();
 		this.id = id;
 		this.createdAt = createdAt;

@@ -3,7 +3,6 @@ package com.fit.iuh.entites;
 import jakarta.persistence.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 
