@@ -1,7 +1,6 @@
 package com.fit.iuh.entites;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import com.fit.iuh.enums.BanListState;
