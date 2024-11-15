@@ -8,11 +8,12 @@ import com.fit.iuh.enums.UserAccountState;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="app_user")
+@Table(name="users")
 public class User {
 
 	@Id
-	@Column(name="user_id", nullable = false, unique = true, columnDefinition = "")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="user_id")
 	private int userId;
 
 	@Column(name="name", nullable = false, unique = false, columnDefinition = "")

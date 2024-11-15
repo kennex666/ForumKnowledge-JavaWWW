@@ -7,11 +7,12 @@ import com.fit.iuh.enums.PostReportState;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="post_report")
+@Table(name="post_reports")
 public class PostReport {
 
 	@Id
-	@Column(name="id", nullable = false, unique = true, columnDefinition = "")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
 
 	@Enumerated(EnumType.STRING)
@@ -28,15 +29,15 @@ public class PostReport {
 	private Date updateAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="post_id", nullable = false)
+	@JoinColumn(name="post_id", referencedColumnName = "post_id")
 	private Post post;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="reporter_id", nullable = false)
+	@JoinColumn(name="reporter_id", referencedColumnName = "user_id")
 	private User reporter;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="inspector_id", nullable = false)
+	@JoinColumn(name="inspector_id", nullable = true)
 	private User inspector;
 
 	public int getId() {

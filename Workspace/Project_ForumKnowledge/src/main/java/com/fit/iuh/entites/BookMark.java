@@ -6,11 +6,12 @@ import java.util.Date;
 import java.util.Objects;
 
 @Entity
-@Table(name="book_mark")
+@Table(name="bookmarks")
 public class BookMark {
 
 	@Id
-	@Column(name="id", nullable = false, unique = true, columnDefinition = "")
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
@@ -20,11 +21,11 @@ public class BookMark {
 	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id", nullable = false)
+	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="post_id", nullable = false)
+	@JoinColumn(name="post_id", referencedColumnName = "post_id")
 	private Post post;
 
 	public int getId() {

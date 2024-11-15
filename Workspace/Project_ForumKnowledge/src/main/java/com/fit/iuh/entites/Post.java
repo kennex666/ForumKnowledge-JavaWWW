@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name="post")
+@Table(name="posts")
 public class Post {
 
 	@Id
-	@Column(name="post_id", nullable = false, unique = true, columnDefinition = "")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="post_id")
 	private int postId;
 
 	@Column(name="title", nullable = false, unique = false, columnDefinition = "")
@@ -56,7 +57,7 @@ public class Post {
 	private List<PostReport> postReports;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="author_id", nullable = false)
+	@JoinColumn(name="author_id")
 	private User author;
 
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
@@ -69,7 +70,7 @@ public class Post {
 	private List<BookMark> bookMarks;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="topic_id", nullable = false)
+	@JoinColumn(name="tag_id", referencedColumnName = "tag_id")
 	private Topic topic;
 
 	public int getPostId() {

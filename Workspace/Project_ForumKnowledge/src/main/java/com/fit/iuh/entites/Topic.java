@@ -7,11 +7,12 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name="topic")
+@Table(name="topics")
 public class Topic {
 
 	@Id
-	@Column(name="tag_id", nullable = false, unique = true, columnDefinition = "")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="tag_id")
 	private int tagId;
 
 	@Column(name="name", nullable = false, unique = false, columnDefinition = "")

@@ -7,11 +7,12 @@ import com.fit.iuh.enums.BanListState;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="ban_list")
+@Table(name="ban_lists")
 public class BanList {
 
 	@Id
-	@Column(name="id", nullable = false, unique = true, columnDefinition = "")
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	@Enumerated(EnumType.STRING)
@@ -34,7 +35,7 @@ public class BanList {
 	private Date updateAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id", nullable = false)
+	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private User user;
 
 	public int getId() {

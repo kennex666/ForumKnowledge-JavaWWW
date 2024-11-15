@@ -7,11 +7,12 @@ import com.fit.iuh.enums.ReactionType;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="reaction")
+@Table(name="reactions")
 public class Reaction {
 
 	@Id
-	@Column(name="reaction_id", nullable = false, unique = true, columnDefinition = "")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="reaction_id")
 	private int reactionId;
 
 	@Enumerated(EnumType.STRING)
@@ -25,11 +26,11 @@ public class Reaction {
 	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id", nullable = false)
+	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="post_id", nullable = false)
+	@JoinColumn(name="post_id", referencedColumnName = "post_id")
 	private Post post;
 
 	public int getReactionId() {

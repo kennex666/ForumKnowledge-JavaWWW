@@ -7,11 +7,12 @@ import java.util.Objects;
 
 
 @Entity
-@Table(name="comment")
+@Table(name="comments")
 public class Comment {
 
 	@Id
-	@Column(name="comment_id", nullable = false, unique = true, columnDefinition = "")
+	@Column(name="comment_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int commentId;
 
 	@Column(name="content", nullable = false, unique = false, columnDefinition = "")
@@ -24,11 +25,11 @@ public class Comment {
 	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="post_id")
+	@JoinColumn(name="post_id", referencedColumnName = "post_id")
 	private Post post;
 
 	public int getCommentId() {
