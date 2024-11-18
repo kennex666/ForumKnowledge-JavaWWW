@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PostServiceImpl implements PostService {
@@ -29,11 +30,15 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postRepository.update(post);
 	}
-
+	
 	@Override
 	public Boolean delete(int postId) {
-		// TODO Auto-generated method stub
-		return postRepository.delete(postId);
+        Optional<Post> post = postRepository.findById(postId);
+        if (post.isPresent()) {
+            postRepository.deleteById(postId);
+            return !postRepository.existsById(postId);
+        }
+        return false;
 	}
 	
 	@Override

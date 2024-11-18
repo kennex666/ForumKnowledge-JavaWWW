@@ -1,7 +1,10 @@
 package com.fit.iuh.repositories;
 
 import java.util.Date;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 /*
  * Update at 1:45 AM 7/25/2021
@@ -11,6 +14,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
  */
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.entites.Reaction;
 import com.fit.iuh.entites.User;
 import com.fit.iuh.enums.ReactionType;
 
@@ -25,5 +29,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @RepositoryRestResource
-public interface ReactionRepository {
+public interface ReactionRepository extends JpaRepository<Reaction, Integer>{
+	
 }
