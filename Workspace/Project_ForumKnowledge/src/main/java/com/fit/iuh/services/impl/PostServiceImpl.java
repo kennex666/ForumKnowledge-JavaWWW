@@ -17,4 +17,34 @@ public class PostServiceImpl implements PostService {
     public List<Post> search(String keyword) {
         return postRepository.search(keyword);
     }
+
+	@Override
+	public Post save(Post post) {
+		// TODO Auto-generated method stub
+		return postRepository.save(post);
+	}
+
+	@Override
+	public Post update(Post post) {
+		// TODO Auto-generated method stub
+		return postRepository.update(post);
+	}
+
+	@Override
+	public Boolean delete(int postId) {
+		// TODO Auto-generated method stub
+		return postRepository.delete(postId);
+	}
+	
+	@Override
+	public List<Post> findAll() {
+		// TODO Auto-generated method stub
+		return postRepository.findAll();
+	}
+	
+	@Override
+	public Post findByTitleOrDescrpition(String title, String description) {
+		// TODO Auto-generated method stub
+		return postRepository.findByTitleOrDescrpition(title, description);
+	}
 }
