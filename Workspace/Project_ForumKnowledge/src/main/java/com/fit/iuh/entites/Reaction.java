@@ -4,18 +4,33 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.fit.iuh.enums.ReactionType;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name="reactions")
 public class Reaction {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="reaction_id")
 	private int reactionId;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name="type", nullable = false, unique = false, columnDefinition = "")
 	private ReactionType type;
 
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createdAt;
 
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updatedAt;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private User user;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="post_id", referencedColumnName = "post_id")
 	private Post post;
 
 	public int getReactionId() {

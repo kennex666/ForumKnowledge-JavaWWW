@@ -1,18 +1,31 @@
 package com.fit.iuh.entites;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name="bookmarks")
 public class BookMark {
+
+	@Id
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createdAt;
 
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updatedAt;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private User user;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="post_id", referencedColumnName = "post_id")
 	private Post post;
 
 	public int getId() {
@@ -55,7 +68,7 @@ public class BookMark {
 		this.post = post;
 	}
 
-	public BookMark(int id, Date createdAt, Date updatedAt, User uses, Post post) {
+	public BookMark(int id, Date createdAt, Date updatedAt, User user, Post post) {
 		super();
 		this.id = id;
 		this.createdAt = createdAt;

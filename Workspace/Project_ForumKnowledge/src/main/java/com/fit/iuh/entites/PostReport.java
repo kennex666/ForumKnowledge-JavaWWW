@@ -4,22 +4,40 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.fit.iuh.enums.PostReportState;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name="post_reports")
 public class PostReport {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="id")
 	private int id;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name="state", nullable = false, unique = false, columnDefinition = "")
 	private PostReportState state;
 
+	@Column(name="reason", nullable = false, unique = false, columnDefinition = "")
 	private String reason;
 
+	@Column(name="create_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createAt;
 
+	@Column(name="update_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updateAt;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="post_id", referencedColumnName = "post_id")
 	private Post post;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="reporter_id", referencedColumnName = "user_id")
 	private User reporter;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="inspector_id", nullable = true)
 	private User inspector;
 
 	public int getId() {

@@ -1,17 +1,31 @@
 package com.fit.iuh.entites;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.Objects;
 
+@Entity
+@Table(name="followings")
 public class Following {
+
+	@Id
+	@Column(name="follow_id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int followId;
 
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createdAt;
 
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updatedAt;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="follower_id", referencedColumnName = "user_id")
 	private User follower;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="followed_id", referencedColumnName = "user_id")
 	private User followed;
 
 	public int getFollowId() {

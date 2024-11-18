@@ -1,20 +1,33 @@
 package com.fit.iuh.entites;
 
+import jakarta.persistence.*;
+
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
+@Table(name="topics")
 public class Topic {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="tag_id")
 	private int tagId;
 
+	@Column(name="name", nullable = false, unique = false, columnDefinition = "")
 	private String name;
 
+	@Column(name="hashtag", nullable = false, unique = false, columnDefinition = "")
 	private String hashtag;
 
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createdAt;
 
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updatedAt;
 
+	@OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
 	private List<Post> posts;
 
 	public int getTagId() {

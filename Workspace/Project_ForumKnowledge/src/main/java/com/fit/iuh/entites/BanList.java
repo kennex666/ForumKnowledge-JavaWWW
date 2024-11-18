@@ -1,26 +1,41 @@
 package com.fit.iuh.entites;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 import com.fit.iuh.enums.BanListState;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name="ban_lists")
 public class BanList {
+
+	@Id
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name="state", nullable = false, unique = false, columnDefinition = "")
 	private BanListState state;
 
+	@Column(name="reason", nullable = false, unique = false, columnDefinition = "")
 	private String reason;
 
+	@Column(name="time_start", nullable = false, unique = false, columnDefinition = "")
 	private Date timeStart;
 
+	@Column(name="time_end", nullable = false, unique = false, columnDefinition = "")
 	private Date timeEnd;
 
+	@Column(name="create_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createAt;
 
+	@Column(name="update_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updateAt;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private User user;
 
 	public int getId() {

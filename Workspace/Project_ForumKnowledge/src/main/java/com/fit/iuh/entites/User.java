@@ -5,46 +5,73 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fit.iuh.enums.UserAccountState;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name="users")
 public class User {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name="user_id")
 	private int userId;
 
+	@Column(name="name", nullable = false, unique = false, columnDefinition = "")
 	private String name;
 
+	@Column(name="role", nullable = false, unique = false, columnDefinition = "")
 	private int role;
 
+	@Enumerated(EnumType.STRING)
+	@Column(name="account_state", nullable = false, unique = false, columnDefinition = "")
 	private UserAccountState accountState;
 
+	@Column(name="email", nullable = false, unique = true, columnDefinition = "")
 	private String email;
 
+	@Column(name="title", nullable = false, unique = false, columnDefinition = "")
 	private String title;
 
+	@Column(name="password_hash", nullable = false, unique = false, columnDefinition = "")
 	private String passwordHash;
 
+	@Column(name="profile_picture", nullable = false, unique = false, columnDefinition = "")
 	private String profilePicture;
 
+	@Column(name="bio", nullable = false, unique = false, columnDefinition = "")
 	private String bio;
 
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createdAt;
 
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updatedAt;
 
+	@OneToMany(mappedBy = "reporter", fetch = FetchType.LAZY)
 	private List<PostReport> reporters;
 
+	@OneToMany(mappedBy = "inspector", fetch = FetchType.LAZY)
 	private List<PostReport> inspectors;
 
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<BanList> banList;
 
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<BookMark> bookMarks;
 
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Comment> comments;
 
+	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Reaction> reactions;
 
+	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
 	private List<Post> posts;
 
+	@OneToMany(mappedBy = "followed", fetch = FetchType.LAZY)
 	private List<Following> followers;
 
+	@OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
 	private List<Following> followings;
 
 	public int getUserId() {
