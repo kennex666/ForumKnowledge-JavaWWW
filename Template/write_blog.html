@@ -28,7 +28,7 @@
     >
       <div class="flex items-end justify-center space-x-4">
         <div class="flex justify-center space-x-4">
-          <h1 class="text-2xl font-bold">iDev4rum</h1>
+          <a href="/"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
         </div>
         <div
           class="flex items-center justify-center space-x-2 text-sm"
@@ -62,7 +62,10 @@
     <div class="container mx-auto px-12 lg:w-10/12">
       <div class="flex justify-center items-start py-2">
         <!-- Recommend blog -->
-        <div class="w-2/3 space-y-8">
+        <div class="w-2/3 space-y-4">
+            <div>
+                <input id="title" type="text" class="w-full border border-gray-300 p-2 focus:border-gray-300 text-lg" placeholder="Tiêu đề bài viết">
+            </div>
           <textarea class="" id="editor"></textarea>
           <style>
             header {
@@ -103,7 +106,6 @@
             }
 
             .CodeMirror-code {
-
               min-height: 60vh;
             }
 
