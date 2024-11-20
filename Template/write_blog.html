@@ -65,36 +65,50 @@
         <div class="w-2/3 space-y-8">
           <textarea class="" id="editor"></textarea>
           <style>
+            header {
+              z-index: 1000;
+            }
             /* Change the editor's background color */
             .editor-toolbar {
               border: 1px solid #e1e4e8;
               position: sticky;
               background-color: #f8f9fa;
               opacity: 1;
-              z-index: -1; /* Toolbar nằm dưới nav bar */
+              z-index: 100; /* Toolbar nằm dưới nav bar */
             }
             .editor-toolbar:hover {
               border: 1px solid #e1e4e8;
               position: sticky;
               background-color: #f8f9fa;
               opacity: 1;
-              z-index: -1; /* Toolbar nằm dưới nav bar */
+              z-index: 100; /* Toolbar nằm dưới nav bar */
             }
             .CodeMirror-wrap {
-              border: 1px solid #e1e4e8;
               /* sticky if move to bottom */
-              z-index: -2;
+              font-size: 1.12rem;
+              border: none;
+              cursor: text;
+              /* border: 1px solid #e1e4e8; */
             }
+
             .editor-statusbar {
               position: fixed;
               background-color: #f8f9fa;
               opacity: 1;
-              z-index: -1; /* Toolbar nằm dưới nav bar */
+              z-index: 2; /* Toolbar nằm dưới nav bar */
               bottom: 0;
               display: flex;
               justify-content: flex-end;
               align-items: center;
             }
+
+            .CodeMirror-code {
+
+              min-height: 60vh;
+            }
+
+            /*.CodeMirror-gutter-filler {
+            }; */
           </style>
 
           <script>
@@ -189,6 +203,58 @@
                 }
               };
 
+              //   handle event
+              simplemde.codemirror.on("drop", (editor, event) => {
+                const files = event.dataTransfer.files;
+
+                if (files && files[0] && files[0].type.startsWith("image/")) {
+                  const file = files[0];
+
+                  // Example: Convert image to base64 or upload to server
+                  const reader = new FileReader();
+                  reader.onload = function (e) {
+                    const base64Image = e.target.result;
+
+                    // Insert the image as markdown
+                    const imageMarkdown = `![Uploaded Image](${base64Image})`;
+                    const doc = simplemde.codemirror.getDoc();
+                    const cursor = doc.getCursor();
+                    doc.replaceRange(imageMarkdown, cursor);
+                  };
+                  reader.readAsDataURL(file); // Convert to base64
+                } else {
+                  alert("Only image files are allowed!");
+                }
+
+                event.preventDefault(); // Prevent default browser behavior
+              });
+
+              // Handle paste event (optional)
+              simplemde.codemirror.on("paste", (editor, event) => {
+                const items = event.clipboardData.items;
+
+                for (const item of items) {
+                  if (item.type.startsWith("image/")) {
+                    const file = item.getAsFile();
+
+                    // Handle file as needed (upload or convert to base64)
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                      const base64Image = e.target.result;
+
+                      // Insert the image as markdown
+                      const imageMarkdown = `![Pasted Image](${base64Image})`;
+                      const doc = simplemde.codemirror.getDoc();
+                      const cursor = doc.getCursor();
+                      doc.replaceRange(imageMarkdown, cursor);
+                    };
+                    reader.readAsDataURL(file);
+                  }
+                }
+
+                event.preventDefault(); // Prevent default paste behavior
+              });
+
               // Publish
               document
                 .getElementById("btn-publish")
@@ -219,7 +285,7 @@
                         alert("Đăng bài thất bại! Lỗi fetch");
                       });
                   } catch (error) {
-                        alert("Đăng bài thất bại! Lỗi js");
+                    alert("Đăng bài thất bại! Lỗi js");
                   }
                 });
             };
