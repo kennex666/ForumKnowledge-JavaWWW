@@ -1,6 +1,8 @@
-# The Bookstore Whimsibooks
+# iDev4rum - IUH Developers Forum
 ## About this project
-For edu (Test)
+iDev4rum - IUH Developers Forum is an educational platform designed for student developers, similar to Medium, but with a focus on knowledge sharing and learning. 
+
+It provides a space for students to publish articles, share insights, and discuss various topics related to software development, programming, and technology. The forum aims to foster a collaborative environment where students can enhance their skills, learn from peers, and contribute to the developer community.
 
 ## General information
 - Lecturer: Mrs. Đặng Thị Thu Hà.
@@ -11,7 +13,7 @@ For edu (Test)
     4. Nguyễn Thiên Phú - Student code: 20073871
     5. Bùi Tất Nhựt Minh - Student code: 21001565
 
-- Team's name: **5Panthers**
+- Team's name: **iDev4Rum Team**
 - Summary purpose about project: For education.
 
 ## Config/Run project
@@ -19,14 +21,15 @@ For edu (Test)
 
 ## The technologies, applications, libraries used whole project)
 1. Java Language
-2. Microsoft SQL Server
-3. JDBC Library
-4. Eclipse IDE
-5. Visual Studio Code
-6. Visual Paradigm for UML
-7. Figma
-8. Google Meet
-9. Git
+2. Spring Boot
+3. Microsoft SQL Server
+4. JDBC Library
+5. Eclipse IDE
+6. Visual Studio Code
+7. Visual Paradigm for UML
+8. Figma
+9. Google Meet
+10. Git
 
 ## Contributors
 - Lastest update at 6:59 P.M. 24/05/2024
