@@ -1,5 +1,6 @@
 package com.fit.iuh.controllers;
 
+import com.fit.iuh.entites.Post;
 import com.fit.iuh.entites.Topic;
 import com.fit.iuh.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class AdminController {
     public String topic(Model model,
                         @RequestParam(defaultValue = "0") int numberPage,
                         @RequestParam(defaultValue = "10") int size,
-                        @RequestParam(required = false) String key) {  // Thêm tham số key
+                        @RequestParam(required = false) String key) {
 
         Page<Topic> page;
         if (key != null && !key.trim().isEmpty()) {
@@ -62,6 +63,19 @@ public class AdminController {
         topic.setUpdatedAt(new Date(System.currentTimeMillis()));
         topicService.add(topic);
         return "redirect:/admin/topic";
+    }
+
+    
+    @GetMapping("/topic/detail/{id}")
+    public String viewTopic(@PathVariable int id, Model model) {
+
+        Topic topic = topicService.getById(id);
+        model.addAttribute("topic", topic);
+
+        List<Post> posts = topic.getPosts();
+        model.addAttribute("posts", posts);
+
+        return "view-topic";
     }
 
     @PostMapping("/topic/edit")

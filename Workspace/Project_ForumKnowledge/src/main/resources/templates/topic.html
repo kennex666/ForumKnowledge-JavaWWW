@@ -201,7 +201,8 @@
                                             <td th:text="${topic.posts.size()}">61</td>
                                             <!-- Detail -->
                                             <td>
-                                                <a class="btn btn-primary btn-sm" role="button" th:href="@{/admin/topic/detail}" title="View">
+                                                <a class="btn btn-primary btn-sm" role="button" 
+                                                    th:href="@{'/admin/topic/detail/' + ${topic.tagId}}">
                                                     <i class="fas fa-eye"></i>
                                                 </a>
                                             </td>
