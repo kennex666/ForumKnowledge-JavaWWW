@@ -20,4 +20,6 @@ public interface TopicService {
     public Integer getNumberOfPosts(int tagId);
 
     public boolean add(Topic topic);
+
+    public boolean delete(int id);
 }

@@ -54,4 +54,15 @@ public class TopicServiceImpl implements TopicService {
         }
         return false;
     }
+
+    @Override
+    public boolean delete(int id) {
+        try {
+            topicRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

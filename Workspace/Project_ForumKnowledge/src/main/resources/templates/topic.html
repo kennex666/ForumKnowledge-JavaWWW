@@ -190,7 +190,10 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                <a class="btn btn-danger btn-sm" role="button" th:href="@{/admin/topic/delete}" title="Delete">
+                                                <a class="btn btn-danger btn-sm" role="button" 
+                                                   onclick="return confirm('Are you sure you want to delete this topic?')"
+                                                   th:href="@{'/admin/topic/delete?id='+ ${topic.tagId}}" 
+                                                   title="Delete">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </td>
