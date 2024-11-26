@@ -13,12 +13,13 @@
         }
     </style>
 </head>
-<body class="flex flex-row">
-        <div class="w-8/12 h-full">
-            <img src="https://i.ytimg.com/vi/6RzQvN238vQ/maxresdefault.jpg" alt="iDev4rum logo" class="object-cover h-full">
+<body>
+    <div class="flex flex-row min-h-full">
+        <div class="w-8/12">
+            <img src="https://i.ytimg.com/vi/6RzQvN238vQ/maxresdefault.jpg" alt="iDev4rum logo" class="object-cover min-h-full w-full">
         </div>
-        <div class="w-4/12 flex flex-row items-center">
-            <div class="flex flex-col px-6">
+        <div class="w-4/12 flex flex-col items-center justify-center px-6 min-h-full pt-3">
+            <div class="flex flex-col">
                 <h1 class="text-2xl font-bold uppercase text-center mt-2 mb-4">Đăng ký tài khoản</h1>
                 <p class="text-gray-500 text-center mb-4">Đăng ký tài khoản để tham gia cộng đồng iDev4rum</p>
                 <form method="POST" action="register">
@@ -72,6 +73,8 @@
         
        
     </div>
+    </div>
+        
 
     <script>
        window.onload = () => {

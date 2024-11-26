@@ -13,12 +13,13 @@
         }
     </style>
 </head>
-<body class="flex flex-row">
+<body class="">
+<div class="flex flex-row min-h-full">
         <div class="w-8/12">
-            <img src="https://i.ytimg.com/vi/6RzQvN238vQ/maxresdefault.jpg" alt="iDev4rum logo" class="object-cover h-full">
+            <img src="https://i.ytimg.com/vi/6RzQvN238vQ/maxresdefault.jpg" alt="iDev4rum logo" class="object-cover min-h-full w-full">
         </div>
-        <div class="w-4/12 items-center flex flex-row py-12">
-            <div class="flex flex-col py-4 px-6">
+        <div class="w-4/12 flex flex-col items-center justify-center px-6 min-h-full pt-3">
+            <div class="flex flex-col">
                 <h1 class="text-2xl font-bold uppercase text-center mt-2 mb-4">Đăng nhập iDev4rum</h1>
                 <p class="text-gray-500 text-center mb-4">Tiếp tục đăng nhập để kết nối nhiều hơn nữa</p>
                 <form method="POST" action="login">
@@ -63,7 +64,7 @@
         
        
     </div>
-
+</div>
     <script>
        window.onload = () => {
          const btnShow = document.getElementById("btn-show");
