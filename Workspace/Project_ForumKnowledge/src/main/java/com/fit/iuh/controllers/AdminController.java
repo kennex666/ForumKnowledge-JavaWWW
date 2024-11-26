@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -31,6 +33,21 @@ public class AdminController {
         List<Topic> topics = topicService.getAll();
         model.addAttribute("topics", topics);
         return "topic";
+    }
+
+    @GetMapping("/topic/addform")
+    public String addTopicForm(Model model) {
+        model.addAttribute("topic", new Topic());
+        return "add-topic";
+    }
+
+    @PostMapping("/topic/add")
+    public String addTopic(Topic topic) {
+        System.out.println(topic);
+        topic.setCreatedAt(new Date(System.currentTimeMillis()));
+        topic.setUpdatedAt(new Date(System.currentTimeMillis()));
+        topicService.add(topic);
+        return "redirect:/admin/topic";
     }
 
     // Layouts pages

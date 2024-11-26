@@ -43,4 +43,15 @@ public class TopicServiceImpl implements TopicService {
     public Integer getNumberOfPosts(int tagId) {
         return topicRepository.getNumberOfPosts(tagId);
     }
+
+    @Override
+    public boolean add(Topic topic) {
+        try {
+            topicRepository.save(topic);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

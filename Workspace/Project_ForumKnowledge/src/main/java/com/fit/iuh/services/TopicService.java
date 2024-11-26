@@ -17,5 +17,7 @@ public interface TopicService {
 
     public List<Topic> getAll();
 
-    Integer getNumberOfPosts(int tagId);
+    public Integer getNumberOfPosts(int tagId);
+
+    public boolean add(Topic topic);
 }
