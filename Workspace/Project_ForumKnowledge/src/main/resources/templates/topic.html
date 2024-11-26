@@ -141,7 +141,6 @@
                             <p class="text-primary m-0 fw-bold">Topic Info</p>
                             <div>
                                 <a th:href="@{/admin/topic/addform}" class="btn btn-success text-white me-2" type="button">Add topic</a>
-                                <a class="btn btn-success text-white" type="button">Import topic</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -157,21 +156,26 @@
                                     </div>
                                 </div>
                                 <div class="col-md-6">
-                                    <div class="text-md-end dataTables_filter" id="dataTable_filter"><label class="form-label"><input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search"></label></div>
+                                    <div class="text-md-end dataTables_filter" id="dataTable_filter">
+                                        <label class="form-label">
+                                            <input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search" id="search" th:value="${key}">
+                                        </label>
+                                        <a class="btn btn-outline-primary btn-sm" type="button" onclick="searchTopic()" id="search-btn">
+                                            <i class="fas fa-search"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                             <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
                                 <table class="table my-0" id="dataTable">
                                     <thead>
                                         <tr>
-                                            <th>Name</th>
-                                            <th>Start Date</th>
-                                            <th>Updated Date</th>
-                                            <th>Hashtag</th>
-                                            <th style="width: 15%">Number of Posts</th>
-                                            <th style="width: 4%">Detail</th>
-                                            <th style="width: 4%">Edit</th>
-                                            <th style="width: 4%">Delete</th>
+                                            <th style="width: 26%">Name</th>
+                                            <th style="width: 26%">Hashtag</th>
+                                            <th style="width: 26%">Number of Posts</th>
+                                            <th>Detail</th>
+                                            <th>Edit</th>
+                                            <th>Delete</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -185,8 +189,6 @@
                                                     style="display: none;"
                                                 >
                                             </td>
-                                            <td th:text="${#dates.format(topic.createdAt, 'dd/MM/yyyy')}">2011/04/25</td>
-                                            <td th:text="${#dates.format(topic.updatedAt, 'dd/MM/yyyy')}">2011/04/25</td>
                                             <td>
                                                 <span th:text="${topic.hashtag}" th:id="'hashtag-' + ${topic.tagId}">#luandeptrai</span>
                                                 <input type="text"
@@ -236,8 +238,6 @@
                                     <tfoot>
                                         <tr>
                                             <td><strong>Name</strong></td>
-                                            <td><strong>Start Date</strong></td>
-                                            <td><strong>Updated Date</strong></td>
                                             <td><strong>Hashtag</strong></td>
                                             <td><strong>Number of Posts</strong></td>
                                             <td><strong>Detail</strong></td>
@@ -359,8 +359,16 @@
                     document.getElementById("save-btn-" + id).style.display = 'none';
                 });
         }
+
+        // Change page size
         function changePage(size) {
             window.location.href = `/admin/topic?size=${size}`;
+        }
+
+        // Search topic
+        function searchTopic() {
+            const search = document.getElementById("search").value;
+            window.location.href = `/admin/topic?key=${search}`;
         }
     </script>
 </body>

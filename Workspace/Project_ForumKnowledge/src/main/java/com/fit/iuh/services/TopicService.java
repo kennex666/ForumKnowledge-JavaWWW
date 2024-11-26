@@ -29,4 +29,8 @@ public interface TopicService {
     public boolean update(Topic topic);
 
     public Page<Topic> getPage(int page, int size);
+
+    public List<Topic> searchByKeyword(String search);
+
+    public Page<Topic> searchByKeywordWithPaging(String key, int numberPage, int size);
 }

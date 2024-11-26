@@ -25,18 +25,28 @@ public class AdminController {
 
     // Topic
     @GetMapping("/topic")
-    public String topic(Model model, @RequestParam(defaultValue = "0") int numberPage, @RequestParam(defaultValue = "10") int size) {
-        // Get all topics
-        Page<Topic> page = topicService.getPage(numberPage, size);
+    public String topic(Model model,
+                        @RequestParam(defaultValue = "0") int numberPage,
+                        @RequestParam(defaultValue = "10") int size,
+                        @RequestParam(required = false) String key) {  // Thêm tham số key
+
+        Page<Topic> page;
+        if (key != null && !key.trim().isEmpty()) {
+            // Nếu có từ khóa tìm kiếm
+            page = topicService.searchByKeywordWithPaging(key, numberPage, size);
+            model.addAttribute("key", key);
+        } else {
+            page = topicService.getPage(numberPage, size);
+        }
+
+        // Các attribute khác giữ nguyên
         model.addAttribute("topics", page.getContent());
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("currentPage", numberPage);
-        // thứ tự cua du lieu dau tien cua trang
         model.addAttribute("start", numberPage * size + 1);
-        // thứ tự cua du lieu cuoi cung cua trang
         model.addAttribute("end", numberPage * size + page.getNumberOfElements());
-
         model.addAttribute("quantityTopic", page.getTotalElements());
+
         return "topic";
     }
 
