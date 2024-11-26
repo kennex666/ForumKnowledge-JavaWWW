@@ -64,7 +64,7 @@ public class PostServiceImpl implements PostService {
 		Optional<Post> post = postRepository.findById(postId);
 		if (post.isPresent()) {
 			post.get().setState(state);
-			postRepository.update(post.get());
+			postRepository.save(post.get());
 			return true;
 		}
 		return false;

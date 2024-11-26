@@ -232,13 +232,14 @@
                                     <td th:text="${post.postId}"></td>
                                     <td th:text="${post.title}"></td>
                                     <td>
-                                        <select class="form-select">
+                                        <select class="form-select"
+                                                th:onchange="'changeState(this.value)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
-                                                    th:value="${state}"
-                                                    th:selected="${state == post.state}"></option>
+                                                    th:value="@{/admin/posts/state-change(id=${post.postId}, state=${state})}"
+                                                    th:selected="${state == post.state}">
+                                            </option>
                                         </select>
-
                                     </td>
                                     <td th:text="${post.totalComments}"></td>
                                     <td th:text="${post.totalUpVote}"></td>
@@ -304,5 +305,10 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/assets/js/bs-init.js"></script>
 <script src="/assets/js/theme.js"></script>
+<script>
+    function changeState(value) {
+        window.location.href = value;
+    }
+</script>
 </body>
 </html>
