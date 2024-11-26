@@ -8,10 +8,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/admin")
 public class AdminController {
 
-    @GetMapping("")
+    @GetMapping("/")
     public String index() {
         return "index";
     }
+
+    // Topic
+    @GetMapping("/topic")
+    public String topic() {
+        return "topic";
+    }
+
+    // Layouts pages
+    @GetMapping("/table")
+    public String table() { return "table"; }
 
     @GetMapping("/login")
     public String login() {
