@@ -52,4 +52,9 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postRepository.findByTitleOrDescrpition(title, description);
 	}
+
+	@Override
+	public Post findById(int postId) {
+		return postRepository.findById(postId).orElse(null);
+	}
 }

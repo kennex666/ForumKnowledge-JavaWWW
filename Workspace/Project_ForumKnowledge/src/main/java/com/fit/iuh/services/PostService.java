@@ -28,4 +28,7 @@ public interface PostService {
 
 	// Method find article by title or description
 	public Post findByTitleOrDescrpition(String title, String description);
+
+    // Method find article by id
+    public Post findById(int postId);
 }
