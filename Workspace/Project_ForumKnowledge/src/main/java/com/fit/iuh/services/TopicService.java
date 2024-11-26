@@ -1,6 +1,7 @@
 package com.fit.iuh.services;
 
 import com.fit.iuh.entites.Topic;
+import org.springframework.data.domain.Page;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Date;
@@ -26,4 +27,6 @@ public interface TopicService {
     public Topic getById(int tagId);
 
     public boolean update(Topic topic);
+
+    public Page<Topic> getPage(int page, int size);
 }
