@@ -1,6 +1,7 @@
 package com.fit.iuh.services.impl;
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.enums.PostState;
 import com.fit.iuh.repositories.PostRepository;
 import com.fit.iuh.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,5 +57,16 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Post findById(int postId) {
 		return postRepository.findById(postId).orElse(null);
+	}
+
+	@Override
+	public Boolean changeState(int postId, PostState state) {
+		Optional<Post> post = postRepository.findById(postId);
+		if (post.isPresent()) {
+			post.get().setState(state);
+			postRepository.update(post.get());
+			return true;
+		}
+		return false;
 	}
 }

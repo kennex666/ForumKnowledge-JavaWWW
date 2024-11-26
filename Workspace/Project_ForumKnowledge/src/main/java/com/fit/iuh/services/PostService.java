@@ -8,6 +8,7 @@
 package com.fit.iuh.services;
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.enums.PostState;
 
 import java.util.List;
 
@@ -31,4 +32,7 @@ public interface PostService {
 
     // Method find article by id
     public Post findById(int postId);
+
+    // Method change state of article
+    public Boolean changeState(int postId, PostState state);
 }
