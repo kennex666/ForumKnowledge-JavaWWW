@@ -7,9 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Controller
 @RequestMapping("/admin")
@@ -41,12 +39,32 @@ public class AdminController {
 
     @PostMapping("/topic/add")
     public String addTopic(Topic topic) {
-        System.out.println(topic);
-        topic.setCreatedAt(new Date(System.currentTimeMillis()));
-        topic.setUpdatedAt(new Date(System.currentTimeMillis()));
-        topicService.add(topic);
         return "redirect:/admin/topic";
     }
+
+    @PostMapping("/topic/edit")
+    @ResponseBody
+    public Map<String, Object> editTopic(@RequestParam int id, @RequestParam String name, @RequestParam String hashtag) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            Topic topic = topicService.getById(id);
+            topic.setName(name.trim());
+            topic.setHashtag(hashtag.trim());
+            topic.setUpdatedAt(new Date(System.currentTimeMillis()));
+
+            topicService.update(topic);
+
+            response.put("status", "success");
+            response.put("message", "Cập nhật thành công!");
+
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "Lỗi: " + e.getMessage());
+        }
+
+        return response;
+    }
+
 
     @GetMapping("/topic/delete")
     public String deleteTopic(@RequestParam int id) {

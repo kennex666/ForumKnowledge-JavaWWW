@@ -22,4 +22,8 @@ public interface TopicService {
     public boolean add(Topic topic);
 
     public boolean delete(int id);
+
+    public Topic getById(int tagId);
+
+    public boolean update(Topic topic);
 }

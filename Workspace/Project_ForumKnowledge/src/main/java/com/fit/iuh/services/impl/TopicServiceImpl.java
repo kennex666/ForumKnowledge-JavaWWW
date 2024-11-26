@@ -65,4 +65,20 @@ public class TopicServiceImpl implements TopicService {
         }
         return false;
     }
+
+    @Override
+    public Topic getById(int tagId) {
+        return topicRepository.findById(tagId).get();
+    }
+
+    @Override
+    public boolean update(Topic topic) {
+        try {
+            topicRepository.save(topic);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

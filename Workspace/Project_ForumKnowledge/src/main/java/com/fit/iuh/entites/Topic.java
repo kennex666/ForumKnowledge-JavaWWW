@@ -97,6 +97,12 @@ public class Topic {
 		this.posts = posts;
 	}
 
+	public Topic(int tagId, String hashtag, String name) {
+		this.tagId = tagId;
+		this.hashtag = hashtag;
+		this.name = name;
+	}
+
 	public Topic() {
 		super();
 		// TODO Auto-generated constructor stub
