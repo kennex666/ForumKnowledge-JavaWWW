@@ -24,7 +24,7 @@ public class User {
 
 	@Enumerated(EnumType.STRING)
 	@Column(name="account_state", nullable = false, unique = false, columnDefinition = "")
-	private UserAccountState accountState;
+		private UserAccountState accountState;
 
 	@Column(name="email", nullable = false, unique = true, columnDefinition = "")
 	private String email;
