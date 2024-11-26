@@ -14,4 +14,8 @@ public interface TopicService {
     public boolean existsByHashtag(@Param("hashtag") String hashtag);
 
     public List<Topic> findByCreatedAtBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    public List<Topic> getAll();
+
+    Integer getNumberOfPosts(int tagId);
 }

@@ -22,4 +22,7 @@ public interface TopicRepository extends JpaRepository<Topic, Integer> {
 
     @Query("SELECT t FROM Topic t WHERE t.createdAt BETWEEN :startDate AND :endDate")
     List<Topic> findByCreatedAtBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
+
+    @Query("SELECT count(t) FROM Post t WHERE t.topic.tagId = :tagId")
+    Integer getNumberOfPosts(int tagId);
 }

@@ -168,12 +168,12 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Accountant</td>
-                                            <td>Tokyo</td>
-                                            <td>33</td>
-                                            <td>2008/11/28</td>
-                                            <td>$162,700</td>
+                                        <tr th:each="topic : ${topics}">
+                                            <td th:text="${topic.name}">Tiger Nixon</td>
+                                            <td th:text="${#dates.format(topic.createdAt, 'dd/MM/yyyy')}">2011/04/25</td>
+                                            <td th:text="${#dates.format(topic.updatedAt, 'dd/MM/yyyy')}">2011/04/25</td>
+                                            <td th:text="${topic.hashtag}">#luandeptrai</td>
+                                            <td th:text="${topic.posts.size()}">61</td>
                                             <td><a class="btn btn-primary" role="button" th:href="@{/admin/topic/detail}">View</a></td>
                                             <td><a class="btn btn-warning" role="button" th:href="@{/admin/topic/edit}">Edit</a></td>
                                         </tr>

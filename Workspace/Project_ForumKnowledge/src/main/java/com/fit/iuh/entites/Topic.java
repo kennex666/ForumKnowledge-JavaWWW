@@ -103,11 +103,6 @@ public class Topic {
 	}
 
 	@Override
-	public String toString() {
-		return name;
-	}
-
-	@Override
 	public int hashCode() {
 		return Objects.hash(tagId);
 	}
@@ -124,4 +119,15 @@ public class Topic {
 		return tagId == other.tagId;
 	}
 
+	@Override
+	public String toString() {
+		return "Topic{" +
+				"tagId=" + tagId +
+				", name='" + name + '\'' +
+				", hashtag='" + hashtag + '\'' +
+				", createdAt=" + createdAt +
+				", updatedAt=" + updatedAt +
+				", posts=" + posts +
+				'}';
+	}
 }
