@@ -10,7 +10,6 @@ import java.util.*;
 
 public class OpenAI {
 
-    public static String apiKey = System.getenv("OPEN_AI_KEY");
 
     public static List<Map<String, String>> getPromptReviewPost() {
         return Arrays.asList(
@@ -37,7 +36,7 @@ public class OpenAI {
         // Dữ liệu yêu cầu (body)
         Map<String, Object> requestData = new HashMap<>();
         requestData.put("model", "gpt-4o-mini");
-        requestData.put("max_tokens", 50);
+        requestData.put("max_tokens", 1000);
         requestData.put("messages", chatCompletion);
 
         // Chuyển đổi dữ liệu yêu cầu thành JSON
@@ -47,7 +46,7 @@ public class OpenAI {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiEndpoint))
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + apiKey)
+                .header("Authorization", "Bearer " + System.getenv("OPEN_AI_KEY") == null ? "" : System.getenv("OPEN_AI_KEY"))
                 .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
                 .build();
 
