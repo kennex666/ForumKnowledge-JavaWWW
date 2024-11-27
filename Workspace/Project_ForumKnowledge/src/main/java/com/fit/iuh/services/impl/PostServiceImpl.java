@@ -91,6 +91,8 @@ public class PostServiceImpl implements PostService {
 		Optional<Post> latestPost  = postRepository.findTopByOrderByCreatedAtDesc();
 		if (latestPost.isEmpty() || isDiff(latestPost.get().getCreatedAt(), now)) {
 			createNewPost();
+		} else {
+			logger.info("Scheduled Task - Generating Post: Skip");
 		}
 	}
 
@@ -98,7 +100,8 @@ public class PostServiceImpl implements PostService {
 		long oneDay = 24 * 60 * 60 * 1000;
 		long oneMinute = 60 * 1000;
 
-		long diff = now.getTime() - createdAt.getTime() + 1000;
+		long diff = now.getTime() - createdAt.getTime();
+        logger.info("Scheduled Task - Generating Post: Time difference from last post: {}", diff);
 		return diff >= oneMinute;
 	}
 
@@ -106,7 +109,7 @@ public class PostServiceImpl implements PostService {
 		GeminiResponse content = geminiContentGenerator.generateContent();
 
 		if (content == null) {
-			logger.error("Scheduled Task - Generating Post: Error");
+			logger.error("Scheduled Task - Generating Post: Unable to generate content");
 			return;
 		}
 
