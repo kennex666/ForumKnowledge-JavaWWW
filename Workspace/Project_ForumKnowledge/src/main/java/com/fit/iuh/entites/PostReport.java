@@ -5,9 +5,11 @@ import java.util.Objects;
 
 import com.fit.iuh.enums.PostReportState;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name="post_reports")
+@EntityListeners(AuditingEntityListener.class)  // Kích hoạt Auditing cho entity này
 public class PostReport {
 
 	@Id

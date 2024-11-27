@@ -3,6 +3,7 @@ package com.fit.iuh.entites;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="topics")
+@EntityListeners(AuditingEntityListener.class)  // Kích hoạt Auditing cho entity này
 public class Topic {
 
 	@Id

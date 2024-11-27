@@ -1,12 +1,14 @@
 package com.fit.iuh.entites;
 
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 import java.util.Objects;
 
 @Entity
 @Table(name="bookmarks")
+@EntityListeners(AuditingEntityListener.class)  // Kích hoạt Auditing cho entity này
 public class BookMark {
 
 	@Id
