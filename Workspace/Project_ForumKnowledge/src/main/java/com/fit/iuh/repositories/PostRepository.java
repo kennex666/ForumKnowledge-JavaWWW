@@ -23,7 +23,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query("DELETE FROM Post p WHERE p.postId = :postId")
 	public Boolean delete(@Param("postId") int postId);
 
-	@Query("SELECT p FROM Post where p.title LIKE %:title% OR p.description LIKE %:description%")
+	@Query("SELECT p FROM Post p where p.title LIKE %:title% OR p.description LIKE %:description%")
 	public Post findByTitleOrDescrpition(String title, String description);
 	
 }
