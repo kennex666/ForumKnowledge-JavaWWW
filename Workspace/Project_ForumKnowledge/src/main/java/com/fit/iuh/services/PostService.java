@@ -34,4 +34,6 @@ public interface PostService {
     Page<Post> searchByKeywordWithPaging(String key, int numberPage, int size);
 
     Page<Post> getPage(int numberPage, int size);
+
+    Post findByID(int id);
 }

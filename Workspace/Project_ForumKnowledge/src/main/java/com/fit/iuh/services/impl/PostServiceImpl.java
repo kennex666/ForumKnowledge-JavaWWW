@@ -68,4 +68,9 @@ public class PostServiceImpl implements PostService {
 		return postRepository.findAll(PageRequest.of(numberPage, size));
 	}
 
+	@Override
+	public Post findByID(int id) {
+		return postRepository.findById(id).orElse(null);
+	}
+
 }

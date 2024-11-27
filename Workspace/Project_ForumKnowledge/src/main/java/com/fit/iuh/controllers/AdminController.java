@@ -6,6 +6,7 @@ import com.fit.iuh.entites.Topic;
 import com.fit.iuh.services.CommentService;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
+import com.fit.iuh.utilities.CommentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -151,9 +152,35 @@ public class AdminController {
         model.addAttribute("quantityPost", page.getTotalElements());
         model.addAttribute("size", size);
 
+        List<Comment> comments = new ArrayList<>();
+        for (Post post : page.getContent()) {
+            comments.addAll(post.getComments());
+        }
+        // check comment
+        int numberNegative = 0;
+        for (Comment comment : comments) {
+            int check = CommentUtils.checkComment(comment.getContent());
+            if (check == 0) {
+                numberNegative++;
+            }
+        }
+        model.addAttribute("numberNegative", numberNegative);
+        model.addAttribute("comments", comments);
+
         return "comment";
     }
 
+    @GetMapping("/view-comment/{id}")
+    public String viewComment(@PathVariable int id, Model model) {
+        Post post = postService.findByID(id);
+        model.addAttribute("post", post);
+        return "view-comment";
+    }
+
+    @GetMapping("/comment/negative")
+    public String negativeComment(Model model) {
+        return "negative-comment";
+    }
 
     /*
     * Comment different
