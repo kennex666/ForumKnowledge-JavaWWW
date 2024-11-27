@@ -1,12 +1,12 @@
 package com.fit.iuh.utilities;
 
 import com.google.gson.Gson;
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
+import jakarta.xml.bind.Unmarshaller;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -79,9 +79,21 @@ public class GeminiContentGenerator {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws JAXBException {
         GeminiContentGenerator generator = new GeminiContentGenerator();
-        System.out.println(generator.generateContent());
+        String content = generator.generateContent();
+        System.out.println(content);
+
+        String xmlContent = content.replaceAll("```xml|```", "").trim();
+
+        JAXBContext context = JAXBContext.newInstance(GeminiContentResponse.class);
+        Unmarshaller unmarshaller = context.createUnmarshaller();
+
+        GeminiContentResponse response = (GeminiContentResponse) unmarshaller.unmarshal(new StringReader(xmlContent));
+
+        System.out.println("Title: " + response.getTitle());
+        System.out.println("Description: " + response.getDescription());
+        System.out.println("Content: " + response.getContent());
     }
 
 }
