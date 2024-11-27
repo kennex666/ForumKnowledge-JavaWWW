@@ -33,4 +33,14 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> findByCreatedAtBetween(Date startDate, Date endDate) {
         return topicRepository.findByCreatedAtBetween(startDate, endDate);
     }
+
+    @Override
+    public Topic findById(int id) {
+        return topicRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Topic> findAll() {
+        return topicRepository.findAll();
+    }
 }
