@@ -101,7 +101,7 @@ public class PostServiceImpl implements PostService {
 		long oneMinute = 60 * 1000;
 
 		long diff = now.getTime() - createdAt.getTime();
-        logger.info("Scheduled Task - Generating Post: Time difference from last post: {}", diff);
+        logger.info("Scheduled Task - Generating Post: Time difference from last post: {} seconds", diff / 1000);
 		return diff >= oneMinute;
 	}
 
