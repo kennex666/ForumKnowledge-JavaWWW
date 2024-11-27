@@ -19,77 +19,88 @@ import java.util.Map;
 @Service
 public class GeminiContentGenerator {
 
-    public String generateContent() {
+    public GeminiResponse generateContent() {
 
         String apiPath = "D:\\09_ETC\\API_KEY\\gemini_api_key.txt";
+        String apiKey = getAPIKey(apiPath);
+        String prompt = getPrompt();
 
-        String apiKey;
-        try (BufferedReader reader = new BufferedReader(new FileReader(apiPath))) {
-            apiKey = reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace(System.err);
+        if (apiKey == null || prompt == null) {
             return null;
         }
 
-        String prompt;
-        // Get the file content in project-root/resources/prompt/gemini-content-generator.xml
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("prompt/gemini-content-generator.xml");) {
-            if (inputStream == null) {
-                return null;
-            }
-
-            prompt = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
-        } catch (IOException e) {
+        String responseContent;
+        try {
+            String requestBody = getRequestBody(prompt);
+            responseContent = getHttpResponseBody(requestBody, apiKey);
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace(System.err);
             return null;
         }
-
-        Map<String, Object> requestBody = new HashMap<>();
-        requestBody.put("contents", List.of(
-                Map.of("parts", List.of(
-                        Map.of("text", prompt)
-                ))
-        ));
-
-        Gson gson = new Gson();
-        String json = gson.toJson(requestBody);
-
-        String apiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(apiEndpoint))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(json))
-                .build();
 
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            return parseResponse(responseContent);
+        } catch (JAXBException e) {
+            e.printStackTrace(System.err);
+            return null;
+        }
 
-            String responseBody = response.body();
+    }
 
-            Gson gsonConverter = new Gson();
-            GeminiGenerationResponse geminiGenerationResponse = gsonConverter.fromJson(responseBody, GeminiGenerationResponse.class);
-
-            String textResult = geminiGenerationResponse.getCandidates().get(0).getContent().getParts().get(0).getText();
-
-            return textResult;
-        } catch (IOException | InterruptedException e) {
+    private String getAPIKey(String apiPath) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(apiPath))) {
+            return reader.readLine();
+        } catch (IOException e) {
             e.printStackTrace(System.err);
             return null;
         }
     }
 
-    public static void main(String[] args) throws JAXBException {
-        GeminiContentGenerator generator = new GeminiContentGenerator();
-        String content = generator.generateContent();
-        System.out.println(content);
+    private String getPrompt() {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("prompt/gemini-content-generator.xml")) {
+            if (inputStream == null) {
+                return null;
+            }
+            return new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace(System.err);
+            return null;
+        }
+    }
 
-        String xmlContent = content.replaceAll("```xml|```", "").trim();
+    private String getRequestBody(String prompt) {
+        Gson gson = new Gson();
+        Map<String, Object> requestBody = new HashMap<>();
 
+        requestBody.put("contents", List.of(Map.of("parts", List.of(Map.of("text", prompt)))));
+        return gson.toJson(requestBody);
+    }
+
+    private String getHttpResponseBody(String requestBody, String apiKey) throws IOException, InterruptedException {
+        String apiEndpoint = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder().uri(URI.create(apiEndpoint)).header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(requestBody)).build();
+
+        Gson gson = new Gson();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        String responseBody = response.body();
+
+        GeminiGenerationResponse geminiGenerationResponse = gson.fromJson(responseBody, GeminiGenerationResponse.class);
+        return geminiGenerationResponse.getCandidates().get(0).getContent().getParts().get(0).getText();
+    }
+
+    private GeminiResponse parseResponse(String responseContent) throws JAXBException {
         JAXBContext context = JAXBContext.newInstance(GeminiResponse.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
 
-        GeminiResponse response = (GeminiResponse) unmarshaller.unmarshal(new StringReader(xmlContent));
+        String xmlContent = responseContent.replaceAll("```xml|```", "").trim();
+        return (GeminiResponse) unmarshaller.unmarshal(new StringReader(xmlContent));
+    }
+
+    public static void main(String[] args) throws JAXBException {
+        GeminiContentGenerator generator = new GeminiContentGenerator();
+        GeminiResponse response = generator.generateContent();
 
         System.out.println("Title: " + response.getTitle());
         System.out.println("Description: " + response.getDescription());

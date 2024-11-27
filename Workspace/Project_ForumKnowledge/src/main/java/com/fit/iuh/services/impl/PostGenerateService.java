@@ -22,7 +22,7 @@ public class PostGenerateService {
 
     @Scheduled(fixedRate = FIXED_RATE)
     public void generatePost() {
-        logger.info("Running Scheduled Task: Generating Post");
+        logger.info("Scheduled Task - Generating Post: Start");
         postService.checkAndGeneratePost();
     }
 

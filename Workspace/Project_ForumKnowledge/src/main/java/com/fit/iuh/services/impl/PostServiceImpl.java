@@ -5,6 +5,9 @@ import com.fit.iuh.enums.PostState;
 import com.fit.iuh.repositories.PostRepository;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.utilities.GeminiContentGenerator;
+import com.fit.iuh.utilities.GeminiResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,8 @@ public class PostServiceImpl implements PostService {
 
 	@Autowired
 	private GeminiContentGenerator geminiContentGenerator;
+
+	private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
     @Override
     public List<Post> search(String keyword) {
@@ -82,29 +87,33 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public void checkAndGeneratePost() {
+		Date now = new Date();
 		Optional<Post> latestPost  = postRepository.findTopByOrderByCreatedAtDesc();
-		if (latestPost.isEmpty() || isDiff(latestPost.get().getCreatedAt())) {
+		if (latestPost.isEmpty() || isDiff(latestPost.get().getCreatedAt(), now)) {
 			createNewPost();
 		}
 	}
 
-	private boolean isDiff(Date createdAt) {
+	private boolean isDiff(Date createdAt, Date now) {
 		long oneDay = 24 * 60 * 60 * 1000;
 		long oneMinute = 60 * 1000;
 
-		Date now = new Date();
 		long diff = now.getTime() - createdAt.getTime() + 1000;
-		System.out.println("Diff: " + diff);
 		return diff >= oneMinute;
 	}
 
 	private void createNewPost() {
-		String content = geminiContentGenerator.generateContent();
+		GeminiResponse content = geminiContentGenerator.generateContent();
+
+		if (content == null) {
+			logger.error("Scheduled Task - Generating Post: Error");
+			return;
+		}
 
 		Post post = new Post();
-		post.setTitle("Generated Post");
-		post.setDescription("This is a generated post");
-		post.setContent(content);
+		post.setTitle(content.getTitle());
+		post.setDescription(content.getDescription());
+		post.setContent(content.getContent());
 		post.setUrl("");
 		post.setState(PostState.PUBLISHED);
 		post.setTotalComments(0);
@@ -116,6 +125,7 @@ public class PostServiceImpl implements PostService {
 		post.setUpdatedAt(new Date());
 
 		postRepository.save(post);
+		logger.info("Scheduled Task - Generating Post: Success");
 	}
 
 }

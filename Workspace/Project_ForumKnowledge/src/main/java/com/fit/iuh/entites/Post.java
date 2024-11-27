@@ -19,10 +19,10 @@ public class Post {
 	@Column(name="title", nullable = false, unique = false, columnDefinition = "")
 	private String title;
 
-	@Column(name="description", nullable = false, unique = false, columnDefinition = "")
+	@Column(name="description", nullable = false, unique = false, columnDefinition = "nvarchar(max)")
 	private String description;
 
-	@Column(name="content", nullable = false, unique = false, columnDefinition = "")
+	@Column(name="content", nullable = false, unique = false, columnDefinition = "nvarchar(max)")
 	private String content;
 
 	@Column(name="url", nullable = false, unique = false, columnDefinition = "")

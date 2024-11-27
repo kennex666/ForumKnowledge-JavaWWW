@@ -8,11 +8,11 @@
 
     <task>
         <description>Kết quả trả về của bạn bao gồm:</description>
-        <reponse>
+        <response>
             <title>Tiêu đề của bài viết</title>
             <description>Mô tả ngắn gọn về nội dung của bài viết</description>
             <content>Nội dung chi tiết của bài viết. Nội dùng càng dài càng tốt, tối thiểu 1000 từ. Luôn luôn là văn bản thô, không phải xml</content>
-        </reponse>
+        </response>
     </task>
 
 </model-instruction>
