@@ -237,7 +237,11 @@
                                     <td th:text="${post.totalUpVote}"></td>
                                     <td th:text="${post.totalDownVote}"></td>
                                     <td th:text="${post.createdAt}"></td>
-                                    <td th:text="${post.postReports.size()}"></td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm">
+                                            <i th:text="${post.postReports.size()}"></i>
+                                        </button>
+                                    </td>
                                     <td>
                                         <select class="form-select"
                                                 th:onchange="'changeState(this.value)'">
@@ -310,7 +314,11 @@
 <script src="/assets/js/theme.js"></script>
 <script>
     function changeState(value) {
-        window.location.href = value;
+        const confirm = window.confirm("Bạn có chắc chắn muốn thay đổi trạng thái bài viết?");
+        if (confirm)
+            window.location.href = value;
+        else
+            window.location.reload();
     }
 </script>
 </body>
