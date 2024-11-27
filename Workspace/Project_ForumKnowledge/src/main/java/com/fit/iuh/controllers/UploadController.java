@@ -36,7 +36,7 @@ public class UploadController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/image")
     public ResponseEntity<Map<String, String>> uploadFile(@RequestParam("file") MultipartFile file) {
         if (file.isEmpty()) {
             Map<String, String> response = new HashMap<>();
@@ -59,7 +59,7 @@ public class UploadController {
             Files.write(path, file.getBytes());
 
             // Construct the file URL
-            String fileUrl = "http://localhost:" + serverPort + "/uploads/" + randomFileName;
+            String fileUrl = "uploads/images/" + randomFileName;
 
             // Return the URL in JSON format
             Map<String, String> response = new HashMap<>();
