@@ -68,9 +68,9 @@ public class GeminiContentGenerator {
             String responseBody = response.body();
 
             Gson gsonConverter = new Gson();
-            GeminiResponse geminiResponse = gsonConverter.fromJson(responseBody, GeminiResponse.class);
+            GeminiGenerationResponse geminiGenerationResponse = gsonConverter.fromJson(responseBody, GeminiGenerationResponse.class);
 
-            String textResult = geminiResponse.getCandidates().get(0).getContent().getParts().get(0).getText();
+            String textResult = geminiGenerationResponse.getCandidates().get(0).getContent().getParts().get(0).getText();
 
             return textResult;
         } catch (IOException | InterruptedException e) {
@@ -86,10 +86,10 @@ public class GeminiContentGenerator {
 
         String xmlContent = content.replaceAll("```xml|```", "").trim();
 
-        JAXBContext context = JAXBContext.newInstance(GeminiContentResponse.class);
+        JAXBContext context = JAXBContext.newInstance(GeminiResponse.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
 
-        GeminiContentResponse response = (GeminiContentResponse) unmarshaller.unmarshal(new StringReader(xmlContent));
+        GeminiResponse response = (GeminiResponse) unmarshaller.unmarshal(new StringReader(xmlContent));
 
         System.out.println("Title: " + response.getTitle());
         System.out.println("Description: " + response.getDescription());
