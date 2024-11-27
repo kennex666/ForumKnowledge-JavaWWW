@@ -67,7 +67,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
-
 		<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
@@ -88,7 +87,6 @@
 			<artifactId>jaxb-runtime</artifactId>
 			<version>4.0.5</version>
 		</dependency>
-
 	</dependencies>
 
 	<build>
