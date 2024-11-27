@@ -106,6 +106,7 @@ public class PostServiceImpl implements PostService {
 	}
 
 	private void createNewPost() {
+		logger.info("Scheduled Task - Generating Post: Begin to generate new post");
 		GeminiResponse content = geminiContentGenerator.generateContent();
 
 		if (content == null) {
