@@ -205,25 +205,37 @@
                 }
               };
 
-              //   handle event
+              // Handle drop event
               simplemde.codemirror.on("drop", (editor, event) => {
                 const files = event.dataTransfer.files;
 
                 if (files && files[0] && files[0].type.startsWith("image/")) {
                   const file = files[0];
 
-                  // Example: Convert image to base64 or upload to server
-                  const reader = new FileReader();
-                  reader.onload = function (e) {
-                    const base64Image = e.target.result;
+                  // Upload the file to the server
+                  const formData = new FormData();
+                  formData.append("file", file);
 
-                    // Insert the image as markdown
-                    const imageMarkdown = `![Uploaded Image](${base64Image})`;
-                    const doc = simplemde.codemirror.getDoc();
-                    const cursor = doc.getCursor();
-                    doc.replaceRange(imageMarkdown, cursor);
-                  };
-                  reader.readAsDataURL(file); // Convert to base64
+                  fetch("/api/upload", {
+                    method: "POST",
+                    body: formData,
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      if (data.url) {
+                        // Insert the image URL as markdown
+                        const imageMarkdown = `!IMAGE:[${data.url}]`;
+                        const doc = simplemde.codemirror.getDoc();
+                        const cursor = doc.getCursor();
+                        doc.replaceRange(imageMarkdown, cursor);
+                      } else {
+                        alert("Failed to upload the image.");
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Error uploading image:", error);
+                      alert("Error uploading the image.");
+                    });
                 } else {
                   alert("Only image files are allowed!");
                 }
@@ -231,7 +243,7 @@
                 event.preventDefault(); // Prevent default browser behavior
               });
 
-              // Handle paste event (optional)
+              // Handle paste event
               simplemde.codemirror.on("paste", (editor, event) => {
                 const items = event.clipboardData.items;
 
@@ -239,23 +251,36 @@
                   if (item.type.startsWith("image/")) {
                     const file = item.getAsFile();
 
-                    // Handle file as needed (upload or convert to base64)
-                    const reader = new FileReader();
-                    reader.onload = function (e) {
-                      const base64Image = e.target.result;
+                    // Upload the file to the server
+                    const formData = new FormData();
+                    formData.append("file", file);
 
-                      // Insert the image as markdown
-                      const imageMarkdown = `![Pasted Image](${base64Image})`;
-                      const doc = simplemde.codemirror.getDoc();
-                      const cursor = doc.getCursor();
-                      doc.replaceRange(imageMarkdown, cursor);
-                    };
-                    reader.readAsDataURL(file);
+                    fetch("/api/upload", {
+                      method: "POST",
+                      body: formData,
+                    })
+                      .then((response) => response.json())
+                      .then((data) => {
+                        if (data.url) {
+                          // Insert the image URL as markdown
+                          const imageMarkdown = `!IMAGE:[${data.url}]`;
+                          const doc = simplemde.codemirror.getDoc();
+                          const cursor = doc.getCursor();
+                          doc.replaceRange(imageMarkdown, cursor);
+                        } else {
+                          alert("Failed to upload the image.");
+                        }
+                      })
+                      .catch((error) => {
+                        console.error("Error uploading image:", error);
+                        alert("Error uploading the image.");
+                      });
                   }
                 }
 
                 event.preventDefault(); // Prevent default paste behavior
               });
+
 
               // Publish
               document
