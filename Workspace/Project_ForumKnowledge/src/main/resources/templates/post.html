@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${post.title}">Chi tiết bài viết</title>
+
+    <!-- Facebook SDK -->
+    <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" 
+            src="https://connect.facebook.net/vi_VN/sdk.js#xfbml=1&version=v21.0">
+    </script>
+</head>
+<body>
+    <header>
+        <h1 th:text="${post.title}">Tiêu đề bài viết</h1>
+    </header>
+
+    <main>
+        <p><strong>Mô tả:</strong> <span th:text="${post.description}"></span></p>
+        <p><strong>Nội dung:</strong> <span th:text="${post.content}"></span></p>
+        <p><strong>Tác giả:</strong> <span th:text="${post.author.username}"></span></p>
+        <p><strong>Ngày đăng:</strong> <span th:text="${#dates.format(post.createdAt, 'dd/MM/yyyy')}"></span></p>
+
+        <!-- Nút chia sẻ Facebook -->
+        <div class="fb-share-button"
+             th:attr="data-href=@{'http://localhost:8080/posts/detail/' + ${post.postId}}"
+             data-layout="button_count" 
+             data-size="large">
+            <a target="_blank"
+               th:href="'https://www.facebook.com/sharer/sharer.php?u=' + @{http://localhost:8080/posts/detail/${post.postId}}"
+               class="fb-xfbml-parse-ignore">
+                Chia sẻ
+            </a>
+        </div>
+
+        <p><strong>Lượt xem:</strong> <span th:text="${post.totalView}"></span></p>
+        <p><strong>Bình luận:</strong> <span th:text="${post.totalComments}"></span></p>
+    </main>
+</body>
+</html>
