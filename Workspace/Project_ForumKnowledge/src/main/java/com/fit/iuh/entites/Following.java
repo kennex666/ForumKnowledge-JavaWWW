@@ -1,6 +1,8 @@
 package com.fit.iuh.entites;
 
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 import java.util.Objects;
@@ -15,9 +17,11 @@ public class Following {
 	private int followId;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	@CreatedDate
 	private Date createdAt;
 
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	@LastModifiedDate
 	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)

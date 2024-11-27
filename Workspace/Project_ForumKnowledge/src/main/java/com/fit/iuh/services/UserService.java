@@ -17,4 +17,6 @@ public interface UserService {
     public User findUserByEmail(String email);
 
     public User findUserByEmailAndPassword(String email, String passwordHash);
+
+    public void save(User user);
 }

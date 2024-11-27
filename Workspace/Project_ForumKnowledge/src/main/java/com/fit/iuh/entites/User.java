@@ -6,6 +6,12 @@ import java.util.Objects;
 
 import com.fit.iuh.enums.UserAccountState;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Table(name="users")
@@ -17,34 +23,48 @@ public class User {
 	private int userId;
 
 	@Column(name="name", nullable = false, unique = false, columnDefinition = "")
+	@NotBlank(message = "Tên đăng nhập không được để trống")
 	private String name;
 
 	@Column(name="role", nullable = false, unique = false, columnDefinition = "")
 	private int role;
 
+	// Method sẽ được gọi trước khi đối tượng được lưu vào cơ sở dữ liệu
+	@PrePersist
+	public void setDefaultValues() {
+		if (this.accountState == null) {
+			this.accountState = UserAccountState.ACTIVE; // Giá trị mặc định
+		}
+	}
+
 	@Enumerated(EnumType.STRING)
-	@Column(name="account_state", nullable = false, unique = false, columnDefinition = "")
+	@Column(name="account_state", nullable = false , unique = false, columnDefinition = "")
 		private UserAccountState accountState;
 
 	@Column(name="email", nullable = false, unique = true, columnDefinition = "")
+	@Email(message = "Định dạng email không hợp lệ. VD: me@dtbao.io.vn")
+	@NotBlank(message = "Email không được để trống")
 	private String email;
 
-	@Column(name="title", nullable = false, unique = false, columnDefinition = "")
+	@Column(name="title", nullable = true, unique = false, columnDefinition = "")
 	private String title;
 
 	@Column(name="password_hash", nullable = false, unique = false, columnDefinition = "")
+	@Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
 	private String passwordHash;
 
-	@Column(name="profile_picture", nullable = false, unique = false, columnDefinition = "")
+	@Column(name="profile_picture", nullable = true, unique = false, columnDefinition = "")
 	private String profilePicture;
 
-	@Column(name="bio", nullable = false, unique = false, columnDefinition = "")
+	@Column(name="bio", nullable = true, unique = false, columnDefinition = "")
 	private String bio;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	@CreatedDate
 	private Date createdAt;
 
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	@LastModifiedDate
 	private Date updatedAt;
 
 	@OneToMany(mappedBy = "reporter", fetch = FetchType.LAZY)

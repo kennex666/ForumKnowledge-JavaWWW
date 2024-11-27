@@ -5,6 +5,8 @@ import java.util.Objects;
 
 import com.fit.iuh.enums.ReactionType;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 @Entity
 @Table(name="reactions")
@@ -20,9 +22,11 @@ public class Reaction {
 	private ReactionType type;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	@CreatedDate
 	private Date createdAt;
 
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	@LastModifiedDate
 	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)

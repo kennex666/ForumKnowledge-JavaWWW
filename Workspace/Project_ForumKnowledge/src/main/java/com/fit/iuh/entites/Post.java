@@ -2,6 +2,8 @@ package com.fit.iuh.entites;
 
 import com.fit.iuh.enums.PostState;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import java.util.Date;
 import java.util.List;
@@ -48,9 +50,11 @@ public class Post {
 	private int totalView;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	@CreatedDate
 	private Date createdAt;
 
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	@LastModifiedDate
 	private Date updatedAt;
 
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)

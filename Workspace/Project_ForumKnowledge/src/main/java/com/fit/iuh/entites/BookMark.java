@@ -18,6 +18,7 @@ public class BookMark {
 	private Date createdAt;
 
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+
 	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
