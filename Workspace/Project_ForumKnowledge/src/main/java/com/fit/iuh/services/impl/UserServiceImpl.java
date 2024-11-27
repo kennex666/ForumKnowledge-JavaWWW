@@ -5,6 +5,7 @@ import com.fit.iuh.repositories.UserRepository;
 import com.fit.iuh.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +15,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public List<User> getAllUsers(Pageable page) {
@@ -49,4 +53,31 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         userRepository.save(user);
     }
+
+    @Override
+    public String registerUser(User user, int role) {
+        user.setPasswordHash(passwordEncoder.encode(user.getPasswordHash()));
+
+        User userInRecord =  userRepository.existsByEmail(user.getEmail());
+
+        if (userInRecord != null) {
+            return "Người dùng đã sử dụng Email này rồi!";
+        }
+
+        User savedUser = new User();
+
+        savedUser.setName(user.getName());
+        savedUser.setRole(role);
+        savedUser.setAccountState(user.getAccountState());
+        savedUser.setEmail(user.getEmail());
+        savedUser.setPasswordHash(user.getPasswordHash());
+        try {
+            userRepository.save(savedUser);
+            return "Đăng ký thành công!";
+        } catch (Exception e) {
+            return "Đã có lỗi xảy ra!";
+        }
+    }
+
+
 }

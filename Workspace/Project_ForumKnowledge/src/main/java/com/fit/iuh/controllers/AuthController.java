@@ -10,6 +10,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+
 @Controller
 public class AuthController {
 
@@ -36,8 +39,9 @@ public class AuthController {
             return "register";
         }
 
-        userService.save(user);
+        String registerMessage = URLEncoder.encode(userService.registerUser(user, 0), StandardCharsets.UTF_8);
 
-        return "redirect:/login?registerSuccess";
+        return "redirect:/login?registerSuccess=" + registerMessage;
+
     }
 }

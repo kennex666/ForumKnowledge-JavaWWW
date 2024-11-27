@@ -10,16 +10,16 @@
             <h1 class="text-2xl font-bold uppercase text-center mt-2 mb-4">Đăng nhập iDev4rum</h1>
             <p class="text-gray-500 text-center mb-4">Tiếp tục đăng nhập để kết nối nhiều hơn nữa</p>
             <div th:if="${param.registerSuccess}">
-                <p class="text-blue-500" th:text="'Tiếp tục đăng nhập'"></p>
+                <p class="text-blue-500 text-sm mb-4" th:text="${param.registerSuccess}"></p>
             </div>
             <form method="POST" th:action="@{/login}">
                 <div class="flex flex-col gap-4">
                     <label for="username" class="text-gray-500">Tên đăng nhập</label>
-                    <input type="text" id="username" class="border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Tên đăng nhập" required >
+                    <input name="username" type="text" id="username" class="border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Tên đăng nhập" required >
 
                     <label for="password" class="text-gray-500">Mật khẩu</label>
                     <div class="relative flex flex-row w-full">
-                        <input type="password" id="password" class="w-full border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Mật khẩu" required >
+                        <input name="password" type="password" id="password" class="w-full border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Mật khẩu" required >
                         <button class="absolute text-gray-500 rounded-lg p-2 focus:outline-none z-10 right-2 h-full" id="btn-show">
                             <i class="fas fa-eye"></i>
                         </button>

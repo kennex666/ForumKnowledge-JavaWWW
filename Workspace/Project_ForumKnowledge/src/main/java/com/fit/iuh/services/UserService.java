@@ -19,4 +19,6 @@ public interface UserService {
     public User findUserByEmailAndPassword(String email, String passwordHash);
 
     public void save(User user);
+
+    public String registerUser(User user, int role);
 }
