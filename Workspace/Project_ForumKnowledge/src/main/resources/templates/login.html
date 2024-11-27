@@ -1,18 +1,5 @@
 <html>
-<head lang="vi" xmlns="http://www.thymeleaf.org">
-    <title>Profile | iDev4rum</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- charset utff 8 -->
-    <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-    </style>
-</head>
+<head th:replace="~{fragments/head :: head}"></head>
 <body class="">
 <div class="flex flex-row min-h-full">
     <div class="w-8/12">
@@ -37,7 +24,7 @@
 
                     <div th:if="${param.error}">
                         <!-- Error message -->
-                        <p class="text-red-500" th:text="Tên đăng nhập hoặc mật khẩu không đúng!"></p>
+                        <p class="text-red-500" th:text="'Tên đăng nhập hoặc mật khẩu không đúng!'"></p>
                     </div>
 
                     <div>
