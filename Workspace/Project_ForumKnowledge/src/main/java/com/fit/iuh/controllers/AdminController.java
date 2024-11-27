@@ -1,7 +1,10 @@
 package com.fit.iuh.controllers;
 
+import com.fit.iuh.entites.Comment;
 import com.fit.iuh.entites.Post;
 import com.fit.iuh.entites.Topic;
+import com.fit.iuh.services.CommentService;
+import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +20,9 @@ public class AdminController {
     // Service
     @Autowired
     private TopicService topicService;
+
+    @Autowired
+    private PostService postService;
 
     @GetMapping("/")
     public String index() {
@@ -124,7 +130,27 @@ public class AdminController {
     * 1. Hiển thị danh sách comment
     */
     @GetMapping("/comment")
-    public String comment() {
+    public String comment(Model model,
+                          @RequestParam(defaultValue = "0") int numberPage,
+                          @RequestParam(defaultValue = "10") int size,
+                          @RequestParam(required = false) String key) {
+
+        Page<Post> page;
+        if (key != null && !key.trim().isEmpty()) {
+            // Nếu có từ khóa tìm kiếm
+            page = postService.searchByKeywordWithPaging(key, numberPage, size);
+            model.addAttribute("key", key);
+        } else {
+            page = postService.getPage(numberPage, size);
+        }
+        model.addAttribute("posts", page.getContent());
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("currentPage", numberPage);
+        model.addAttribute("start", numberPage * size + 1);
+        model.addAttribute("end", numberPage * size + page.getNumberOfElements());
+        model.addAttribute("quantityPost", page.getTotalElements());
+        model.addAttribute("size", size);
+
         return "comment";
     }
 

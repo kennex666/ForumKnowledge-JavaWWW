@@ -153,7 +153,9 @@
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Posts</div>
-                                            <div class="h5 mb-0 font-weight-bold text-primary">215</div>
+                                            <div class="h5 mb-0 font-weight-bold text-primary">
+                                                <span th:text="${quantityPost}">27</span>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
@@ -192,10 +194,10 @@
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <div class="input-group">
-                                        <input type="text" class="form-control" id="searchPosts" placeholder="Search posts...">
-                                        <button class="btn btn-primary" type="button">
+                                        <input type="search" class="form-control" id="searchPosts" placeholder="Search posts..." th:value="${key}">
+                                        <a class="btn btn-primary" type="button" onclick="searchPosts()" id="searchPostsBtn">
                                             <i class="fas fa-search"></i>
-                                        </button>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -211,18 +213,38 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>How to start with Spring Boot</td>
-                                            <td>25</td>
+                                        <tr th:each="post : ${posts}">
+                                            <td th:text="${post.title}">How to start with Spring Boot</td>
+                                            <td th:text="${post.totalComments}">25</td>
                                             <td class="text-danger">3</td>
                                             <td>
                                                 <button class="btn btn-sm btn-info">View Comments</button>
                                             </td>
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-                        </div>
+                            <div class="row">
+                                <div class="col-md-6 align-self-center">
+                                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite" th:text="'Showing '+ ${start} +' to '+${end}+' of '+ ${quantityPost}" >Showing 1 to 10 of 27</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                                        <ul class="pagination">
+                                            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+                                                <a class="page-link" aria-label="Previous" th:href="${currentPage > 0 ? '/admin/comment?numberPage='+(currentPage - 1) : '#'}"><span aria-hidden="true">«</span></a>
+                                            </li>
+                                            <li class="page-item "
+                                                th:each="i : ${#numbers.sequence(0, totalPages-1)}"
+                                                th:classappend="${currentPage == i ? 'active' : ''}">
+                                                <a class="page-link" th:href="@{|/admin/comment?numberPage=${i}|}" th:text="${i + 1}">1</a>
+                                            </li>
+                                            <li class="page-item" th:classappend="${currentPage == totalPages-1} ? 'disabled' : ''">
+                                                <a class="page-link" aria-label="Next" th:href="${currentPage < totalPages-1 ? '/admin/comment?numberPage='+(currentPage + 1) : '#'}"><span aria-hidden="true">»</span></a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
                     </div>
                 </div>
             </div>
@@ -234,9 +256,15 @@
             </footer>
         </div><a class="border rounded d-inline scroll-to-top" href="#page-top"><i class="fas fa-angle-up"></i></a>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script th:src="@{/assets/js/bs-init.js}"></script>
-    <script th:src="@{/assets/js/theme.js}"></script>
-</body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+        <script th:src="@{/assets/js/bs-init.js}"></script>
+        <script th:src="@{/assets/js/theme.js}"></script>
+        <script>
+            function searchPosts() {
+                const search = document.getElementById("searchPosts").value;
+                window.location.href = `/admin/comment?key=${search}`;
+            }
+        </script>
 
+</body>
 </html>

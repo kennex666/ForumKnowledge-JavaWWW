@@ -1,6 +1,8 @@
 package com.fit.iuh.repositories;
 import com.fit.iuh.entites.Post;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -25,5 +27,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query("SELECT p FROM Post p where p.title LIKE %:title% OR p.description LIKE %:description%")
 	public Post findByTitleOrDescrpition(String title, String description);
-	
+
+	@Query("SELECT p FROM Post p WHERE p.title LIKE %:key% OR p.content LIKE %:key%")
+	Page<Post> searchByKeywordWithPaging(@Param("key") String key, Pageable pageable);
 }

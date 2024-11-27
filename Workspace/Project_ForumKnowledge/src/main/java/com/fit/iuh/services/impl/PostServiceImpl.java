@@ -1,9 +1,13 @@
 package com.fit.iuh.services.impl;
 
+import com.fit.iuh.entites.Comment;
 import com.fit.iuh.entites.Post;
 import com.fit.iuh.repositories.PostRepository;
 import com.fit.iuh.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -52,4 +56,16 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postRepository.findByTitleOrDescrpition(title, description);
 	}
+
+	@Override
+	public Page<Post> searchByKeywordWithPaging(String key, int numberPage, int size) {
+		Pageable pageable = PageRequest.of(numberPage, size);
+		return postRepository.searchByKeywordWithPaging(key, pageable);
+	}
+
+	@Override
+	public Page<Post> getPage(int numberPage, int size) {
+		return postRepository.findAll(PageRequest.of(numberPage, size));
+	}
+
 }

@@ -8,8 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fit.iuh.entites.Comment;
 import com.fit.iuh.repositories.CommentRepository;
 import com.fit.iuh.services.CommentService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
-public class CommentServiceImpl implements CommentService{
+@Service
+public class CommentServiceImpl implements CommentService {
 	@Autowired
 	private CommentRepository commentRepository;
 
@@ -46,5 +51,5 @@ public class CommentServiceImpl implements CommentService{
         }
         return false;
 	}
-	
+
 }
