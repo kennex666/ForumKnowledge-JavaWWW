@@ -35,4 +35,10 @@ public interface PostService {
 
     // Method change state of article
     public Boolean changeState(int postId, PostState state);
+
+    // Method get top article by created date
+    public Post findTopByOrderByCreatedAtDesc();
+
+    // Method check and generate article
+    public void checkAndGeneratePost();
 }

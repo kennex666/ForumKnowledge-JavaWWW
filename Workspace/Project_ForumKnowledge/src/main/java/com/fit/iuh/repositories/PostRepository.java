@@ -27,6 +27,7 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RepositoryRestResource
 public interface PostRepository extends JpaRepository<Post, Integer> {
@@ -45,5 +46,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query("SELECT p FROM Post p where p.title LIKE %:title% OR p.description LIKE %:description%")
 	public Post findByTitleOrDescrpition(String title, String description);
-	
+
+	public Optional<Post> findTopByOrderByCreatedAtDesc();
+
 }
