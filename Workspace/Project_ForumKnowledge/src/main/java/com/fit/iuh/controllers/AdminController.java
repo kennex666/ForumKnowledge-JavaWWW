@@ -14,7 +14,6 @@ import java.util.*;
 @Controller
 @RequestMapping("/admin")
 public class AdminController {
-
     // Service
     @Autowired
     private TopicService topicService;
@@ -23,8 +22,18 @@ public class AdminController {
     public String index() {
         return "index";
     }
+    /*
+      ** Topic
+      * 1. Hiển thị danh sách topic
+      * 2. Thêm topic
+      *     2.1 Hiển thị form thêm topic,
+      *     2.2 Thêm topic
+      * 3. Xem chi tiết topic
+      * 4. Sửa topic
+      * 5. Xóa topic
+     */
 
-    // Topic
+    // 1. Hiển thị danh sách topic
     @GetMapping("/topic")
     public String topic(Model model,
                         @RequestParam(defaultValue = "0") int numberPage,
@@ -47,16 +56,18 @@ public class AdminController {
         model.addAttribute("start", numberPage * size + 1);
         model.addAttribute("end", numberPage * size + page.getNumberOfElements());
         model.addAttribute("quantityTopic", page.getTotalElements());
+        model.addAttribute("size", size);
 
         return "topic";
     }
-
+    // 2. Thêm topic
     @GetMapping("/topic/addform")
     public String addTopicForm(Model model) {
         model.addAttribute("topic", new Topic());
         return "add-topic";
     }
 
+    // 2.1 Hiển thị form thêm topic
     @PostMapping("/topic/add")
     public String addTopic(Topic topic) {
         topic.setCreatedAt(new Date(System.currentTimeMillis()));
@@ -65,7 +76,7 @@ public class AdminController {
         return "redirect:/admin/topic";
     }
 
-    
+    // 3. Xem chi tiết topic
     @GetMapping("/topic/detail/{id}")
     public String viewTopic(@PathVariable int id, Model model) {
 
@@ -78,6 +89,7 @@ public class AdminController {
         return "view-topic";
     }
 
+    // 4. Sửa topic
     @PostMapping("/topic/edit")
     @ResponseBody
     public Map<String, Object> editTopic(@RequestParam int id, @RequestParam String name, @RequestParam String hashtag) {
@@ -100,14 +112,26 @@ public class AdminController {
         return response;
     }
 
-
+    // 5. Xóa topic
     @GetMapping("/topic/delete")
     public String deleteTopic(@RequestParam int id) {
         topicService.delete(id);
         return "redirect:/admin/topic";
     }
 
-    // Layouts pages
+    /*
+    * Comment
+    * 1. Hiển thị danh sách comment
+    */
+    @GetMapping("/comment")
+    public String comment() {
+        return "comment";
+    }
+
+
+    /*
+    * Comment different
+     */
     @GetMapping("/table")
     public String table() { return "table"; }
 

@@ -24,6 +24,7 @@
                     <li class="nav-item"><a class="nav-link" th:href="@{/admin/profile}"><i class="fas fa-user"></i><span>Profile</span></a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/admin/table}"><i class="fas fa-table"></i><span>Table</span></a></li>
                     <li class="nav-item"><a class="nav-link active" th:href="@{/admin/topic}"><i class="fas fa-table"></i><span>Manage topics</span></a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/admin/comment}"><i class="fas fa-comments"></i><span>Manage comments</span></a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/admin/login}"><i class="far fa-user-circle"></i><span>Login</span></a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/admin/register}"><i class="fas fa-user-circle"></i><span>Register</span></a></li>
                     <li class="nav-item"><a class="nav-link" th:href="@{/admin/forgot-password}"><i class="fas fa-key"></i><span>Forgotten Password</span></a></li>
@@ -148,11 +149,12 @@
                                 <div class="col-md-6 text-nowrap">
                                     <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label class="form-label">Show&nbsp;
                                         <select class="d-inline-block form-select form-select-sm" onchange="changePage(this.value)">
-                                                <option value="10" selected="">10</option>
-                                                <option value="25">25</option>
-                                                <option value="50">50</option>
-                                                <option value="100">100</option>
-                                            </select>&nbsp;</label>
+                                            <option value="10" th:selected="${size == 10}">10</option>
+                                            <option value="25" th:selected="${size == 25}">25</option>
+                                            <option value="50" th:selected="${size == 50}">50</option>
+                                            <option value="100" th:selected="${size == 100}">100</option>
+                                        </select>
+                                        &nbsp;</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -363,6 +365,7 @@
 
         // Change page size
         function changePage(size) {
+            console.log(size);
             window.location.href = `/admin/topic?size=${size}`;
         }
 
