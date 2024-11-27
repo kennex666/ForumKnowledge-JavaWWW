@@ -13,6 +13,23 @@
 </head>
 
 <body id="page-top">
+<!-- Modal -->
+<div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reportModalLabel">Danh sách Báo cáo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul id="reportList">
+                    <!-- Các báo cáo sẽ được thêm vào đây -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="wrapper">
     <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
         <div class="container-fluid d-flex flex-column p-0"><a
@@ -223,8 +240,8 @@
                                     <th>UpVotes</th>
                                     <th>DownVotes</th>
                                     <th>Created at</th>
-                                    <th>Reports</th>
                                     <th>State</th>
+                                    <th>Reports</th>
                                     <th>Detail</th>
                                 </tr>
                                 </thead>
@@ -238,11 +255,6 @@
                                     <td th:text="${post.totalDownVote}"></td>
                                     <td th:text="${post.createdAt}"></td>
                                     <td>
-                                        <button class="btn btn-danger btn-sm">
-                                            <i th:text="${post.postReports.size()}"></i>
-                                        </button>
-                                    </td>
-                                    <td>
                                         <select class="form-select"
                                                 th:onchange="'changeState(this.value)'">
                                             <option th:each="state : ${states}"
@@ -251,6 +263,14 @@
                                                     th:selected="${state == post.state}">
                                             </option>
                                         </select>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#reportModal"
+                                        >
+                                            <i th:text="${post.postReports.size()}"></i>
+                                        </button>
                                     </td>
                                     <td>
                                         <a class="btn btn-primary btn-sm"
@@ -270,8 +290,8 @@
                                     <td><strong>UpVotes</strong></td>
                                     <td><strong>DownVotes</strong></td>
                                     <td><strong>Created at</strong></td>
-                                    <td><strong>Reports</strong></td>
                                     <td><strong>State</strong></td>
+                                    <td><strong>Reports</strong></td>
                                     <td><strong>Detail</strong></td>
                                 </tr>
                                 </tfoot>
