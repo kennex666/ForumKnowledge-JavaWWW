@@ -1,0 +1,309 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}"></head>
+<body class="">
+<!-- Nav bar -->
+<header
+        class="bg-white px-20 py-4 flex justify-between items-center sticky top-0"
+>
+    <div class="flex items-end justify-center space-x-4">
+        <div class="flex justify-center space-x-4">
+            <a href="/"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
+        </div>
+        <div
+                class="flex items-center justify-center space-x-2 text-sm"
+                style="padding-bottom: 0.2rem"
+        >
+            <p>Trạng thái:</p>
+            <p class="text-gray-500 font-bold" id="text-save-status">Đã lưu</p>
+        </div>
+    </div>
+
+    <div class="flex items-center space-x-10">
+        <button
+                id="btn-publish"
+                class="text-white bg-blue-500 focus:outline-none space-x-2 border px-3 py-2 rounded-full"
+        >
+            <i class="fas fa-check"></i>
+            <span>Đăng bài</span>
+        </button>
+        <button class="text-gray-500 focus:outline-none">
+            <i class="fas fa-bell"></i>
+        </button>
+        <img
+                src="https://placehold.co/32x32"
+                alt="User profile image, placeholder image"
+                class="rounded-full"
+        />
+    </div>
+</header>
+
+<!-- Blog space -->
+<div class="container mx-auto px-12 lg:w-10/12">
+    <div class="flex justify-center items-start py-2">
+        <!-- Recommend blog -->
+        <div class="w-2/3 space-y-4">
+            <div>
+                <input id="title" type="text" class="w-full border border-gray-300 p-2 focus:border-gray-300 text-lg" placeholder="Tiêu đề bài viết">
+            </div>
+            <textarea class="" id="editor"></textarea>
+            <style>
+                header {
+                    z-index: 1000;
+                }
+                /* Change the editor's background color */
+                .editor-toolbar {
+                    border: 1px solid #e1e4e8;
+                    position: sticky;
+                    background-color: #f8f9fa;
+                    opacity: 1;
+                    z-index: 100; /* Toolbar nằm dưới nav bar */
+                }
+                .editor-toolbar:hover {
+                    border: 1px solid #e1e4e8;
+                    position: sticky;
+                    background-color: #f8f9fa;
+                    opacity: 1;
+                    z-index: 100; /* Toolbar nằm dưới nav bar */
+                }
+                .CodeMirror-wrap {
+                    /* sticky if move to bottom */
+                    font-size: 1.12rem;
+                    border: none;
+                    cursor: text;
+                    /* border: 1px solid #e1e4e8; */
+                }
+
+                .editor-statusbar {
+                    position: fixed;
+                    background-color: #f8f9fa;
+                    opacity: 1;
+                    z-index: 2; /* Toolbar nằm dưới nav bar */
+                    bottom: 0;
+                    display: flex;
+                    justify-content: flex-end;
+                    align-items: center;
+                }
+
+                .CodeMirror-code {
+                    min-height: 60vh;
+                }
+
+                /*.CodeMirror-gutter-filler {
+                }; */
+            </style>
+
+            <script>
+                window.onload = function () {
+                    const navSize = document.querySelector("header").offsetHeight;
+
+                    const textStatus = document.getElementById("text-save-status");
+
+                    var editorToolbar = null;
+
+                    var editorStatusbar = null;
+
+                    var simplemde = new SimpleMDE({
+                        element: document.getElementById("editor"),
+                        autofocus: true, // Auto-focus the editor on page load
+                        autosave: {
+                            enabled: true,
+                            uniqueId: "editorContent",
+                            delay: 5000, // Save every 1 second
+                        },
+                        placeholder: "Viết bài viết của bạn ở đây...",
+                        spellChecker: false, // Enable the spell checker
+                        status: ["lines", "words"], // Status bar options
+                        toolbar: [
+                            "bold",
+                            "italic",
+                            "heading",
+                            "|", // Basic formatting
+                            "quote",
+                            "unordered-list",
+                            "ordered-list",
+                            "|",
+                            "link",
+                            "image",
+                            "|",
+                            "preview",
+                            "side-by-side",
+                            "fullscreen",
+                            "|",
+                            {
+                                name: "Đăng bài",
+                                action: function customFunction(editor) {
+                                    alert("Custom Button Clicked!");
+                                },
+                                className: "fa fa-star",
+                                title: "Custom Button",
+                            },
+                        ],
+                    });
+
+                    setInterval(() => {
+                        if (checkIsSaved()) {
+                            textStatus.innerText = "Đã lưu bản nháp";
+                        } else {
+                            textStatus.innerText = "Đang lưu bản nháp..";
+                        }
+                    }, 500);
+
+                    simplemde.codemirror.on("change", function () {
+                        textStatus.innerText = "";
+                    });
+
+                    simplemde.codemirror.on("refresh", function () {
+                        editorToolbar = document.querySelector(".editor-toolbar");
+
+                        editorStatusbar = document.querySelector(".editor-statusbar");
+                        editorStatusbar.style.width = editorToolbar.offsetWidth + "px";
+                    });
+
+                    const checkIsSaved = () => {
+                        let editorContent = simplemde.value(); // Current content
+                        let autosavedContent =
+                            localStorage.getItem("smde_editorContent"); // Autosaved content
+                        if (editorContent === autosavedContent) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    };
+
+                    window.onscroll = function () {
+                        // get size of nav (header)
+
+                        var currentScrollPos =
+                            window.pageYOffset || document.documentElement.scrollTop;
+                        if (currentScrollPos > navSize) {
+                            document.querySelector(".editor-toolbar").style.top =
+                                navSize + "px";
+                            console.log(navSize);
+                        } else {
+                            document.querySelector(".editor-toolbar").style.top = "";
+                        }
+                    };
+
+                    // Handle drop event
+                    simplemde.codemirror.on("drop", (editor, event) => {
+                        const files = event.dataTransfer.files;
+
+                        if (files && files[0] && files[0].type.startsWith("image/")) {
+                            const file = files[0];
+
+                            // Upload the file to the server
+                            const formData = new FormData();
+                            formData.append("file", file);
+
+                            fetch("/api/upload", {
+                                method: "POST",
+                                body: formData,
+                            })
+                                .then((response) => response.json())
+                                .then((data) => {
+                                    if (data.url) {
+                                        // Insert the image URL as markdown
+                                        const imageMarkdown = `!IMAGE:[${data.url}]`;
+                                        const doc = simplemde.codemirror.getDoc();
+                                        const cursor = doc.getCursor();
+                                        doc.replaceRange(imageMarkdown, cursor);
+                                    } else {
+                                        alert("Failed to upload the image.");
+                                    }
+                                })
+                                .catch((error) => {
+                                    console.error("Error uploading image:", error);
+                                    alert("Error uploading the image.");
+                                });
+                        } else {
+                            alert("Only image files are allowed!");
+                        }
+
+                        event.preventDefault(); // Prevent default browser behavior
+                    });
+
+                    // Handle paste event
+                    simplemde.codemirror.on("paste", (editor, event) => {
+                        const items = event.clipboardData.items;
+
+                        for (const item of items) {
+                            if (item.type.startsWith("image/")) {
+                                const file = item.getAsFile();
+
+                                // Upload the file to the server
+                                const formData = new FormData();
+                                formData.append("file", file);
+
+                                fetch("/api/upload", {
+                                    method: "POST",
+                                    body: formData,
+                                })
+                                    .then((response) => response.json())
+                                    .then((data) => {
+                                        if (data.url) {
+                                            // Insert the image URL as markdown
+                                            const imageMarkdown = `!IMAGE:[${data.url}]`;
+                                            const doc = simplemde.codemirror.getDoc();
+                                            const cursor = doc.getCursor();
+                                            doc.replaceRange(imageMarkdown, cursor);
+                                        } else {
+                                            alert("Failed to upload the image.");
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        console.error("Error uploading image:", error);
+                                        alert("Error uploading the image.");
+                                    });
+                            }
+                        }
+
+                        event.preventDefault(); // Prevent default paste behavior
+                    });
+
+
+                    // Publish
+                    document
+                        .getElementById("btn-publish")
+                        .addEventListener("click", function () {
+                            // redirect to submit handle post
+
+                            try {
+                                const content = simplemde.value().trim();
+
+                                fetch("http://localhost:3000/posts", {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                    },
+                                    body: JSON.stringify({
+                                        content: content,
+                                    }),
+                                })
+                                    .then((response) => {
+                                        if (response.ok) {
+                                            alert("Đăng bài thành công!");
+                                            window.location.href = "myprofile.html";
+                                        } else {
+                                            alert("Đăng bài thất bại! Lỗi server");
+                                        }
+                                    })
+                                    .catch((error) => {
+                                        alert("Đăng bài thất bại! Lỗi fetch");
+                                    });
+                            } catch (error) {
+                                alert("Đăng bài thất bại! Lỗi js");
+                            }
+                        });
+                };
+            </script>
+        </div>
+    </div>
+</div>
+</body>
+
+<link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+</html>

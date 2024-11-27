@@ -17,6 +17,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/upload")
@@ -40,25 +41,35 @@ public class UploadController {
         if (file.isEmpty()) {
             Map<String, String> response = new HashMap<>();
             response.put("error", "No file uploaded");
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+            response.put("errorCode", "500");
+            return ResponseEntity.ok(response);
         }
 
         try {
-            // Save the file to the uploads directory
-            String fileName = file.getOriginalFilename();
-            Path path = Paths.get(UPLOAD_DIR + fileName);
+            // Tạo tên tệp ngẫu nhiên bằng UUID
+            String originalFileName = file.getOriginalFilename();
+            String fileExtension = ""; // Phần mở rộng của tệp (ví dụ .jpg, .png)
+            if (originalFileName != null && originalFileName.contains(".")) {
+                fileExtension = originalFileName.substring(originalFileName.lastIndexOf("."));
+            }
+            String randomFileName = UUID.randomUUID().toString() + fileExtension;
+
+            // Lưu tệp với tên ngẫu nhiên
+            Path path = Paths.get(UPLOAD_DIR + randomFileName);
             Files.write(path, file.getBytes());
 
             // Construct the file URL
-            String fileUrl = "http://localhost:" + serverPort + "/uploads/" + fileName;
+            String fileUrl = "http://localhost:" + serverPort + "/uploads/" + randomFileName;
 
             // Return the URL in JSON format
             Map<String, String> response = new HashMap<>();
             response.put("url", fileUrl);
+            response.put("errorCode", "201");
             return ResponseEntity.ok(response);
         } catch (IOException e) {
             Map<String, String> response = new HashMap<>();
-            response.put("error", "File upload failed");
+            response.put("error", "File upload failed: " + e.toString());
+            response.put("errorCode", "500");
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
