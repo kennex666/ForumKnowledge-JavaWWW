@@ -3,7 +3,7 @@ package com.fit.iuh.utilities;
 import jakarta.xml.bind.annotation.XmlElement;
 import jakarta.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "reponse")
+@XmlRootElement(name = "response")
 public class GeminiResponse {
 
     private String title;
