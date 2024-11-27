@@ -13,4 +13,8 @@ public interface UserService {
     public List<User> findUserByName(String keyword);
 
     public User findUserById(int id);
+
+    public User findUserByEmail(String email);
+
+    public User findUserByEmailAndPassword(String email, String passwordHash);
 }

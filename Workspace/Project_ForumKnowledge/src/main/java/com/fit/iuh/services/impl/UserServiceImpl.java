@@ -17,21 +17,31 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> getAllUsers(Pageable page) {
-        return List.of();
+        return userRepository.findAll(page).getContent();
     }
 
     @Override
     public List<User> getAllUsers() {
-        return List.of();
+        return userRepository.findAll();
     }
 
     @Override
     public List<User> findUserByName(String keyword) {
-        return List.of();
+        return userRepository.findByNameContaining(keyword);
     }
 
     @Override
     public User findUserById(int id) {
-        return null;
+        return userRepository.findById(id);
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    @Override
+    public User findUserByEmailAndPassword(String email, String passwordHash) {
+        return userRepository.findByEmailAndPassword(email, passwordHash);
     }
 }
