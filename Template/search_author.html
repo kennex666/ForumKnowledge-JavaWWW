@@ -1,6 +1,6 @@
 <html>
 <head lang="vi">
-    <title>Profile | iDev4rum</title>
+    <title>Search | iDev4rum</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
@@ -29,7 +29,7 @@
         <div class="flex items-center space-x-10">
             <button class="text-gray-500 focus:outline-none space-x-2">
                 <i class="fas fa-pen"></i>
-                <span>Viết bai</span>
+                <span>Viết bài</span>
             </button>
             <button class="text-gray-500 focus:outline-none">
                 <i class="fas fa-bell"></i>
@@ -40,76 +40,100 @@
 
     <!-- Blog space -->
     <div class="container mx-auto px-12 lg:w-10/12">
-        <div class="flex justify-between items-start">
+        <div class="flex justify-between items-start pt-12">
 
             <!-- Recommend blog -->
-            <div class="w-2/3 space-y-8 ">
+            <div class="w-2/3">
                 <!-- Bar -->
                 <!-- Cover and name -->
-                <div class="flex flex-col justify-center pt-3 px-5 space-y-8">
-                    <img src="https://placehold.co/720x150">
-                    <div class="flex flex-row items-center justify-between">
-                        <h2 class="text-4xl font-bold">Dương Thái Bảo</h2>
-                        <div class="flex flex-row items-center space-x-4">
-                            <button class="text-gray-500 focus:outline-none">
-                                <i class="fa-solid fa-ellipsis text-xl me-8"></i>
-                            </button>
-                        </div>
+                <div class="flex flex-col justify-center px-5 space-y-8">
+                    <div class="flex flex-row items-center justify-start">
+                        <h2 class="text-4xl text-gray-500">Tìm kiếm cho <span class="text-black">Java</span></h2>
                     </div>
                 </div>
 
-                <div class="flex flex-row space-x-10 items-center pt-3 text-nowrap scrollbar-custom px-5">
+                <div class="flex flex-row space-x-10 items-center text-nowrap scrollbar-custom px-5 mt-7 mb-6">
                     <!-- plus icon -->
-                    <a class="pb-3 text-gray-500 hover:text-black" href="myprofile.html">Trang chủ</a>
-                    <a class="pb-3 text-gray-500 hover:text-black" href="myprofile_list.html">Danh sách</a>
-                    <a class="pb-3 border-black border-b-2" href="#">Về tác giả</a>
-
+                    <a class="pb-3 text-gray-500 hover:text-black" href="search.html">Bài viết</a>
+                    <a class="pb-3 border-black border-b-2" href="#">Tác giả</a>
+                    <a class="pb-3 text-gray-500 hover:text-black" href="myprofile_about.html">Chủ đề</a>
                 </div>
 
 
-                <!-- Post suggest -->
-                <div class="flex flex-col space-y-3 ps-6 pe-11 text-lg ">
+               <!-- Post suggest -->
+                <div class="flex flex-col">
                     <!-- post item -->
-                     <p>Xin chào, mình là Dương Thái Bảo.</p>
-                     <p>Mình cảm thấy rất vui khi được tham gia những dự án làm việc nhóm và đây là một trong số những dự án đó!</p>
-                     <p>Tất cả những lời này đều là do chính tay mình viết đó, không hề GPT tí nào. 
-                     </p>
-                     <p>Và mình rất mong chúng ta sẽ làm việc với nhau một cách thật vui vẻ!</p>
-                     <p>Lời cuối cùng, cảm ơn bạn đã đọc nhaa~</p>
-                     <p><a href="https://dtbao.io.vn/" class="text-gray-600 font-semibold underline hover:text-black">Bảo Dương (Project Lead)</a></p>
-                </div>
-                
-            </div>
+                    <div class="px-6 py-5 flex items-center border-b border-gray-200">
+                        <!-- Avatar và thông tin tác giả -->
+                         <div class="flex w-16">
+                            <a href="#" class="flex flex-row space-x-4 items-center w-16">                            
+                                <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-full w-16">
+                            </a>
+                         </div>
 
-            <!-- Profile -->
-            <div class="w-1/3 p-4 pl-12">
-                <!-- Info -->
-                <div class="mt-8">
-                    <div class="flex flex-col space-y-2">
-                        <div class="rounded-full"> 
-                            <img src="https://placehold.co/150x150" alt="Profile image of Chris Davidson" class="rounded-full w-24 h-24">
-                        </div>
-                        <div class="flex flex-col space-y-2">
-                            <h2 class="font-semibold text-lg">Dương Thái Bảo</h2>
-                            <!-- <p class="text-gray-500">(nam)</p> -->
-                            <p class="text-gray-500">1.2K Followers</p>
-                        </div>
-                        <div class="pb-2">
-                            <p class="text-sm text-gray-500">Một người thích chia sẻ kiến thức đến với cộng đồng<br>Bạn có thể ghé thăm website của tôi tại <a href="https://dtbao.io.vn/" class="underline">https://dtbao.io.vn</a></p>
-                        </div>
-                        <div class="flex flex-row space-x-2">
-                            <a class="bg-blue-400 rounded-full px-4 py-2 text-white text-sm font-bold">Follow</a>
-                            <a href="mailto:me@dtbao.io.vn" class="flex">
-                                <div class="bg-blue-400 rounded-full w-9 text-white text-sm font-bold flex justify-center items-center">
-                                    <i class="fa-regular fa-envelope"></i>
-                                </div>
+                        <div class="flex flex-col px-6">
+                                <a class="hover:text-gray-500 font-semibold" href="#">Bao Duong</a>
+                                <a class="text-sm text-gray-600"  href="#">Một người thích chia sẻ kiến thức đến với cộng đồng. Một người thích chia sẻ kiến thức đến với cộng đồng. </a>
                             </a>
                         </div>
+
+                        <!-- Nút Follow (căn sang bên phải) -->
+                        <div class="ml-auto">
+                            <a href="#" class="bg-blue-400 rounded-full px-4 py-2 text-white text-sm font-bold hover:opacity-70">Follow</a>
+                        </div>
                     </div>
+                    <!-- post item -->
+                    <div class="px-6 py-5 flex items-center border-b border-gray-200">
+                        <!-- Avatar và thông tin tác giả -->
+                         <div class="flex w-16">
+                            <a href="#" class="flex flex-row space-x-4 items-center w-16">                            
+                                <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-full w-16">
+                            </a>
+                         </div>
+
+                        <div class="flex flex-col px-6">
+                                <a class="hover:text-gray-500 font-semibold" href="#">Bao Duong</a>
+                                <a class="text-sm text-gray-600"  href="#">Một người thích chia sẻ kiến thức đến với cộng đồng. Một người thích chia sẻ kiến thức đến với cộng đồng. </a>
+                            </a>
+                        </div>
+
+                        <!-- Nút Follow (căn sang bên phải) -->
+                        <div class="ml-auto">
+                            <a href="#" class="bg-blue-400 rounded-full px-4 py-2 text-white text-sm font-bold hover:opacity-70">Follow</a>
+                        </div>
+                    </div>
+                    
+                    <!-- post item -->
+                    <div class="px-6 py-5 flex items-center border-b border-gray-200">
+                        <!-- Avatar và thông tin tác giả -->
+                         <div class="flex w-16">
+                            <a href="#" class="flex flex-row space-x-4 items-center w-16">                            
+                                <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-full w-16">
+                            </a>
+                         </div>
+
+                        <div class="flex flex-col px-6">
+                                <a class="hover:text-gray-500 font-semibold" href="#">Bao Duong</a>
+                                <a class="text-sm text-gray-600"  href="#">Một người thích chia sẻ kiến thức đến với cộng đồng. Một người thích chia sẻ kiến thức đến với cộng đồng. </a>
+                            </a>
+                        </div>
+
+                        <!-- Nút Follow (căn sang bên phải) -->
+                        <div class="ml-auto">
+                            <a href="#" class="bg-blue-400 rounded-full px-4 py-2 text-white text-sm font-bold hover:opacity-70">Follow</a>
+                        </div>
+                    </div>
+                    
+                    
                 </div>
 
-                <div class="py-12">
-                    <h3 class="font-semibold mb-5">Đã lưu gần đây</h3>
+            </div>
+
+            <!-- Spons -->
+            <div class="w-1/3 pl-12 space-y-12">
+
+                <div class="">
+                    <h3 class="font-semibold mb-5">Bài viết nổi bật</h3>
                     <div class="space-y-5">
                         <div class="mb-3 space-y-5">
                             <!-- Bookmark item -->
