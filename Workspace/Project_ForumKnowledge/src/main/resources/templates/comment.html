@@ -189,7 +189,7 @@
                             <h6 class="m-0 font-weight-bold text-primary">Overview</h6>
                             <div>
                                 <a class="btn btn-primary me-2" th:href="@{#}">View All Post</a>
-                                <button class="btn btn-danger" th:href="@{/admin/comment/negative}">View Negative Comments</button>
+                                <a class="btn btn-danger" th:href="@{/admin/comment/negative}">View Negative Comments</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -218,7 +218,7 @@
                                         <tr th:each="post : ${posts}">
                                             <td th:text="${post.title}">How to start with Spring Boot</td>
                                             <td th:text="${post.totalComments}">25</td>
-                                            <td class="text-danger">3</td>
+                                            <td th:text="${negativeCommentCounts[post.postId]}" class="text-danger">3</td>
                                             <td>
                                                 <a class="btn btn-sm btn-info" th:href="@{/admin/view-comment/{id}(id=${post.postId})}">View Comments</a>
                                             </td>

@@ -144,13 +144,14 @@ public class AdminController {
         } else {
             page = postService.getPage(numberPage, size);
         }
-        model.addAttribute("posts", page.getContent());
         model.addAttribute("totalPages", page.getTotalPages());
         model.addAttribute("currentPage", numberPage);
         model.addAttribute("start", numberPage * size + 1);
         model.addAttribute("end", numberPage * size + page.getNumberOfElements());
         model.addAttribute("quantityPost", page.getTotalElements());
         model.addAttribute("size", size);
+        model.addAttribute("posts", page.getContent());
+
 
         List<Comment> comments = new ArrayList<>();
         for (Post post : page.getContent()) {
@@ -167,6 +168,20 @@ public class AdminController {
         model.addAttribute("numberNegative", numberNegative);
         model.addAttribute("comments", comments);
 
+        List<Post> posts = page.getContent();
+        Map<Integer, Integer> negativeCommentCounts = new HashMap<>();
+        for (Post post : posts) {
+            int countNegative = 0;
+            for (Comment comment : post.getComments()) {
+                int check = CommentUtils.checkComment(comment.getContent());
+                if (check == 0) {
+                    countNegative++;
+                }
+            }
+            negativeCommentCounts.put(post.getPostId(), countNegative);
+        }
+        model.addAttribute("negativeCommentCounts", negativeCommentCounts);
+
         return "comment";
     }
 
@@ -179,7 +194,18 @@ public class AdminController {
 
     @GetMapping("/comment/negative")
     public String negativeComment(Model model) {
-        return "negative-comment";
+        List<Comment> negativeComments = new ArrayList<>();
+        List<Post> posts = postService.findAll();
+        for (Post post : posts) {
+            for (Comment comment : post.getComments()) {
+                int check = CommentUtils.checkComment(comment.getContent());
+                if (check == 0) {
+                    negativeComments.add(comment);
+                }
+            }
+        }
+        model.addAttribute("negativeComments", negativeComments);
+        return "view-negative-comment";
     }
 
     /*
