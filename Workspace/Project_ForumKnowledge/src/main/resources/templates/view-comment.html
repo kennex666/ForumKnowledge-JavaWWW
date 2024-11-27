@@ -73,7 +73,7 @@
                                     <thead>
                                         <tr>
                                             <th>Commenter</th>
-                                            <th>Comment</th>
+                                            <th style="width: 40%;">Content</th>
                                             <th>Date</th>
                                             <th>Status</th>
                                             <th>Action</th>
@@ -84,7 +84,10 @@
                                             <td th:text="${comment.user.name}">John Doe</td>
                                             <td th:text="${comment.content}">This is a comment.</td>
                                             <td th:text="${#dates.format(comment.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</td>
-                                            <td th:text="${#dates.format(comment.createdAt, 'dd/MM/yyyy HH:mm')}">Approved</td>
+                                            <td>
+                                                <span th:if="${T(com.fit.iuh.utilities.CommentUtils).checkComment(comment.content) == 0}" class="text-danger">✖</span>
+                                                <span th:if="${T(com.fit.iuh.utilities.CommentUtils).checkComment(comment.content) == 1}" class="text-success">✔</span>
+                                            </td>
                                             <td>
                                                 <a class="btn btn-danger" th:href="@{/admin/comment/delete/{id}(id=${comment.commentId})}">Delete</a>
                                             </td>
