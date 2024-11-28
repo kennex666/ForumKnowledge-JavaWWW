@@ -28,7 +28,7 @@ public class BanListServiceImpl implements BanListService {
 
     @Override
     public BanList saveOrUpdateBanList(BanList banList) {
-        banList.setUpdateAt(new Date());
+        banList.setUpdatedAt(new Date());
         return banListRepository.save(banList);
     }
 
