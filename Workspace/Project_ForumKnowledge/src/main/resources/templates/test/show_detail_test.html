@@ -6,5 +6,9 @@
 </head>
 <body>
     <h1>Show detail test</h1>
+    <p>ID: <span th:text="${postId}"></span></p>
+    <p>Name topic: <span th:text="${post.topic.getName()}"></span></p>
+    <p>Description: <span th:text="${post.description}"></span></p>
+    <p>Content: <span th:text="${post.content}"></span></p>
 </body>
 </html>

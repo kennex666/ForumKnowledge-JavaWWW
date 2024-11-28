@@ -80,11 +80,11 @@ public class PostController {
         model.addAttribute("post", post);
         return "test/detail-test";
     }
-    @GetMapping("/show_detail")
-    public String showDetail(Model model) {
-        Post post = postService.findById(1);
+    @GetMapping("/show_detail/{postId}")
+    public String showDetail(Model model, @PathVariable("postId") int id) {
+        Post post = postService.findById(id);
         model.addAttribute("post", post);
-        return "test/blog";
+        return "test/show_detail_test";
     }
     @GetMapping("/report/{postId}")
     public String report(Model model, @PathVariable("postId") int postId) {
