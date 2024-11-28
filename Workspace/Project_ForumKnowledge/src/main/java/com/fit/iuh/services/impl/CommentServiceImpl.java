@@ -52,4 +52,14 @@ public class CommentServiceImpl implements CommentService {
         return false;
 	}
 
+	@Override
+	public Boolean remove(int id) {
+		try {
+			commentRepository.deleteById(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 }

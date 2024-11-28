@@ -84,7 +84,7 @@
                                             <td th:text="${comment.content}">This is a negative comment.</td>
                                             <td th:text="${#dates.format(comment.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2024 12:00</td>
                                             <td>
-                                                <a class="btn btn-danger" th:href="@{/admin/comment/delete/{id}(id=${comment.commentId})}">Delete</a>
+                                                <a class="btn btn-danger" th:href="@{/admin/comment/delete/{id}(id=${comment.commentId})}" onclick="return confirm('Do you want to delete this comment?');">Delete</a>
                                             </td>
                                         </tr>
                                     </tbody>

@@ -13,4 +13,5 @@ public interface CommentService {
 	public Comment save(Comment comment);
 	public Boolean delete(int commentId);
 
+    public Boolean remove(int id);
 }

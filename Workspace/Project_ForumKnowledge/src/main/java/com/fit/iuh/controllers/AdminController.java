@@ -25,6 +25,9 @@ public class AdminController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private CommentService commentService;
+
     @GetMapping("/")
     public String index() {
         return "index";
@@ -206,6 +209,12 @@ public class AdminController {
         }
         model.addAttribute("negativeComments", negativeComments);
         return "view-negative-comment";
+    }
+
+    @GetMapping("/comment/delete/{id}")
+    public String deleteComment(@PathVariable int id) {
+        commentService.remove(id);
+        return "redirect:/admin/comment";
     }
 
     /*
