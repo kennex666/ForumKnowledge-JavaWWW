@@ -28,7 +28,7 @@ public class PostReportServiceImpl implements PostReportService {
 
     @Override
     public PostReport saveOrUpdatePostReport(PostReport postReport) {
-        postReport.setUpdateAt(new Date());
+        postReport.setUpdatedAt(new Date());
         return postReportRepository.save(postReport);
     }
 

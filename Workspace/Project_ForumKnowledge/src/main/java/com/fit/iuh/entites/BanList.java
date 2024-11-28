@@ -5,9 +5,13 @@ import java.util.Objects;
 
 import com.fit.iuh.enums.BanListState;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name="ban_lists")
+@EntityListeners(AuditingEntityListener.class)  // Kích hoạt Auditing cho entity này
 public class BanList {
 
 	@Id
@@ -28,11 +32,13 @@ public class BanList {
 	@Column(name="time_end", nullable = false, unique = false, columnDefinition = "")
 	private Date timeEnd;
 
-	@Column(name="create_at", nullable = false, unique = false, columnDefinition = "")
-	private Date createAt;
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	@CreatedDate
+	private Date createdAt;
 
-	@Column(name="update_at", nullable = false, unique = false, columnDefinition = "")
-	private Date updateAt;
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	@LastModifiedDate
+	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id", referencedColumnName = "user_id")
@@ -78,20 +84,20 @@ public class BanList {
 		this.timeEnd = timeEnd;
 	}
 
-	public Date getCreateAt() {
-		return createAt;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Date getUpdateAt() {
-		return updateAt;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdateAt(Date updateAt) {
-		this.updateAt = updateAt;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public User getUser() {
@@ -102,28 +108,28 @@ public class BanList {
 		this.user = user;
 	}
 
-	public BanList(int id, BanListState state, String reason, Date timeStart, Date timeEnd, Date createAt,
-			Date updateAt) {
+	public BanList(int id, BanListState state, String reason, Date timeStart, Date timeEnd, Date createdAt,
+			Date updatedAt) {
 		super();
 		this.id = id;
 		this.state = state;
 		this.reason = reason;
 		this.timeStart = timeStart;
 		this.timeEnd = timeEnd;
-		this.createAt = createAt;
-		this.updateAt = updateAt;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
-	public BanList(int id, BanListState state, String reason, Date timeStart, Date timeEnd, Date createAt,
-			Date updateAt, User user) {
+	public BanList(int id, BanListState state, String reason, Date timeStart, Date timeEnd, Date createdAt,
+			Date updatedAt, User user) {
 		super();
 		this.id = id;
 		this.state = state;
 		this.reason = reason;
 		this.timeStart = timeStart;
 		this.timeEnd = timeEnd;
-		this.createAt = createAt;
-		this.updateAt = updateAt;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 		this.user = user;
 	}
 

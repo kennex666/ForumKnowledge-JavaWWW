@@ -226,3 +226,5 @@ replay_pid*
 .ionide
 
 # End of https://www.toptal.com/developers/gitignore/api/intellij,java,eclipse,visualstudiocode
+
+Workspace/Project_ForumKnowledge/uploads/*

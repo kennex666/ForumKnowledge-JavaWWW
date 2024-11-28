@@ -5,9 +5,11 @@ import java.util.Objects;
 
 import com.fit.iuh.enums.PostReportState;
 import jakarta.persistence.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name="post_reports")
+@EntityListeners(AuditingEntityListener.class)  // Kích hoạt Auditing cho entity này
 public class PostReport {
 
 	@Id
@@ -22,11 +24,11 @@ public class PostReport {
 	@Column(name="reason", nullable = false, unique = false, columnDefinition = "")
 	private String reason;
 
-	@Column(name="create_at", nullable = false, unique = false, columnDefinition = "")
-	private Date createAt;
+	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	private Date createdAt;
 
-	@Column(name="update_at", nullable = false, unique = false, columnDefinition = "")
-	private Date updateAt;
+	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="post_id", referencedColumnName = "post_id")
@@ -64,20 +66,20 @@ public class PostReport {
 		this.reason = reason;
 	}
 
-	public Date getCreateAt() {
-		return createAt;
+	public Date getCreatedAt() {
+		return createdAt;
 	}
 
-	public void setCreateAt(Date createAt) {
-		this.createAt = createAt;
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
 	}
 
-	public Date getUpdateAt() {
-		return updateAt;
+	public Date getUpdatedAt() {
+		return updatedAt;
 	}
 
-	public void setUpdateAt(Date updateAt) {
-		this.updateAt = updateAt;
+	public void setUpdatedAt(Date updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
 	public Post getPost() {
@@ -104,26 +106,26 @@ public class PostReport {
 		this.inspector = inspector;
 	}
 
-	public PostReport(int id, PostReportState state, String reason, Date createAt, Date updateAt, Post post,
+	public PostReport(int id, PostReportState state, String reason, Date createdAt, Date updatedAt, Post post,
 			User reporter, User inspector) {
 		super();
 		this.id = id;
 		this.state = state;
 		this.reason = reason;
-		this.createAt = createAt;
-		this.updateAt = updateAt;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 		this.post = post;
 		this.reporter = reporter;
 		this.inspector = inspector;
 	}
 
-	public PostReport(int id, PostReportState state, String reason, Date createAt, Date updateAt) {
+	public PostReport(int id, PostReportState state, String reason, Date createdAt, Date updatedAt) {
 		super();
 		this.id = id;
 		this.state = state;
 		this.reason = reason;
-		this.createAt = createAt;
-		this.updateAt = updateAt;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
 	}
 
 	public PostReport() {
