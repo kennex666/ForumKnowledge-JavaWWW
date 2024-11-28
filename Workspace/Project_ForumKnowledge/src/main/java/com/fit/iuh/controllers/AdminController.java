@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -31,7 +32,10 @@ public class AdminController {
     private BookMarkService bookmarkService;
 
     @Autowired
-    private FollowingService followService;
+    private FollowingService followingService;
+
+    @Autowired
+    private PostReportService postReportService;
 
     @GetMapping("/")
     public String index() {
@@ -246,7 +250,106 @@ public class AdminController {
         List<Comment> comments = commentService.findAll();
         List<Reaction> reactions = reactionService.findAll();
         List<BookMark> bookMarks = bookmarkService.findAll();
-        List<Following> follows = followService.findAll();
+        List<Following> follows = followingService.findAll();
+
+        // Tong tuong tac
+        int totalInteractions = comments.size() + reactions.size() + bookMarks.size() + follows.size();
+        model.addAttribute("totalInteractions", totalInteractions);
+
+        // Thong ke so luong comment, reaction, bookmark, follow trong tuan
+        List<Comment> commentsInWeek = commentService.getCommentsCreatedInWeek();
+        List<Reaction> reactionsInWeek = reactionService.getReactionsCreatedInWeek();
+        List<BookMark> bookMarksInWeek = bookmarkService.getBookMarksCreatedInWeek();
+        List<Following> followsInWeek = followingService.getFollowingsCreatedInWeek();
+
+        // Tong tuong tac trong tuan
+        int totalInteractionsInWeek = commentsInWeek.size() + reactionsInWeek.size() + bookMarksInWeek.size() + followsInWeek.size();
+        model.addAttribute("totalInteractionsInWeek", totalInteractionsInWeek);
+
+        // Thong ke so luong thanh vien
+        model.addAttribute("follows", follows);
+        // Thong ke thanh vien duoc tao trong tuan
+        model.addAttribute("followsInWeek", followsInWeek);
+
+        // Thong ke so luong bai viet bi bao cao
+        List<PostReport> postReports = postReportService.findAll();
+        model.addAttribute("postReports", postReports);
+
+        // Thong ke so luong bai viet bi bao cao trong tuan
+        List<PostReport> postReportsInWeek = postReportService.getPostReportsCreatedInWeek();
+        model.addAttribute("postReportsInWeek", postReportsInWeek);
+
+        // Tính toán tương tác cho 4 tháng gần nhất
+        int[] monthlyInteractions = new int[4];
+        String[] monthLabels = new String[4];
+        
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
+        
+        // Lùi về 3 tháng trước để bắt đầu tính (vì tháng hiện tại là tháng thứ 4)
+        cal.add(Calendar.MONTH, -3);
+        
+        for (int i = 0; i < 4; i++) {
+            // Set ngày đầu tháng
+            cal.set(Calendar.DAY_OF_MONTH, 1);
+            cal.set(Calendar.HOUR_OF_DAY, 0);
+            cal.set(Calendar.MINUTE, 0);
+            cal.set(Calendar.SECOND, 0);
+            cal.set(Calendar.MILLISECOND, 0);
+            Date startDate = cal.getTime();
+            
+            // Set ngày cuối tháng
+            cal.set(Calendar.DAY_OF_MONTH, cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+            cal.set(Calendar.HOUR_OF_DAY, 23);
+            cal.set(Calendar.MINUTE, 59);
+            cal.set(Calendar.SECOND, 59);
+            cal.set(Calendar.MILLISECOND, 999);
+            Date endDate = cal.getTime();
+            
+            // Lưu label tháng
+            monthLabels[i] = monthFormat.format(cal.getTime());
+            
+            // Lấy tất cả tương tác trong tháng
+            List<Comment> monthComments = commentService.getCommentsBetweenDates(startDate, endDate);
+            List<Reaction> monthReactions = reactionService.getReactionsBetweenDates(startDate, endDate);
+            List<BookMark> monthBookmarks = bookmarkService.getBookMarksBetweenDates(startDate, endDate);
+            List<Following> monthFollows = followingService.getFollowingsBetweenDates(startDate, endDate);
+            
+            // Tính tổng tương tác
+            monthlyInteractions[i] = monthComments.size() + 
+                                    monthReactions.size() + 
+                                    monthBookmarks.size() + 
+                                    monthFollows.size();
+            
+            // Chuyển sang tháng tiếp theo
+            cal.add(Calendar.MONTH, 1);
+        }
+        System.out.println(monthlyInteractions);    
+        
+        model.addAttribute("monthLabels", monthLabels);
+        model.addAttribute("monthlyInteractions", monthlyInteractions);
+
+        // Thống kê trạng thái báo cáo bài viết
+        int acceptedReports = 0;
+        int processingReports = 0;
+        int rejectedReports = 0;
+
+        for (PostReport report : postReports) {
+            switch (report.getState()) {
+                case ACCEPTED:
+                    acceptedReports++;
+                    break;
+                case PROCESSING:
+                    processingReports++;
+                    break;
+                case REJECTED:
+                    rejectedReports++;
+                    break;
+            }
+        }
+
+        int[] reportStats = {acceptedReports, processingReports, rejectedReports};
+        model.addAttribute("reportStats", reportStats);
 
         return "views_admin/index";
     }

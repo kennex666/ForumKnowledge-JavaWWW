@@ -28,4 +28,7 @@ public interface PostReportRepository extends JpaRepository<PostReport, Integer>
     @Query("SELECT pr FROM PostReport pr WHERE pr.inspector.userId = :inspectorId")
     public List<PostReport> findByInspectorId(@Param("inspectorId") Integer inspectorId);
 
+    // SELECT * FROM post_reports pr WHERE pr.created_at >= DATEADD(day, -7, GETDATE()) ORDER BY pr.created_at DESC
+    @Query(value = "SELECT * FROM post_reports pr WHERE pr.created_at >= DATEADD(day, -7, GETDATE()) ORDER BY pr.created_at DESC", nativeQuery = true)
+    List<PostReport> getPostReportsCreatedInWeek();
 }

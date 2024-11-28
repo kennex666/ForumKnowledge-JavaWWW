@@ -1,5 +1,6 @@
 package com.fit.iuh.services.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,6 +58,16 @@ public class CommentServiceImpl implements CommentService{
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+    @Override
+    public List<Comment> getCommentsCreatedInWeek() {
+        return commentRepository.getCommentsCreatedInWeek();
+    }
+
+	@Override
+	public List<Comment> getCommentsBetweenDates(Date startDate, Date endDate) {
+		return commentRepository.getCommentsBetweenDates(startDate, endDate);
 	}
 
 }

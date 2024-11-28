@@ -2,6 +2,7 @@ package com.fit.iuh.services;
 
 import com.fit.iuh.entites.BookMark;
 
+import java.util.Date;
 import java.util.List;
 
 public interface BookMarkService {
@@ -12,4 +13,10 @@ public interface BookMarkService {
     public boolean existsByUserIdAndPostId(int userId, int postId);
 
     public long countByPostId(int postId);
+
+    List<BookMark> findAll();
+
+    List<BookMark> getBookMarksCreatedInWeek();
+
+    List<BookMark> getBookMarksBetweenDates(Date startDate, Date endDate);
 }

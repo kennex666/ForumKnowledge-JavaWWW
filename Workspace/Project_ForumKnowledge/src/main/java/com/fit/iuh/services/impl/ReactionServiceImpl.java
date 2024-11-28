@@ -7,6 +7,7 @@ import com.fit.iuh.entites.Reaction;
 import com.fit.iuh.repositories.ReactionRepository;
 import com.fit.iuh.services.ReactionService;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -30,5 +31,15 @@ public class ReactionServiceImpl implements ReactionService{
 	public Boolean update(Reaction reaction) {
 		// TODO Auto-generated method stub
 		return reactionRepository.save(reaction) != null;
+	}
+
+    @Override
+    public List<Reaction> getReactionsCreatedInWeek() {
+        return reactionRepository.getReactionsCreatedInWeek();
+    }
+
+	@Override
+	public List<Reaction> getReactionsBetweenDates(Date startDate, Date endDate) {
+		return reactionRepository.getReactionsBetweenDates(startDate, endDate);
 	}
 }

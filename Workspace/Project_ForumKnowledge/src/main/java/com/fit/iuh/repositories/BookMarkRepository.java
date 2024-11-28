@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
+import java.util.Date;
 import java.util.List;
 
 @RepositoryRestResource
@@ -22,4 +23,11 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Integer> {
 
     @Query("SELECT COUNT(b) FROM BookMark b WHERE b.post.postId = :postId")
     long countByPostId(@Param("postId") int postId);
+
+    // SELECT * FROM bookmarks b WHERE b.created_at >= DATEADD(day, -7, GETDATE()) ORDER BY b.created_at DESC
+    @Query(value = "SELECT * FROM bookmarks b WHERE b.created_at >= DATEADD(day, -7, GETDATE()) ORDER BY b.created_at DESC", nativeQuery = true)
+    List<BookMark> getBookMarksCreatedInWeek();
+
+    @Query("SELECT b FROM BookMark b WHERE b.createdAt BETWEEN :startDate AND :endDate")
+    List<BookMark> getBookMarksBetweenDates(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }
