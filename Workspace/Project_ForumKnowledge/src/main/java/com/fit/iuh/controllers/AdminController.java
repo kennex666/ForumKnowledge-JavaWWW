@@ -224,6 +224,14 @@ public class AdminController {
     }
 
     /*
+    * Dashboard
+     */
+    @GetMapping("/dashboard")
+    public String dashboard() {
+        return "views_admin/index";
+    }
+
+    /*
     * Comment different
      */
     @GetMapping("/table")

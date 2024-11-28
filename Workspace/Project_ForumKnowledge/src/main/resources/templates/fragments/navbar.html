@@ -10,16 +10,16 @@
             </a>
             <hr class="sidebar-divider my-0">
             <ul class="navbar-nav text-light" id="accordionSidebar">
-                <li class="nav-item"><a class="nav-link" th:href="@{/static}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/profile}"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/table}"><i class="fas fa-table"></i><span>Table</span></a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/topic}"><i class="fas fa-table"></i><span>Manage topics</span></a></li>
+                <!-- Dashboard -->
+                <li class="nav-item"><a class="nav-link" th:href="@{/admin/dashboard}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <!-- Manage posts -->
+                <li class="nav-item"><a class="nav-link" th:href="@{/admin/posts}"><i class="fas fa-blog"></i><span>Manage posts</span></a></li>
+                <!-- Manage topics -->
+                <li class="nav-item"><a class="nav-link" th:href="@{/admin/topic}"><i class="fas fa-tags"></i><span>Manage topics</span></a></li>
+                <!-- Manage comments -->
                 <li class="nav-item"><a class="nav-link active" th:href="@{/admin/comment}"><i class="fas fa-comments"></i><span>Manage comments</span></a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/login}"><i class="far fa-user-circle"></i><span>Login</span></a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/register}"><i class="fas fa-user-circle"></i><span>Register</span></a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/forgot-password}"><i class="fas fa-key"></i><span>Forgotten Password</span></a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/404}"><i class="fas fa-exclamation-circle"></i><span>Page Not Found</span></a></li>
-                <li class="nav-item"><a class="nav-link" th:href="@{/admin/blank}"><i class="fas fa-window-maximize"></i><span>Blank Page</span></a></li>
+                <!-- Manage users -->
+                <li class="nav-item"><a class="nav-link" th:href="@{/admin/user}"><i class="fas fa-users"></i><span>Manage users</span></a></li>
             </ul>
             <div class="text-center d-none d-md-inline">
                 <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
