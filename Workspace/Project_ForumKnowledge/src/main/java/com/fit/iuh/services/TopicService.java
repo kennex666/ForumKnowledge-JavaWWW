@@ -37,4 +37,6 @@ public interface TopicService {
   
     public Topic findById(int id);
     public List<Topic> findAll();
+
+    public boolean isExist(String name, String hashtag);
 }

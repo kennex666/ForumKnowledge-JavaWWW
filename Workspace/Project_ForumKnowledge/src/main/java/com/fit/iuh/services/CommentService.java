@@ -11,4 +11,6 @@ public interface CommentService {
 	public List<Comment> findAllByPostId(int postId);
 	public Comment save(Comment comment);
 	public Boolean delete(int commentId);
+
+	public Boolean remove(int id);
 }

@@ -109,4 +109,9 @@ public class TopicServiceImpl implements TopicService {
     public List<Topic> findAll() {
         return topicRepository.findAll();
     }
+
+    @Override
+    public boolean isExist(String name, String hashtag) {
+        return topicRepository.existsByNameAndHashtag(name, hashtag);
+    }
 }

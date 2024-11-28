@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fit.iuh.entites.Comment;
 import com.fit.iuh.repositories.CommentRepository;
 import com.fit.iuh.services.CommentService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class CommentServiceImpl implements CommentService{
 	@Autowired
 	private CommentRepository commentRepository;
@@ -46,5 +48,15 @@ public class CommentServiceImpl implements CommentService{
         }
         return false;
 	}
-	
+
+	@Override
+	public Boolean remove(int id) {
+		try {
+			commentRepository.deleteById(id);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
 }

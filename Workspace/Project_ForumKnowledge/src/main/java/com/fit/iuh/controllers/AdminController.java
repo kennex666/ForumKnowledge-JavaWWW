@@ -1,8 +1,12 @@
 package com.fit.iuh.controllers;
 
+import com.fit.iuh.entites.Comment;
 import com.fit.iuh.entites.Post;
 import com.fit.iuh.entites.Topic;
+import com.fit.iuh.services.CommentService;
+import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
+import com.fit.iuh.utilities.CommentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -17,6 +21,12 @@ public class AdminController {
     // Service
     @Autowired
     private TopicService topicService;
+
+    @Autowired
+    private PostService postService;
+
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/")
     public String index() {
@@ -69,9 +79,14 @@ public class AdminController {
 
     // 2.1 Hiển thị form thêm topic
     @PostMapping("/topic/add")
-    public String addTopic(Topic topic) {
+    public String addTopic(Model model,Topic topic) {
         topic.setCreatedAt(new Date(System.currentTimeMillis()));
         topic.setUpdatedAt(new Date(System.currentTimeMillis()));
+        // Kiểm tra xem topic đã tồn tại chưa, nếu topic đã tồn { Name , Hashtag } thì thông báo ra
+        if (topicService.isExist(topic.getName(), topic.getHashtag())) {
+            model.addAttribute("error", "Topic already exists with the same name and hashtag.");
+            return "views_admin/add-topic";
+        }
         topicService.add(topic);
         return "redirect:/admin/topic";
     }
@@ -124,10 +139,88 @@ public class AdminController {
     * 1. Hiển thị danh sách comment
     */
     @GetMapping("/comment")
-    public String comment() {
+    public String comment(Model model,
+                          @RequestParam(defaultValue = "0") int numberPage,
+                          @RequestParam(defaultValue = "10") int size,
+                          @RequestParam(required = false) String key) {
+
+        Page<Post> page;
+        if (key != null && !key.trim().isEmpty()) {
+            // Nếu có từ khóa tìm kiếm
+            page = postService.searchByKeywordWithPaging(key, numberPage, size);
+            model.addAttribute("key", key);
+        } else {
+            page = postService.getPage(numberPage, size);
+        }
+        model.addAttribute("totalPages", page.getTotalPages());
+        model.addAttribute("currentPage", numberPage);
+        model.addAttribute("start", numberPage * size + 1);
+        model.addAttribute("end", numberPage * size + page.getNumberOfElements());
+        model.addAttribute("quantityPost", page.getTotalElements());
+        model.addAttribute("size", size);
+        model.addAttribute("posts", page.getContent());
+
+
+        List<Comment> comments = new ArrayList<>();
+        for (Post post : page.getContent()) {
+            comments.addAll(post.getComments());
+        }
+        // check comment
+        int numberNegative = 0;
+        for (Comment comment : comments) {
+            int check = CommentUtils.checkComment(comment.getContent());
+            if (check == 0) {
+                numberNegative++;
+            }
+        }
+        model.addAttribute("numberNegative", numberNegative);
+        model.addAttribute("comments", comments);
+
+        List<Post> posts = page.getContent();
+        Map<Integer, Integer> negativeCommentCounts = new HashMap<>();
+        for (Post post : posts) {
+            int countNegative = 0;
+            for (Comment comment : post.getComments()) {
+                int check = CommentUtils.checkComment(comment.getContent());
+                if (check == 0) {
+                    countNegative++;
+                }
+            }
+            negativeCommentCounts.put(post.getPostId(), countNegative);
+        }
+        model.addAttribute("negativeCommentCounts", negativeCommentCounts);
+
         return "views_admin/comment";
     }
 
+    @GetMapping("/view-comment/{id}")
+    public String viewComment(@PathVariable int id, Model model) {
+        Post post = postService.findByID(id);
+        model.addAttribute("post", post);
+        return "views_admin/view-comment";
+    }
+
+    @GetMapping("/comment/negative")
+    public String negativeComment(Model model) {
+        List<Comment> negativeComments = new ArrayList<>();
+        List<Post> posts = postService.findAll();
+        for (Post post : posts) {
+            for (Comment comment : post.getComments()) {
+                int check = CommentUtils.checkComment(comment.getContent());
+                if (check == 0) {
+                    negativeComments.add(comment);
+                }
+            }
+        }
+        model.addAttribute("negativeComments", negativeComments);
+        return "views_admin/view-negative-comment";
+    }
+
+    @GetMapping("/comment/delete/{id}")
+    public String deleteComment(@PathVariable int id) {
+        commentService.remove(id);
+        return "redirect:/admin/comment";
+    }
 
     /*
     * Comment different
