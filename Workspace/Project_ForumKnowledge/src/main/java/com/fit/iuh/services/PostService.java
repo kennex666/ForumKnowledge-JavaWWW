@@ -9,6 +9,8 @@ package com.fit.iuh.services;
 
 import com.fit.iuh.entites.Post;
 import com.fit.iuh.enums.PostState;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -45,4 +47,7 @@ public interface PostService {
     public Post findByUrl(String url);
 
     public Post findByIdAndUrl(String id);
+
+    // Method get all article
+    public Page<Post> findForHome(Pageable pageable);
 }

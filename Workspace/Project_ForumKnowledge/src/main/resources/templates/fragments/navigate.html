@@ -1,10 +1,11 @@
-<header class="bg-white px-20 py-4 flex justify-between items-center" xmlns:th="http://www.thymeleaf.org">
-    <div class="flex items-center justify-center space-x-10">
+<header th:class="${'px-20 py-4 flex justify-between items-center sticky top-0 ' +
+ ((currentUser != null && currentUser.role == 1) ? 'bg-gray-800 text-white' : 'bg-white')}" xmlns:th="http://www.thymeleaf.org">
+<div class="flex items-center justify-center space-x-10">
         <a href="/"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
 
         <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
             <i class="fas fa-search text-gray-500"></i>
-            <input type="text" placeholder="Tìm kiếm..." class="bg-transparent focus:outline-none ml-4" id="form-search">
+            <input type="text" placeholder="Tìm kiếm..." class="bg-transparent focus:outline-none ml-4 text-black" id="form-search">
             <script>
                 const formSearch = document.getElementById("form-search");
 
@@ -31,22 +32,25 @@
     </div>
 
     <!-- Show login and register buttons if currentUser is null -->
-    <div class="flex items-center space-x-10" th:if="${currentUser == null}">
-        <a href="/login" class="text-gray-500 focus:outline-none">
+    <div th:class="${'flex items-center space-x-10 ' +
+ ((currentUser != null && currentUser.role == 1) ? 'text-white' : 'text-gray-500') }"  th:if="${currentUser == null}">
+        <a href="/login" class="focus:outline-none">
             <i class="fas fa-sign-in-alt mr-1"></i> Login
         </a>
-        <a href="/register" class="text-gray-500 focus:outline-none">
+        <a href="/register" class="focus:outline-none">
             <i class="fas fa-user-plus mr-1"></i> Register
         </a>
     </div>
 
     <!-- Show profile and admin options if currentUser is not null -->
     <div class="flex items-center space-x-10" th:if="${currentUser != null}">
-        <a href="/write" class="text-gray-500 focus:outline-none space-x-2">
+        <a href="/write" th:class="${'focus:outline-none space-x-2 ' +
+ ((currentUser != null && currentUser.role == 1) ? 'text-white' : 'text-gray-500') }">
             <i class="fas fa-pen"></i>
             <span>Viết bài</span>
         </a>
-        <button class="text-gray-500 focus:outline-none">
+        <button th:class="${'focus:outline-none space-x-2 ' +
+ ((currentUser != null && currentUser.role == 1) ? 'text-white' : 'text-gray-500') }">
             <i class="fas fa-bell"></i>
         </button>
 

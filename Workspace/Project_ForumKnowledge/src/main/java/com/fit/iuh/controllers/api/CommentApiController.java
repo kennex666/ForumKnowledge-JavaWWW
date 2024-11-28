@@ -40,7 +40,7 @@ public class CommentApiController {
     public ResponseEntity<Map<String, Object>> createComment(InputStream inputStream) {
         String currentEmail = SpringContext.getCurrentUserEmail();
         if (currentEmail.isBlank()){
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "You must login to create comment!", "errorCode", 401, "data", null));
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "You must login to create comment!", "errorCode", 401, "data", ""));
         }
         try {
             String json = new String(inputStream.readAllBytes());
