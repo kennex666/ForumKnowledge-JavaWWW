@@ -265,9 +265,9 @@
                                     <td th:text="${post.totalDownVote}"></td>
                                     <td th:text="${post.createdAt}"></td>
                                     <td>
-                                        <select id="state"
-                                                class="form-select"
-                                                th:onchange="'postStateChange(' + ${post.postId} + ', this.value)'">
+                                        <select class="form-select"
+                                                th:data-state="${post.state}"
+                                                th:onchange="'postStateChange(' + ${post.postId} + ', this.value, this)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
                                                     th:value="@{${state}}"
@@ -345,15 +345,15 @@
 <script src="/assets/js/bs-init.js"></script>
 <script src="/assets/js/theme.js"></script>
 <script>
-    let statePostValue = document.getElementById('state').value;
-
-    function postStateChange(postId, state) {
+    function postStateChange(postId, state, element) {
         const confirm = window.confirm('Are you sure you want to change the state of this post?');
+        const statePostValue = element.getAttribute('data-state');
 
         if (!confirm) {
-            const stateComboBox = document.getElementById('state');
-            stateComboBox.value = statePostValue;
+            element.value = statePostValue;
             return;
+        } else {
+            element.setAttribute('data-state', state);
         }
 
         fetch(`http://localhost:8080/api/posts/state-change?id=${postId}&state=${state}`, {
@@ -368,12 +368,6 @@
     }
 
     function postReportStateChange(reportId, state) {
-        const confirm = window.confirm('Are you sure you want to change the state of this report?');
-
-        if (!confirm) {
-            return;
-        }
-
         fetch(`http://localhost:8080/api/post-reports/state-change?id=${reportId}&state=${state}`, {
             method: 'PUT'
         }).then(response => {
