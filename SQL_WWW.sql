@@ -1,4 +1,5 @@
 -- User data
+use iDev4rum
 SET IDENTITY_INSERT users ON;
 INSERT INTO users (user_id, name, role, account_state, email, title, password_hash, profile_picture, bio, created_at, updated_at) VALUES
 (1, 'Alice', 1, 'EXPIRED', 'alice@example.com', 'Developer', 'hash1', 'pic1.jpg', 'Bio of Alice', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
@@ -126,7 +127,7 @@ go
 -- BanList data
 
 SET IDENTITY_INSERT ban_lists ON;
-INSERT INTO ban_lists (id, state, reason, time_start, time_end, create_at, update_at, user_id) VALUES
+INSERT INTO ban_lists (id, state, reason, time_start, time_end, created_at, updated_at, user_id) VALUES
 (1, 'BANNED', 'Violation of rules', CURRENT_TIMESTAMP, DATEADD(DAY, 1, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1),
 (2, 'BANNED', 'Spamming', CURRENT_TIMESTAMP, DATEADD(DAY, 2, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2),
 (3, 'BANNED', 'Harassment', CURRENT_TIMESTAMP, DATEADD(DAY, 3, CURRENT_TIMESTAMP), CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3),
@@ -199,7 +200,7 @@ SET IDENTITY_INSERT followings OFF;
 
 -- PostReport data
 SET IDENTITY_INSERT post_reports ON;
-INSERT INTO post_reports (id, state, reason, create_at, update_at, post_id, reporter_id, inspector_id) VALUES
+INSERT INTO post_reports (id, state, reason, created_at, updated_at, post_id, reporter_id, inspector_id) VALUES
 (1, 'PROCESSING', 'Inappropriate content', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 1, 1, 2),
 (2, 'ACCEPTED', 'Spam', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 2, 2, 3),
 (3, 'REJECTED', 'Harassment', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP, 3, 3, 4),

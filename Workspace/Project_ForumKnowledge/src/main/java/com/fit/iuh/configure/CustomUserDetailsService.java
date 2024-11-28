@@ -36,7 +36,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         // Chuyển role thành authority
-        String role = user.getRole() == 1 ? "ROLE_ADMIN" : "ROLE_USER";
+        String role = user.getRole() == 1 ? "ADMIN" : "USER";
 
         // So sánh mật khẩu (đã mã hóa trong database với mật khẩu nhập vào)
         // Thực tế Spring Security tự động làm việc này khi đăng nhập

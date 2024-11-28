@@ -25,7 +25,7 @@ public class AdminPostController {
         PostState[] states = PostState.values();
         model.addAttribute("posts", posts);
         model.addAttribute("states", states);
-        return "admin/post-list";
+        return "views_admin/post-list";
     }
 
     @GetMapping("/state-change")

@@ -259,7 +259,7 @@
                                                 th:onchange="'changeState(this.value)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
-                                                    th:value="@{/admin/posts/state-change(id=${post.postId}, state=${state})}"
+                                                    th:value="@{/templates/views_admin/posts/state-change(id=${post.postId}, state=${state})}"
                                                     th:selected="${state == post.state}">
                                             </option>
                                         </select>

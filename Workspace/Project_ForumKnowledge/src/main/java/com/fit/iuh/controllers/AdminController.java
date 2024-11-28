@@ -20,7 +20,7 @@ public class AdminController {
 
     @GetMapping("/")
     public String index() {
-        return "index";
+        return "views_admin/index";
     }
     /*
       ** Topic
@@ -58,13 +58,13 @@ public class AdminController {
         model.addAttribute("quantityTopic", page.getTotalElements());
         model.addAttribute("size", size);
 
-        return "topic";
+        return "views_admin/topic";
     }
     // 2. Thêm topic
     @GetMapping("/topic/addform")
     public String addTopicForm(Model model) {
         model.addAttribute("topic", new Topic());
-        return "add-topic";
+        return "views_admin/add-topic";
     }
 
     // 2.1 Hiển thị form thêm topic
@@ -86,7 +86,7 @@ public class AdminController {
         List<Post> posts = topic.getPosts();
         model.addAttribute("posts", posts);
 
-        return "view-topic";
+        return "views_admin/view-topic";
     }
 
     // 4. Sửa topic
@@ -125,7 +125,7 @@ public class AdminController {
     */
     @GetMapping("/comment")
     public String comment() {
-        return "comment";
+        return "views_admin/comment";
     }
 
 
@@ -133,35 +133,35 @@ public class AdminController {
     * Comment different
      */
     @GetMapping("/table")
-    public String table() { return "table"; }
+    public String table() { return "views_admin/table"; }
 
     @GetMapping("/login")
     public String login() {
-        return "login";
+        return "views_admin/login";
     }
 
     @GetMapping("/register")
     public String register() {
-        return "register";
+        return "views_admin/register";
     }
 
     @GetMapping("/forgot-password")
     public String forgotPassword() {
-        return "forgot-password";
+        return "views_admin/forgot-password";
     }
 
     @GetMapping("/404")
     public String error404() {
-        return "404";
+        return "views_admin/404";
     }
 
     @GetMapping("/blank")
     public String blank() {
-        return "blank";
+        return "views_admin/blank";
     }
 
     @GetMapping("/profile")
     public String profile() {
-        return "profile";
+        return "views_admin/profile";
     }
 }
