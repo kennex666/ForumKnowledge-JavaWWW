@@ -86,9 +86,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeState(int id, UserAccountState state) {
+    public Boolean changeState(int id, UserAccountState state) {
         User user = userRepository.findById(id);
-        user.setAccountState(state);
-        userRepository.save(user);
+        if (user != null) {
+            user.setAccountState(state);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }

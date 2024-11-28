@@ -25,5 +25,5 @@ public interface UserService {
     
     public User findById(int id);
 
-    public void changeState(int id, UserAccountState state);
+    public Boolean changeState(int id, UserAccountState state);
 }

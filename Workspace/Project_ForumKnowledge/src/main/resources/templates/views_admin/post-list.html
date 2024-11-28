@@ -267,10 +267,10 @@
                                     <td>
                                         <select class="form-select"
                                                 th:data-state="${post.state}"
-                                                th:onchange="'postStateChange(' + ${post.postId} + ', this.value, this)'">
+                                                th:onchange="'postStateChange(' + ${post.postId} + ', this)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
-                                                    th:value="@{${state}}"
+                                                    th:value="${state}"
                                                     th:selected="${state == post.state}">
                                             </option>
                                         </select>
@@ -345,9 +345,10 @@
 <script src="/assets/js/bs-init.js"></script>
 <script src="/assets/js/theme.js"></script>
 <script>
-    function postStateChange(postId, state, element) {
+    function postStateChange(postId, element) {
         const confirm = window.confirm('Are you sure you want to change the state of this post?');
         const statePostValue = element.getAttribute('data-state');
+        const state = element.value;
 
         if (!confirm) {
             element.value = statePostValue;

@@ -99,7 +99,7 @@ public class PostAPIController {
             if (postService.changeState(id, state)) {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "State changed successfully!", "errorCode", 200, "data", ""));
             } else {
-                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: Post not found!", "errorCode", 404, "data", ""));
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error when change state!", "errorCode", 404, "data", ""));
             }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));

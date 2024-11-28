@@ -252,10 +252,11 @@
                                     <td th:text="${user.updatedAt}"></td>
                                     <td>
                                         <select class="form-select"
-                                                th:onchange="'changeState(this.value)'">
+                                                th:data-state="${user.accountState}"
+                                                th:onchange="'userStateChange(' + ${user.userId} + ', this)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
-                                                    th:value="@{/admin/users/state-change(id=${user.userId}, state=${state})}"
+                                                    th:value="${state}"
                                                     th:selected="${state == user.accountState}">
                                             </option>
                                         </select>
@@ -311,12 +312,27 @@
 <script src="/assets/js/bs-init.js"></script>
 <script src="/assets/js/theme.js"></script>
 <script>
-    function changeState(value) {
-        const confirm = window.confirm("Bạn có chắc chắn muốn thay đổi trạng thái tài khoản?");
-        if (confirm)
-            window.location.href = value;
-        else
-            window.location.reload();
+    function userStateChange(userId, element) {
+        const confirm = window.confirm("Are you sure to change the state of this user?");
+        const stateUserValue  = element.getAttribute('data-state');
+        const state = element.value;
+
+        if (!confirm) {
+            element.value = stateUserValue;
+            return;
+        } else {
+            element.setAttribute('data-state', state);
+        }
+
+        fetch(`/api/users/state-change?id=${userId}&state=${state}`, {
+            method: 'PUT'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        }).catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
     }
 </script>
 </body>
