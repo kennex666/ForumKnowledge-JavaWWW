@@ -39,6 +39,7 @@ public class PostServiceImpl implements PostService {
 		return postRepository.save(post);
 	}
 
+
 	@Override
 	public Post update(Post post) {
 		// TODO Auto-generated method stub
@@ -113,6 +114,11 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Post findByID(int id) {
 		return postRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public List<Post> getPostsCreatedInWeek() {
+		return postRepository.getPostsCreatedInWeek();
 	}
 
 	private boolean isDiff(Date createdAt, Date now) {

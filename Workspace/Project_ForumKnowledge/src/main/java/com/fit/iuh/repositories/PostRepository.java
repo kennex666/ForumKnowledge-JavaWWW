@@ -33,4 +33,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query("SELECT p FROM Post p WHERE p.title LIKE %:key% OR p.content LIKE %:key%")
 	Page<Post> searchByKeywordWithPaging(String key, Pageable pageable);
+
+	@Query(value = "SELECT * FROM posts p WHERE p.created_at >= DATEADD(day, -7, GETDATE()) ORDER BY p.created_at DESC", nativeQuery = true)
+	List<Post> getPostsCreatedInWeek();
 }

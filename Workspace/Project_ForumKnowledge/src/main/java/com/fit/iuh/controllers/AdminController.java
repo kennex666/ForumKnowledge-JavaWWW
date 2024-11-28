@@ -1,11 +1,7 @@
 package com.fit.iuh.controllers;
 
-import com.fit.iuh.entites.Comment;
-import com.fit.iuh.entites.Post;
-import com.fit.iuh.entites.Topic;
-import com.fit.iuh.services.CommentService;
-import com.fit.iuh.services.PostService;
-import com.fit.iuh.services.TopicService;
+import com.fit.iuh.entites.*;
+import com.fit.iuh.services.*;
 import com.fit.iuh.utilities.CommentUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +23,15 @@ public class AdminController {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private ReactionService reactionService;
+
+    @Autowired
+    private BookMarkService bookmarkService;
+
+    @Autowired
+    private FollowingService followService;
 
     @GetMapping("/")
     public String index() {
@@ -227,7 +232,22 @@ public class AdminController {
     * Dashboard
      */
     @GetMapping("/dashboard")
-    public String dashboard() {
+    public String dashboard(Model model) {
+        
+        // Thong ke so luong post 
+        List<Post> posts = postService.findAll();
+        model.addAttribute("posts", posts);
+
+        // Thong ke so luong post duoc tao trong tuan
+        List<Post> postsInWeek = postService.getPostsCreatedInWeek();
+        model.addAttribute("postsInWeek", postsInWeek);
+
+        // Thong ke so luong comment, reaction, bookmark, follow trong tuan de lam tong tuong tac
+        List<Comment> comments = commentService.findAll();
+        List<Reaction> reactions = reactionService.findAll();
+        List<BookMark> bookMarks = bookmarkService.findAll();
+        List<Following> follows = followService.findAll();
+
         return "views_admin/index";
     }
 

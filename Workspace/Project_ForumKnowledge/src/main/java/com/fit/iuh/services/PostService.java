@@ -48,4 +48,6 @@ public interface PostService {
     Page<Post> getPage(int numberPage, int size);
 
     Post findByID(int id);
+
+    List<Post> getPostsCreatedInWeek();
 }
