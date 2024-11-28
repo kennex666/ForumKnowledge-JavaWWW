@@ -67,5 +67,15 @@ public class PostReportServiceImpl implements PostReportService {
         return postReportRepository.findByPostId(postId);
     }
 
+    @Override
+    public Boolean changeState(Integer postReportId, PostReportState state) {
+        Optional<PostReport> postReport = postReportRepository.findById(postReportId);
+        if (postReport.isPresent()) {
+            postReport.get().setState(state);
+            postReportRepository.save(postReport.get());
+            return true;
+        }
+        return false;
+    }
 
 }

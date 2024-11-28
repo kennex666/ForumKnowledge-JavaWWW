@@ -28,4 +28,5 @@ public interface PostReportService {
 
     public List<PostReport> findByPostId(Integer postId);
 
+    public Boolean changeState(Integer postReportId, PostReportState state);
 }

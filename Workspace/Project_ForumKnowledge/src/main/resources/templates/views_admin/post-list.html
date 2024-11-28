@@ -367,6 +367,24 @@
         });
     }
 
+    function postReportStateChange(reportId, state) {
+        const confirm = window.confirm('Are you sure you want to change the state of this report?');
+
+        if (!confirm) {
+            return;
+        }
+
+        fetch(`http://localhost:8080/api/post-reports/state-change?id=${reportId}&state=${state}`, {
+            method: 'PUT'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        }).catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+
     async function loadReportsIntoModal(postId) {
         const reportList = document.getElementById('reportList');
         reportList.innerHTML = '';
@@ -411,6 +429,8 @@
 
                     select.appendChild(option);
                 });
+
+                select.onchange = () => postReportStateChange(report.id, select.value);
 
                 tdState.appendChild(select);
                 tr.appendChild(tdState);
