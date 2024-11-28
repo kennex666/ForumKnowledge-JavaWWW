@@ -1,12 +1,9 @@
 package com.fit.iuh.controllers;
 
 import com.fit.iuh.entites.*;
+import com.fit.iuh.enums.PostReportState;
 import com.fit.iuh.services.*;
 import com.fit.iuh.utilities.CommentUtils;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -356,13 +353,6 @@ public class AdminController {
         int[] reportStats = {acceptedReports, processingReports, rejectedReports};
         model.addAttribute("reportStats", reportStats);
 
-        /*
-        * Thống kê số lượng bài viết theo topic
-        * 1. Lấy tất cả topics và posts
-        * 2. Tạo map để đếm số bài viết cho mỗi topic
-        * 3. Sắp xếp topics theo số lượng bài viết (giảm dần)
-        * 4. Lấy 5 topics có nhiều bài viết nhất
-         */
         // Lấy tất cả topics và posts
         List<Topic> allTopics = topicService.findAll();
         List<Post> allPosts = postService.findAll();
@@ -413,7 +403,138 @@ public class AdminController {
 
         model.addAttribute("topicStats", topicStats);
         
+        // Thêm phân tích insights
+        List<DataInsight> insights = analyzeData(
+            totalInteractions, 
+            totalInteractionsInWeek,
+            postReports,
+            processingReports,
+            topicStats,
+            monthlyInteractions
+        );
+        
+        model.addAttribute("insights", insights);
+        
         return "views_admin/index";
+    }
+
+    private List<DataInsight> analyzeData(
+        int totalInteractions,
+        int totalInteractionsInWeek,
+        List<PostReport> postReports,
+        int processingReports,
+        List<TopicStats> topicStats,
+        int[] monthlyInteractions
+    ) {
+        List<DataInsight> insights = new ArrayList<>();
+        
+        // 1. Phân tích tương tác người dùng
+        String userInteractionDesc = analyzeUserInteractions(totalInteractions, totalInteractionsInWeek);
+        insights.add(new DataInsight(
+            "fas fa-users",
+            "Tương tác người dùng",
+            userInteractionDesc,
+            "bg-primary"
+        ));
+
+        // 2. Phân tích báo cáo vi phạm
+        String reportDesc = analyzeReports(postReports);
+        insights.add(new DataInsight(
+            "fas fa-flag",
+            "Báo cáo vi phạm",
+            reportDesc,
+            "bg-success"
+        ));
+
+        // 3. Phân tích phân bố chủ đề
+        String topicDesc = analyzeTopicDistribution(topicStats);
+        insights.add(new DataInsight(
+            "fas fa-tags",
+            "Phân bố chủ đề",
+            topicDesc,
+            "bg-info"
+        ));
+
+        // 4. Phân tích điểm cần chú ý
+        String warningDesc = analyzeWarningPoints(processingReports, postReports.size());
+        insights.add(new DataInsight(
+            "fas fa-exclamation-triangle",
+            "Điểm cần chú ý",
+            warningDesc,
+            "bg-warning"
+        ));
+
+        // 5. Phân tích xu hướng
+        String trendDesc = analyzeTrend(monthlyInteractions);
+        insights.add(new DataInsight(
+            "fas fa-chart-line",
+            "Xu hướng",
+            trendDesc,
+            "bg-danger"
+        ));
+
+        return insights;
+    }
+
+    private String analyzeUserInteractions(int total, int weekly) {
+        double weeklyPercentage = (weekly * 100.0) / total;
+        if (weeklyPercentage > 20) {
+            return "Hệ thống đang hoạt động tốt với lượng tương tác đáng kể từ người dùng";
+        }
+        return "Lượng tương tác người dùng ở mức trung bình";
+    }
+
+    private String analyzeReports(List<PostReport> reports) {
+        if (reports.isEmpty()) {
+            return "Chưa có bài viết nào bị báo cáo";
+        }
+
+        PostReportState[] states = PostReportState.values();
+
+        long resolved = reports.stream()
+                .filter(r -> r.getState() == PostReportState.ACCEPTED || r.getState() == PostReportState.REJECTED)
+                .count();
+        double resolveRate = (resolved * 100.0) / reports.size();
+        
+        if (resolveRate > 70) {
+            return "Các báo cáo vi phạm đang được xử lý kịp thời và hiệu quả";
+        } else if (resolveRate > 40) {
+            return "Tốc độ xử lý báo cáo vi phạm ở mức trung bình";
+        }
+        return "Cần cải thiện tốc độ xử lý báo cáo vi phạm";
+    }
+
+    private String analyzeTopicDistribution(List<TopicStats> topicStats) {
+        boolean isWellDistributed = topicStats.stream()
+            .noneMatch(stat -> stat.getPercentage() > 50) &&
+            topicStats.stream()
+            .filter(stat -> stat.getPercentage() > 10)
+            .count() >= 3;
+            
+        if (isWellDistributed) {
+            return "Các bài viết được phân bố đều, đến trên nhiều chủ đề khác nhau";
+        }
+        return "Phân bố bài viết đang tập trung vào một số chủ đề chính";
+    }
+
+    private String analyzeWarningPoints(int processing, int total) {
+        double processingRate = (processing * 100.0) / total;
+        if (processingRate > 30) {
+            return "Cần theo dõi và xử lý các báo cáo vi phạm đang trong trạng thái chờ";
+        }
+        return "Số lượng báo cáo chờ xử lý ở mức chấp nhận được";
+    }
+
+    private String analyzeTrend(int[] monthlyInteractions) {
+        if (monthlyInteractions.length < 2) return "Chưa đủ dữ liệu để phân tích xu hướng";
+        
+        int lastMonth = monthlyInteractions[monthlyInteractions.length - 1];
+        int previousMonth = monthlyInteractions[monthlyInteractions.length - 2];
+        
+        if (lastMonth > previousMonth) {
+            return "Lượng tương tác có xu hướng tăng trong những ngày gần đây";
+        }
+        return "Lượng tương tác đang ổn định";
     }
 
     /*
@@ -451,13 +572,4 @@ public class AdminController {
     public String profile() {
         return "views_admin/profile";
     }
-}
-
-// Inner class để lưu thống kê của mỗi topic
-@Data
-@AllArgsConstructor
-class TopicStats {
-    private String name;
-    private int count;
-    private double percentage;
 }

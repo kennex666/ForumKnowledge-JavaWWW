@@ -303,32 +303,16 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="text-primary fw-bold m-0">Data Analysis</h6>
-                                </div>
-                                <div class="card-body">
-                                    <div class="text-gray-900">
-                                        <p class="mb-2">
-                                            <i class="fas fa-check-circle text-primary"></i>
-                                            <strong>Tương tác người dùng:</strong> Hệ thống đang hoạt động tốt với lượng tương tác đáng kể từ người dùng.
-                                        </p>
-                                        <p class="mb-2">
-                                            <i class="fas fa-exclamation-circle text-success"></i>
-                                            <strong>Báo cáo vi phạm:</strong> Các báo cáo vi phạm đang được xử lý kịp thời và hiệu quả.
-                                        </p>
-                                        <p class="mb-2">
-                                            <i class="fas fa-info-circle text-info"></i>
-                                            <strong>Phân bố chủ đề:</strong> Các bài viết được phân bố đều đặn trên nhiều chủ đề khác nhau.
-                                        </p>
-                                        <p class="mb-2">
-                                            <i class="fas fa-bell text-warning"></i>
-                                            <strong>Điểm cần chú ý:</strong> Cần theo dõi và xử lý các báo cáo vi phạm đang trong trạng thái chờ.
-                                        </p>
-                                        <p class="mb-0">
-                                            <i class="fas fa-chart-line text-danger"></i>
-                                            <strong>Xu hướng:</strong> Lượng tương tác có xu hướng tăng trong những tháng gần đây.
-                                        </p>
+                            <div class="row">
+                                <div th:each="insight : ${insights}" class="col-lg-6 mb-4">
+                                    <div th:class="'card text-white shadow ' + ${insight.colorClass}">
+                                        <div class="card-body">
+                                            <p class="m-0">
+                                                <i th:class="${insight.icon} + ' me-2'"></i>
+                                                <span th:text="${insight.title}"></span>
+                                            </p>
+                                            <p class="text-white-50 small m-0" th:text="${insight.description}"></p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
