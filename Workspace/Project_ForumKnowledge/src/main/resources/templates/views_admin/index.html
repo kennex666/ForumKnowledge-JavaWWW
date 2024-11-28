@@ -242,25 +242,25 @@
                                     <h6 class="text-primary fw-bold m-0">Posts by Topic</h6>
                                 </div>
                                 <div class="card-body">
-                                    <h4 class="small fw-bold">Programming<span class="float-end">35%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-primary" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" style="width: 35%;"><span class="visually-hidden">35%</span></div>
-                                    </div>
-                                    <h4 class="small fw-bold">Web Development<span class="float-end">25%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-info" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"><span class="visually-hidden">25%</span></div>
-                                    </div>
-                                    <h4 class="small fw-bold">Mobile Development<span class="float-end">20%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-success" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"><span class="visually-hidden">20%</span></div>
-                                    </div>
-                                    <h4 class="small fw-bold">Database<span class="float-end">15%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-warning" aria-valuenow="15" aria-valuemin="0" aria-valuemax="100" style="width: 15%;"><span class="visually-hidden">15%</span></div>
-                                    </div>
-                                    <h4 class="small fw-bold">Others<span class="float-end">5%</span></h4>
-                                    <div class="progress mb-4">
-                                        <div class="progress-bar bg-danger" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;"><span class="visually-hidden">5%</span></div>
+                                    <div th:each="topic, stat : ${topicStats}">
+                                        <h4 class="small fw-bold">
+                                            <span th:text="${topic.name}"></span>
+                                            <span class="float-end" th:text="${#numbers.formatDecimal(topic.percentage, 1, 1) + '%'}"></span>
+                                        </h4>
+                                        <div class="progress mb-4">
+                                            <div th:with="bgClass=${stat.index == 0 ? 'bg-primary' : 
+                                                         (stat.index == 1 ? 'bg-info' : 
+                                                         (stat.index == 2 ? 'bg-success' : 
+                                                         (stat.index == 3 ? 'bg-warning' : 
+                                                         (stat.index == 4 ? 'bg-danger' : 'bg-secondary'))))}"
+                                                 th:class="|progress-bar ${bgClass}|"
+                                                 th:aria-valuenow="${topic.percentage}"
+                                                 aria-valuemin="0"
+                                                 aria-valuemax="100"
+                                                 th:style="|width: ${topic.percentage}%|">
+                                                <span class="visually-hidden" th:text="${topic.percentage + '%'}"></span>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -303,53 +303,32 @@
                             </div>
                         </div>
                         <div class="col">
-                            <div class="row">
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card text-white bg-primary shadow">
-                                        <div class="card-body">
-                                            <p class="m-0">Primary</p>
-                                            <p class="text-white-50 small m-0">#4e73df</p>
-                                        </div>
-                                    </div>
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="text-primary fw-bold m-0">Data Analysis</h6>
                                 </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card text-white bg-success shadow">
-                                        <div class="card-body">
-                                            <p class="m-0">Success</p>
-                                            <p class="text-white-50 small m-0">#1cc88a</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card text-white bg-info shadow">
-                                        <div class="card-body">
-                                            <p class="m-0">Info</p>
-                                            <p class="text-white-50 small m-0">#36b9cc</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card text-white bg-warning shadow">
-                                        <div class="card-body">
-                                            <p class="m-0">Warning</p>
-                                            <p class="text-white-50 small m-0">#f6c23e</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card text-white bg-danger shadow">
-                                        <div class="card-body">
-                                            <p class="m-0">Danger</p>
-                                            <p class="text-white-50 small m-0">#e74a3b</p>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 mb-4">
-                                    <div class="card text-white bg-secondary shadow">
-                                        <div class="card-body">
-                                            <p class="m-0">Secondary</p>
-                                            <p class="text-white-50 small m-0">#858796</p>
-                                        </div>
+                                <div class="card-body">
+                                    <div class="text-gray-900">
+                                        <p class="mb-2">
+                                            <i class="fas fa-check-circle text-primary"></i>
+                                            <strong>Tương tác người dùng:</strong> Hệ thống đang hoạt động tốt với lượng tương tác đáng kể từ người dùng.
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="fas fa-exclamation-circle text-success"></i>
+                                            <strong>Báo cáo vi phạm:</strong> Các báo cáo vi phạm đang được xử lý kịp thời và hiệu quả.
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="fas fa-info-circle text-info"></i>
+                                            <strong>Phân bố chủ đề:</strong> Các bài viết được phân bố đều đặn trên nhiều chủ đề khác nhau.
+                                        </p>
+                                        <p class="mb-2">
+                                            <i class="fas fa-bell text-warning"></i>
+                                            <strong>Điểm cần chú ý:</strong> Cần theo dõi và xử lý các báo cáo vi phạm đang trong trạng thái chờ.
+                                        </p>
+                                        <p class="mb-0">
+                                            <i class="fas fa-chart-line text-danger"></i>
+                                            <strong>Xu hướng:</strong> Lượng tương tác có xu hướng tăng trong những tháng gần đây.
+                                        </p>
                                     </div>
                                 </div>
                             </div>

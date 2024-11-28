@@ -3,6 +3,10 @@ package com.fit.iuh.controllers;
 import com.fit.iuh.entites.*;
 import com.fit.iuh.services.*;
 import com.fit.iuh.utilities.CommentUtils;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/admin")
@@ -351,6 +356,63 @@ public class AdminController {
         int[] reportStats = {acceptedReports, processingReports, rejectedReports};
         model.addAttribute("reportStats", reportStats);
 
+        /*
+        * Thống kê số lượng bài viết theo topic
+        * 1. Lấy tất cả topics và posts
+        * 2. Tạo map để đếm số bài viết cho mỗi topic
+        * 3. Sắp xếp topics theo số lượng bài viết (giảm dần)
+        * 4. Lấy 5 topics có nhiều bài viết nhất
+         */
+        // Lấy tất cả topics và posts
+        List<Topic> allTopics = topicService.findAll();
+        List<Post> allPosts = postService.findAll();
+        int totalPosts = allPosts.size();
+        
+        // Tạo map để đếm số bài viết cho mỗi topic
+        Map<Topic, Long> topicPostCounts = allPosts.stream()
+            .filter(post -> post.getTopic() != null)
+            .collect(Collectors.groupingBy(Post::getTopic, Collectors.counting()));
+
+        // Sắp xếp topics theo số lượng bài viết (giảm dần)
+        List<Map.Entry<Topic, Long>> sortedTopics = topicPostCounts.entrySet()
+            .stream()
+            .sorted(Map.Entry.<Topic, Long>comparingByValue().reversed())
+            .collect(Collectors.toList());
+
+        // Lấy 5 topics có nhiều bài viết nhất
+        List<TopicStats> topicStats = new ArrayList<>();
+        
+        // Tính tổng bài viết của top 5 topics
+        long top5PostsCount = sortedTopics.stream()
+            .limit(5)
+            .mapToLong(Map.Entry::getValue)
+            .sum();
+        
+        // Tính số bài viết còn lại cho Others
+        long othersCount = totalPosts - top5PostsCount;
+
+        // Thêm top 5 topics
+        sortedTopics.stream().limit(5).forEach(entry -> {
+            double percentage = (entry.getValue() * 100.0) / totalPosts;
+            topicStats.add(new TopicStats(
+                entry.getKey().getName(),
+                entry.getValue().intValue(),
+                Math.round(percentage * 10.0) / 10.0
+            ));
+        });
+
+        // Thêm Others nếu có
+        if (othersCount > 0) {
+            double othersPercentage = (othersCount * 100.0) / totalPosts;
+            topicStats.add(new TopicStats(
+                "Others",
+                (int) othersCount,
+                Math.round(othersPercentage * 10.0) / 10.0
+            ));
+        }
+
+        model.addAttribute("topicStats", topicStats);
+        
         return "views_admin/index";
     }
 
@@ -389,4 +451,13 @@ public class AdminController {
     public String profile() {
         return "views_admin/profile";
     }
+}
+
+// Inner class để lưu thống kê của mỗi topic
+@Data
+@AllArgsConstructor
+class TopicStats {
+    private String name;
+    private int count;
+    private double percentage;
 }
