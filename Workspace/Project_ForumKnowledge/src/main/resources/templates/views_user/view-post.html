@@ -1,0 +1,397 @@
+<html>
+<head lang="vi">
+    <title th:text="${post.title + ' | iDev4rum'}">Home</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- charset utff 8 -->
+    <meta charset="UTF-8" />
+    <style>
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+    <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+</head>
+<body class="pb-12">
+<!-- Nav bar -->
+<header class="bg-white px-20 py-4 flex justify-between items-center">
+    <div class="flex items-center justify-center space-x-10">
+        <a href="/"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
+
+        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
+            <i class="fas fa-search text-gray-500"></i>
+            <input
+                    type="text"
+                    placeholder="Tìm kiếm..."
+                    class="bg-transparent focus:outline-none ml-4"
+                    id="form-search"
+            />
+            <script>
+                const formSearch = document.getElementById("form-search");
+
+                formSearch.addEventListener("focus", function () {
+                    formSearch.classList.add("w-64");
+                });
+
+                formSearch.addEventListener("blur", function () {
+                    formSearch.classList.remove("w-64");
+                });
+
+                formSearch.addEventListener("keyup", function () {});
+
+                formSearch.addEventListener("keypress", function (e) {
+                    if (e.key === "Enter") {
+                        // Do something
+                        window.location.href = "/search?q=" + formSearch.value;
+                    }
+                });
+            </script>
+        </div>
+    </div>
+    <div class="flex items-center space-x-10">
+        <a href="write" class="text-gray-500 focus:outline-none space-x-2">
+            <i class="fas fa-pen"></i>
+            <span>Viết bài</span>
+        </a>
+        <button class="text-gray-500 focus:outline-none">
+            <i class="fas fa-bell"></i>
+        </button>
+        <div class="relative">
+            <button id="btn-profile" class="rounded-full">
+                <img
+                        src="https://placehold.co/32x32"
+                        alt="User profile image, placeholder image"
+                        class="w-8 h-8 rounded-full"
+                />
+            </button>
+            <div
+                    class="hidden absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                    role="menu"
+                    aria-orientation="vertical"
+                    aria-labelledby="menu-button"
+                    tabindex="-1"
+                    id="menu-bar"
+            >
+                <div class="py-1 space-y-1" role="none">
+                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
+                    <a
+                            href="/profile"
+                            class="block px-4 py-2 text-sm text-gray-700"
+                            role="menuitem"
+                            tabindex="-1"
+                    ><i class="fa-solid fa-user"></i
+                    ><span class="ps-3">Hồ sơ</span></a
+                    >
+                    <a
+                            href="/admin"
+                            class="block px-4 py-2 text-sm text-gray-700"
+                            role="menuitem"
+                            tabindex="-1"
+                    ><i class="fa-solid fa-bookmark"></i
+                    ><span class="ps-3">Bài viết đã lưu</span></a
+                    >
+                    <a
+                            href="/admin"
+                            class="block px-4 py-2 text-sm text-gray-700"
+                            role="menuitem"
+                            tabindex="-1"
+                    ><i class="fa-solid fa-lock"></i
+                    ><span class="ps-3">Trang quản trị</span></a
+                    >
+                    <a
+                            href="/logout"
+                            class="border-t block px-4 py-2 text-sm font-semibold mt-2 pt-4 text-red-500"
+                            role="menuitem"
+                            tabindex="-1"
+                    ><i class="fa-solid fa-right-from-bracket"></i
+                    ><span class="ps-3">Đăng xuất</span></a
+                    >
+                </div>
+            </div>
+            <style>
+                /* Animation */
+                .nav-bar__dropdown-menu-close {
+                    animation: fadeIn 0.3s;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+            </style>
+            <script>
+                document
+                    .getElementById("btn-profile")
+                    .addEventListener("click", function () {
+                        const menuBar = document.getElementById("menu-bar");
+
+                        menuBar.classList.toggle("hidden");
+                        menuBar.classList.toggle("nav-bar__dropdown-menu-close");
+                    });
+            </script>
+        </div>
+    </div>
+</header>
+
+<!-- Blog space -->
+<div class="container mx-auto px-12 lg:w-5/12 w-full mt-12">
+    <input id="postSearch" hidden th:value="${post.postId}">
+    <!-- Info post -->
+    <div class="flex flex-col">
+        <div class="flex flex-col gap-3">
+            <h3 class="text-4xl font-semibold" th:text="${post.title}">
+
+            </h3>
+            <p class="text-lg" th:text="${post.description}">
+
+            </p>
+        </div>
+    </div>
+
+    <!-- Author info -->
+    <div class="flex flex-row mt-4 gap-3 items-center">
+        <div>
+            <img
+                    th:src="${post.author.profilePicture}"
+                    alt="Author image"
+                    class="w-10 h-10 rounded-full"
+            />
+        </div>
+        <div class="flex flex-col justify-center">
+            <!-- Name -->
+            <div class="flex flex-row gap-2 items-center">
+                <span class="text-sm" th:text="${post.author.name}"></span>
+                <!-- dot center -->
+                <span class="text-gray-500">·</span>
+                <button class="text-blue-500 focus:outline-none text-sm">
+                    Follow
+                </button>
+            </div>
+
+            <!-- Date post -->
+            <div class="flex flex-row gap-2">
+                <span class="text-sm text-gray-500">5 min read</span>
+                <span class="text-sm text-gray-500">·</span>
+                <span class="text-sm text-gray-500" th:text="${post.createdAt}">December 19, 2024</span>
+            </div>
+        </div>
+    </div>
+
+    <div th:replace="~{/fragments/post_react_bar :: div}"></div>
+    <!-- Post space - Dont touch it -->
+    <div
+            class="container flex flex-col gap-1 markdown"
+            id="post-container"
+    ></div>
+
+    <!-- Post react -->
+    <div th:replace="~{/fragments/post_react_bar :: div}"></div>
+
+    <!-- Comment space -->
+    <div class="flex flex-col mt-8">
+        <h3 class="text-2xl font-semibold mb-6">Bình luận của độc giả</h3>
+
+
+        <!-- Comment -->
+        <div class="flex flex-col bg-white gap-3">
+
+            <!-- My comment -->
+            <div class="flex flex-col bg-white gap-3">
+                <div class="flex flex-row items-center gap-2">
+                    <img
+                            th:src="${currentUser.profilePicture}"
+                            alt="User image"
+                            class="w-10 h-10 rounded-full"
+                    />
+                    <div class="flex flex-col">
+                        <p class="text-sm font-semibold" th:text="${currentUser.name}">Dương Thái Bảo</p>
+                        <p class="text-sm text-blue-500">Hãy bình luận văn minh nhé!</p>
+                    </div>
+                </div>
+                <textarea
+                        class="w-full p-4 border border-gray-200 rounded-md focus:outline-none"
+                        placeholder="Viết bình luận..."
+                        id="txt-comment"
+                ></textarea>
+                <div class="flex flex-row justify-end">
+                    <button
+                            class="bg-gray-500 text-white px-7 py-1 rounded-full focus:outline-none"
+                            disabled
+                            id="btn-comment"
+                    >
+                        Gửi
+                    </button>
+                </div>
+            </div>
+
+
+            <div class="border-t mb-2"></div>
+            <div class="flex flex-row">
+                <select class="focus:outline-none text-sm font-semibold">
+                    <option value="newest">Mới nhất</option>
+                    <option value="oldest">Cũ nhất</option>
+                </select>
+            </div>
+
+            <div class="border-t mt-2"></div>
+            <!-- Coment frame -->
+            <div class="flex flex-col mt-4 gap-8" id="comments" th:each="comment:${post.comments}">
+                <!-- Comment item -->
+                <div class="flex flex-row gap-4 items-center">
+                    <a href="#">
+                        <img
+                                th:src="${comment.user.profilePicture}"
+                                alt="User image"
+                                class="w-10 h-10 rounded-full"
+                        />
+                    </a>
+                    <div class="flex flex-col">
+                        <a class="flex flex-row gap-2 items-center" href="#">
+                            <span class="text-sm font-semibold" th:text="${comment.user.name}"></span>
+                            <span class="text-gray-500">·</span>
+                            <span class="text-sm text-gray-500"  th:text="${comment.createdAt}">December 19, 2024</span>
+                        </a>
+                        <p class="text-sm"  th:text="${comment.content}">
+
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script type="text/javascript" src="/assets/js/drawdown.js"></script>
+<script>
+
+    // Định nghĩa các style cho các phần tử Markdown
+    const markdownStyles = {
+        h1: ["text-3xl", "font-bold", "mt-6", "mb-4"],
+        h2: ["text-2xl", "font-semibold", "mt-5", "mb-3"],
+        h3: ["text-xl", "font-medium", "mt-4", "mb-2"],
+        p: ["text-base", "text-gray-700", "mt-2", "mb-4", "leading-relaxed"],
+        ul: ["list-disc", "list-inside", "pl-5", "mt-2", "mb-4"],
+        ol: ["list-decimal", "list-inside", "pl-5", "mt-2", "mb-4"],
+        li: ["text-gray-700", "mb-2"],
+        a: ["text-blue-500", "hover:underline"],
+        code: ["text-red-600", "font-mono", "px-1", "py-0.5", "rounded"],
+        pre: ["bg-gray-100", "p-4", "rounded-md", "overflow-x-auto", "my-4"],
+        blockquote: [
+            "border-l-4",
+            "border-blue-300",
+            "pl-4",
+            "italic",
+            "text-gray-600",
+            "my-4",
+        ],
+    };
+
+    function applyMarkdownStyles(styles, parentElement) {
+        for (const [selector, classList] of Object.entries(styles)) {
+            if (typeof selector === "string" && Array.isArray(classList)) {
+                // Chỉ áp dụng class cho các phần tử con trong parentElement
+                parentElement
+                    .querySelectorAll(selector)
+                    .forEach((el) => el.classList.add(...classList));
+            } else {
+                console.warn(`Invalid selector or classList for: ${selector}`);
+            }
+        }
+        return parentElement.outerHTML;
+    }
+
+    function createContent(content) {
+        const div = document.createElement("div");
+        div.innerHTML = markdown(content);
+
+        div.classList.add("mt-2");
+        return applyMarkdownStyles(markdownStyles, div);
+    }
+
+
+
+    window.onload = () => {
+        const postSearch = document.getElementById("postSearch").value;
+        const txtComment = document.getElementById("txt-comment");
+        const btnComment = document.getElementById("btn-comment");
+
+        txtComment.addEventListener("input", function () {
+            if (txtComment.value.trim() === "") {
+                btnComment.disabled = true;
+                btnComment.classList =
+                    "bg-gray-500 text-white px-7 py-1 rounded-full focus:outline-none";
+            } else {
+                btnComment.disabled = false;
+                btnComment.classList =
+                    "bg-blue-500 text-white px-7 py-1 rounded-full focus:outline-none hover:bg-blue-400";
+            }
+        });
+
+        btnComment.addEventListener("click", function() {
+            const comment = txtComment.value;
+            fetch(`/api/comments/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    content: comment,
+                    idPost: postSearch,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                        const commentData = data.data;
+                        const comments = document.getElementById("comments");
+
+                        const commentItem = document.createElement("div");
+                        commentItem.classList.add("flex", "flex-row", "gap-4", "items-center");
+                        commentItem.innerHTML = `
+                            <a href="#">
+                                <img
+                                    src="${commentData.user.profilePicture}"
+                                    alt="User image"
+                                    class="w-10 h-10 rounded-full"
+                                />
+                            </a>
+                            <div class="flex flex-col">
+                                <a class="flex flex-row gap-2 items-center" href="#">
+                                    <span class="text-sm font-semibold">${commentData.user.name}</span>
+                                    <span class="text-gray-500">·</span>
+                                    <span class="text-sm text-gray-500">${commentData.createdAt}</span>
+                                </a>
+                                <p class="text-sm">${commentData.content}</p>
+                            </div>
+                        `;
+
+                        // Push to top
+                        comments.insertBefore(commentItem, comments.firstChild);
+                        txtComment.value = "";
+                    }
+                )
+        });
+
+
+        fetch(`/api/posts/${postSearch}`)
+            .then((res) => res.json())
+            .then((data) => {
+                postData = data.data.post;
+                document.getElementById("post-container").innerHTML = createContent(postData.content);
+            });
+    };
+</script>
+</html>

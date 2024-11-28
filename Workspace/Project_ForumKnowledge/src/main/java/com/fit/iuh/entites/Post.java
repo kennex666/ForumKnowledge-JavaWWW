@@ -1,5 +1,6 @@
 package com.fit.iuh.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fit.iuh.enums.PostState;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -59,22 +60,28 @@ public class Post {
 	@LastModifiedDate
 	private Date updatedAt;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<PostReport> postReports;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="author_id")
 	private User author;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<Reaction> reactions;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<Comment> comments;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
 	private List<BookMark> bookMarks;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="tag_id", referencedColumnName = "tag_id")
 	private Topic topic;

@@ -1,0 +1,40 @@
+<!-- Post react -->
+<div class="flex flex-row justify-between mt-4 border-y py-4 px-2" xmlns:th="http://www.thymeleaf.org">
+    <div class="flex flex-row gap-4">
+        <button
+                class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
+        >
+            <i class="fa-regular fa-thumbs-up"></i>
+            <span th:text="${post.totalUpVote}">1.2k</span>
+        </button>
+
+        <button
+                class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
+        >
+            <i class="fa-regular fa-thumbs-down"></i>
+            <span th:text="${post.totalDownVote}">1.2k</span>
+        </button>
+        <button
+                class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
+        >
+            <i class="far fa-comment"></i>
+            <span th:text="${post.totalComments}">1.2k</span>
+        </button>
+    </div>
+
+    <div class="flex flex-row gap-6">
+        <button class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none">
+            <i class="fa-solid fa-exclamation"></i>
+        </button>
+        <button
+                class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
+        >
+            <i class="fa-regular fa-bookmark"></i>
+        </button>
+        <button
+                class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
+        >
+            <i class="fas fa-share"></i>
+        </button>
+    </div>
+</div>

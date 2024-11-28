@@ -41,4 +41,8 @@ public interface PostService {
 
     // Method check and generate article
     public void checkAndGeneratePost();
+
+    public Post findByUrl(String url);
+
+    public Post findByIdAndUrl(String id);
 }

@@ -86,6 +86,7 @@
                 <div class="flex flex-row items-center gap-6">
                     <p class="text-lg w-fit whitespace-nowrap">Chủ đề</p>
                     <select name="tag" id="slt-tag" class="border border-gray-300 py-1 px-2 focus:border-gray-300 text-lg" required>
+
                     </select>
                     <input type="text" name="tag-custom" id="txt-tag" class="border border-gray-300 py-1 px-2 focus:border-gray-300 text-lg w-full hidden" placeholder="Nhập chủ đề của bạn ngắn gọn">
                 </div>
@@ -308,8 +309,6 @@
                                     });
                             }
                         }
-
-                        event.preventDefault(); // Prevent default paste behavior
                     });
 
                     // Handle select
@@ -329,10 +328,10 @@
                         .then((response) => response.json())
                         .then((data) => {
                             if (data && data.errorCode && data.errorCode == 200) {
-                                data.tags.push({ id: -1, name: "Khác" });
+                                data.tags.push({ tagId: -1, name: "Khác" });
                                 data.tags.forEach((tag) => {
                                     const option = document.createElement("option");
-                                    option.value = tag.id;
+                                    option.value = tag.tagId;
                                     option.innerText = tag.name;
                                     sltTag.appendChild(option);
                                 });

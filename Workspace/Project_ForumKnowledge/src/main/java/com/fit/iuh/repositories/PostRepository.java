@@ -29,4 +29,9 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	public Optional<Post> findTopByOrderByCreatedAtDesc();
 
+	@Query("SELECT p FROM Post p WHERE p.url = :url")
+	public Post findByUrl(@Param("url") String url);
+
+
+
 }

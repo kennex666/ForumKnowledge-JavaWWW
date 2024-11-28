@@ -1,5 +1,7 @@
 package com.fit.iuh.utilities;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 
 import java.net.URI;
@@ -12,7 +14,7 @@ public class OpenAI {
 
 
     public static List<Map<String, String>> getPromptReviewPost() {
-        return Arrays.asList(
+        return new ArrayList<>(Arrays.asList(
                 Map.of("role", "system", "content", "Bạn là một người kiểm duyệt viên của trang diễn đàn. Bạn sẽ có nhiệm vụ kiểm soát người dùng có đang spam, đăng nội dung lăng mạ, nhạy cảm hay không." +
                         "\n Bạn sẽ trả về chuỗi JSON và không giải thích gì thêm.\n" +
                         "Chuỗi JSON, mẫu {\"status\": 200, \"message\": \"Bài đăng hợp lệ\"}" +
@@ -23,12 +25,12 @@ public class OpenAI {
                 Map.of("role", "assistant", "content", "{\"status\": 400, \"message\": \"Spam\"}"),
                 Map.of("role", "user", "content", "JavaScript là một ngôn ngữ lập trình phổ biến và mạnh mẽ, chủ yếu được sử dụng để phát triển các trang web động. Với khả năng tương tác trực tiếp với HTML và CSS, JavaScript giúp tạo ra các hiệu ứng, hoạt ảnh, và xử lý sự kiện người dùng trên trình duyệt. Bên cạnh việc sử dụng trong phát triển web, JavaScript còn được áp dụng trong các ứng dụng di động, server-side (với Node.js), và thậm chí trong Internet of Things (IoT). Với sự hỗ trợ rộng rãi từ các thư viện và framework như React, Angular, và Vue, JavaScript là lựa chọn hàng đầu cho các nhà phát triển web hiện đại."),
                 Map.of("role", "assistant", "content", "{\"status\": 200, \"message\": \"Bài đã được duyệt\"}")
-        );
+        ));
     }
 
 
     public static String callGPT(String content, List chatCompletion) throws Exception {
-        String apiEndpoint = "https://api.openai.com/v1/completions";
+        String apiEndpoint = "https://api.openai.com/v1/chat/completions";
 
         // Tạo client và yêu cầu POST
         HttpClient client = HttpClient.newHttpClient();
@@ -39,6 +41,7 @@ public class OpenAI {
         requestData.put("max_tokens", 1000);
         requestData.put("messages", chatCompletion);
 
+        System.out.println("API_KEY" + System.getenv("OPEN_AI_KEY"));
         // Chuyển đổi dữ liệu yêu cầu thành JSON
         String jsonRequest = new Gson().toJson(requestData);
 
@@ -46,7 +49,7 @@ public class OpenAI {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(apiEndpoint))
                 .header("Content-Type", "application/json")
-                .header("Authorization", "Bearer " + System.getenv("OPEN_AI_KEY") == null ? "" : System.getenv("OPEN_AI_KEY"))
+                .header("Authorization", "Bearer " + (System.getenv("OPEN_AI_KEY") == null ? "" : System.getenv("OPEN_AI_KEY")))
                 .POST(HttpRequest.BodyPublishers.ofString(jsonRequest))
                 .build();
 
@@ -55,8 +58,18 @@ public class OpenAI {
 
         // Kiểm tra mã trạng thái và trả về phản hồi
         if (response.statusCode() == 200) {
-            return response.body();  // Trả về nội dung phản hồi
+            // parse json
+
+            String json = response.body();
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(json);
+
+            String jsonData = rootNode.path("choices").path(0).path("message").path("content").asText();
+
+            return jsonData;  // Trả về nội dung phản hồi
         } else {
+
             return "Error: " + response.statusCode();  // Trả về lỗi nếu có
         }
     }
@@ -78,6 +91,18 @@ public class OpenAI {
         } catch (Exception e) {
             e.printStackTrace();
             return new Gson().toJson(Map.of("status", 100, "message", "Unexpected GPT error!"));
+        }
+    }
+
+    public static Map parseJson(String json){
+        return new Gson().fromJson(json, Map.class);
+    }
+
+    public static void main(String[] args) {
+        try {
+            System.out.println(autoReview("", "post"));
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
