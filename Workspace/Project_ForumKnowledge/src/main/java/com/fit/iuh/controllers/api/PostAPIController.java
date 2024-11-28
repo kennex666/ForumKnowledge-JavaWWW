@@ -12,9 +12,7 @@ import com.fit.iuh.utilities.StringToUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -94,5 +92,19 @@ public class PostAPIController {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));
         }
     }
+
+    @PutMapping("/state-change")
+    public ResponseEntity<Map<String, Object>> stateChange(@RequestParam("id") int id, @RequestParam("state") PostState state) {
+        try {
+            if (postService.changeState(id, state)) {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "State changed successfully!", "errorCode", 200, "data", ""));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: Post not found!", "errorCode", 404, "data", ""));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));
+        }
+    }
+
 
 }

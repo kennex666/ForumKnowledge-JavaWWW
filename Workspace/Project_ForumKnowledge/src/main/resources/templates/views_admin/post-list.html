@@ -13,22 +13,32 @@
 </head>
 
 <body id="page-top">
-<!-- Modal -->
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="reportModalLabel">Danh sách Báo cáo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ul id="reportList">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Lý do</th>
+                        <th>Ngày tạo</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                    </thead>
+                    <tbody id="reportList">
                     <!-- Các báo cáo sẽ được thêm vào đây -->
-                </ul>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
 </div>
+
 
 <div id="wrapper">
     <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
@@ -256,10 +266,10 @@
                                     <td th:text="${post.createdAt}"></td>
                                     <td>
                                         <select class="form-select"
-                                                th:onchange="'changeState(this.value)'">
+                                                th:onchange="'postStateChange(' + ${post.postId} + ', this.value)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
-                                                    th:value="@{/admin/posts/state-change(id=${post.postId}, state=${state})}"
+                                                    th:value="@{${state}}"
                                                     th:selected="${state == post.state}">
                                             </option>
                                         </select>
@@ -334,17 +344,21 @@
 <script src="/assets/js/bs-init.js"></script>
 <script src="/assets/js/theme.js"></script>
 <script>
-    function changeState(value) {
-        const confirm = window.confirm("Bạn có chắc chắn muốn thay đổi trạng thái bài viết?");
-        if (confirm)
-            window.location.href = value;
-        else
-            window.location.reload();
+    function postStateChange(postId, state) {
+        fetch(`http://localhost:8080/api/posts/state-change?id=${postId}&state=${state}`, {
+            method: 'PUT'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        }).catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
     }
 
     async function loadReportsIntoModal(postId) {
         const reportList = document.getElementById('reportList');
-        reportList.innerHTML = ''; // Xóa dữ liệu cũ trong bảng
+        reportList.innerHTML = '';
 
         try {
             const response = await fetch('http://localhost:8080/api/post-reports/by-post-id/' + postId);
@@ -356,37 +370,30 @@
             const data = body.body;
             const postReportStates = body.postReportStates;
 
-            // Duyệt qua từng báo cáo và thêm hàng vào bảng
             data.forEach(report => {
                 const tr = document.createElement('tr');
 
-                // Cột ID
                 const tdId = document.createElement('td');
                 tdId.textContent = report.id;
                 tr.appendChild(tdId);
 
-                // Cột Lý do
                 const tdReason = document.createElement('td');
                 tdReason.textContent = report.reason;
                 tr.appendChild(tdReason);
 
-                // Cột Ngày tạo
                 const tdCreatedAt = document.createElement('td');
                 tdCreatedAt.textContent = new Date(report.createdAt).toLocaleString();
                 tr.appendChild(tdCreatedAt);
 
-                // Cột Trạng thái
                 const tdState = document.createElement('td');
                 const select = document.createElement('select');
                 select.classList.add('form-select'); // Thêm class Bootstrap để đẹp hơn
 
-                // Thêm các giá trị vào combobox
                 postReportStates.forEach(state => {
                     const option = document.createElement('option');
                     option.value = state;
                     option.textContent = state;
 
-                    // Đặt trạng thái được chọn nếu giá trị khớp
                     if (state === report.state) {
                         option.selected = true;
                     }
@@ -397,7 +404,6 @@
                 tdState.appendChild(select);
                 tr.appendChild(tdState);
 
-                // Thêm hàng vào bảng
                 reportList.appendChild(tr);
             });
 
@@ -405,6 +411,7 @@
             console.error('There has been a problem with your fetch operation:', error);
         }
     }
+
 </script>
 </body>
 </html>
