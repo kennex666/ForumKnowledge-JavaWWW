@@ -19,10 +19,10 @@ public class Post {
 	@Column(name="title", nullable = false, unique = false, columnDefinition = "")
 	private String title;
 
-	@Column(name="description", nullable = false, unique = false, columnDefinition = "")
+	@Column(name="description", nullable = false, unique = false, columnDefinition = "nvarchar(max)")
 	private String description;
 
-	@Column(name="content", nullable = false, unique = false, columnDefinition = "")
+	@Column(name="content", nullable = false, unique = false, columnDefinition = "nvarchar(max)")
 	private String content;
 
 	@Column(name="url", nullable = false, unique = false, columnDefinition = "")
@@ -297,4 +297,21 @@ public class Post {
 		return postId == other.postId;
 	}
 
+	public Post(int postId, String title, String description, String content, String url, PostState state, int totalComments, int totalUpVote, int totalDownVote, int totalShare, int totalView, Date createdAt, Date updatedAt, User author, Topic topic) {
+		this.postId = postId;
+		this.title = title;
+		this.description = description;
+		this.content = content;
+		this.url = url;
+		this.state = state;
+		this.totalComments = totalComments;
+		this.totalUpVote = totalUpVote;
+		this.totalDownVote = totalDownVote;
+		this.totalShare = totalShare;
+		this.totalView = totalView;
+		this.createdAt = createdAt;
+		this.updatedAt = updatedAt;
+		this.author = author;
+		this.topic = topic;
+	}
 }

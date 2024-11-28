@@ -16,6 +16,7 @@ public interface TopicService {
 
     public List<Topic> findByCreatedAtBetween(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
+
     public List<Topic> getAll();
 
     public Integer getNumberOfPosts(int tagId);
@@ -33,4 +34,7 @@ public interface TopicService {
     public List<Topic> searchByKeyword(String search);
 
     public Page<Topic> searchByKeywordWithPaging(String key, int numberPage, int size);
+  
+    public Topic findById(int id);
+    public List<Topic> findAll();
 }

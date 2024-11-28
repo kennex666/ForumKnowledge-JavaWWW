@@ -99,5 +99,13 @@ public class TopicServiceImpl implements TopicService {
     public Page<Topic> searchByKeywordWithPaging(String keyword, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return topicRepository.findByNameContainingOrHashtagContaining(keyword, keyword, pageable);
+
+    public Topic findById(int id) {
+        return topicRepository.findById(id).get();
+    }
+
+    @Override
+    public List<Topic> findAll() {
+        return topicRepository.findAll();
     }
 }
