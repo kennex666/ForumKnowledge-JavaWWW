@@ -32,6 +32,7 @@ public class AdminController {
     public String index() {
         return "views_admin/index";
     }
+
     /*
       ** Topic
       * 1. Hiển thị danh sách topic
