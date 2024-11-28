@@ -1,8 +1,11 @@
 package com.fit.iuh.controllers;
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.entites.PostReport;
 import com.fit.iuh.entites.Topic;
+import com.fit.iuh.enums.PostReportState;
 import com.fit.iuh.enums.PostState;
+import com.fit.iuh.services.PostReportService;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
 import com.fit.iuh.services.UserService;
@@ -11,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -28,9 +28,11 @@ public class PostController {
     private TopicService topicService;
     @Autowired
     private UserService userService;
-    @GetMapping("/")
+    @Autowired
+    private PostReportService postReportService;
+    @GetMapping("/show")
     public String index() {
-        return "index";
+        return "views_user/index";
     }
     @GetMapping("/write_blog_basic")
     public String writeBlog(Model model) {
@@ -77,6 +79,31 @@ public class PostController {
         Post post = postService.findById(id);
         model.addAttribute("post", post);
         return "test/detail-test";
+    }
+    @GetMapping("/show_detail")
+    public String showDetail(Model model) {
+        Post post = postService.findById(1);
+        model.addAttribute("post", post);
+        return "test/blog";
+    }
+    @GetMapping("/report/{postId}")
+    public String report(Model model, @PathVariable("postId") int postId) {
+        Post post = postService.findById(postId);
+        PostReport report = new PostReport();
+        model.addAttribute("post", post);
+        model.addAttribute("report", report);
+        return "test/report";
+    }
+    @PostMapping("/reported/{postId}")
+    public String reported(PostReport postReport , @PathVariable("postId") int postId) {
+        Date now = new Date();
+        postReport.setState(PostReportState.PROCESSING);
+        postReport.setInspector(userService.findById(1));
+        postReport.setReporter(userService.findById(1));
+        postReport.setPost(postService.findById(postId));
+        postReportService.saveOrUpdatePostReport(postReport);
+        return "redirect:/posts/show";
+
     }
 
 }
