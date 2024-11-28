@@ -345,14 +345,14 @@
 <script src="/assets/js/bs-init.js"></script>
 <script src="/assets/js/theme.js"></script>
 <script>
-    let stateValue = document.getElementById('state').value;
+    let statePostValue = document.getElementById('state').value;
 
     function postStateChange(postId, state) {
         const confirm = window.confirm('Are you sure you want to change the state of this post?');
 
         if (!confirm) {
             const stateComboBox = document.getElementById('state');
-            stateComboBox.value = stateValue;
+            stateComboBox.value = statePostValue;
             return;
         }
 
@@ -418,6 +418,8 @@
                 const select = document.createElement('select');
                 select.classList.add('form-select'); // Thêm class Bootstrap để đẹp hơn
 
+                let initialState = report.state;
+
                 postReportStates.forEach(state => {
                     const option = document.createElement('option');
                     option.value = state;
@@ -430,7 +432,19 @@
                     select.appendChild(option);
                 });
 
-                select.onchange = () => postReportStateChange(report.id, select.value);
+                select.addEventListener('change', () => {
+                    const newState = event.target.value;
+                    const confirm = window.confirm('Are you sure you want to change the state of this report?');
+
+                    if (!confirm) {
+                        select.value = initialState;
+                        return;
+                    } else {
+                        initialState = newState;
+                    }
+
+                    postReportStateChange(report.id, newState);
+                });
 
                 tdState.appendChild(select);
                 tr.appendChild(tdState);
