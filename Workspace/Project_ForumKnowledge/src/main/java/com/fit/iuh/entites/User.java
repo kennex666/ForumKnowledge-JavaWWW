@@ -300,6 +300,11 @@ public class User {
 		this.followings = followings;
 	}
 
+	public User(int userId) {
+		super();
+		this.userId = userId;
+	}
+
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub

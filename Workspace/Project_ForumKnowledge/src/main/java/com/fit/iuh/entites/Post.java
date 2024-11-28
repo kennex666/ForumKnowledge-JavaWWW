@@ -231,6 +231,11 @@ public class Post {
 		this.topic = topics;
 	}
 
+	public Post(int postId) {
+		super();
+		this.postId = postId;
+	}
+
 	public Post(int postId, String title, String description, String content, String url, PostState state,
 				int totalComments, int totalUpVote, int totalDownVote, int totalShare, int totalView, Date createdAt,
 				Date updatedAt) {

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Bookmarks | iDev4rum</title>
+    <link rel="stylesheet" href="https://cdn.tailwindcss.com" />
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/js/all.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+</head>
+<body class="pb-12">
+    <header class="bg-white px-20 py-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold">iDev4rum</h1>
+        <!-- Các phần tử khác của header -->
+    </header>
+
+    <div class="container mx-auto px-12 lg:w-5/12 w-full mt-12">
+        <h2 class="text-3xl font-semibold mb-6">Danh sách Bookmark của bạn</h2>
+        <div class="flex flex-col">
+            <div class="bg-white p-4 rounded-md shadow-md" th:each="bookmark : ${bookmarks}">
+                <h3 class="text-xl font-semibold" th:text="${bookmark.post.title}"></h3>
+                <p th:text="${bookmark.post.description}"></p>
+                <button class="text-red-500 mt-2" th:id="'btn-remove-' + ${bookmark.id}" th:onclick="'removeBookmark(' + ${bookmark.id} + ')'">Xóa Bookmark</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function removeBookmark(bookmarkId) {
+            fetch(`/bookmarks/remove`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ bookmarkId: bookmarkId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    document.getElementById('btn-remove-' + bookmarkId).parentElement.remove();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

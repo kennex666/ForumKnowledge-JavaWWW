@@ -41,4 +41,5 @@ public interface PostService {
 
     // Method check and generate article
     public void checkAndGeneratePost();
+
 }
