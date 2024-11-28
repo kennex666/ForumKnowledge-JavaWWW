@@ -5,9 +5,13 @@ import java.util.Objects;
 
 import com.fit.iuh.enums.ReactionType;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name="reactions")
+@EntityListeners(AuditingEntityListener.class)  // Kích hoạt Auditing cho entity này
 public class Reaction {
 
 	@Id
@@ -20,9 +24,11 @@ public class Reaction {
 	private ReactionType type;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	@CreatedDate
 	private Date createdAt;
 
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	@LastModifiedDate
 	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)

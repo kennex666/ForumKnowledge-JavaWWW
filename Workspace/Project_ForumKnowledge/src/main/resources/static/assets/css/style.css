@@ -1,0 +1,19 @@
+/*  custom scroll bar with gray background */
+.scrollbar-custom::-webkit-scrollbar {
+    height: 5px;
+}
+
+/* Track */
+.scrollbar-custom::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+/* Handle */
+.scrollbar-custom::-webkit-scrollbar-thumb {
+    background: #dfdddd;
+}
+
+/* Handle on hover */
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: #d9d7d7;
+}

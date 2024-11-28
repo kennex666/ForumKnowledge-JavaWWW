@@ -1,0 +1,82 @@
+<html  xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{/fragments/head}"></head>
+<body>
+<div class="flex flex-row min-h-full">
+    <div class="w-8/12">
+        <img src="https://i.ytimg.com/vi/6RzQvN238vQ/maxresdefault.jpg" alt="iDev4rum logo" class="object-cover min-h-full w-full">
+    </div>
+    <div class="w-4/12 flex flex-col items-center justify-center px-6 min-h-full pt-3">
+        <div class="flex flex-col">
+            <h1 class="text-2xl font-bold uppercase text-center mt-2 mb-4">Đăng ký tài khoản</h1>
+            <p class="text-gray-500 text-center mb-4">Đăng ký tài khoản để tham gia cộng đồng iDev4rum</p>
+            <form method="POST" th:action="@{/register}" th:object="${user}">
+                <div class="flex flex-col gap-2">
+                    <label for="fullname" class="text-gray-500">Họ và tên</label>
+                    <input type="text" id="fullname" th:field="*{name}" class="border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Họ và tên">
+
+                    <div th:if="${#fields.hasErrors('name')}">
+                        <!-- Error message -->
+                        <p class="text-red-500" th:errors="*{name}" th:value="*{name}">Lỗi: </p>
+                    </div>
+
+                    <label for="email" class="text-gray-500">Email</label>
+                    <input type="email" id="email" th:field="*{email}" th:value="*{email}" class="border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Email">
+
+                    <div th:if="${#fields.hasErrors('email')}">
+                        <!-- Error message -->
+                        <p class="text-red-500" th:errors="*{email}">Lỗi: </p>
+                    </div>
+                    <!-- <label for="username" class="text-gray-500">Tên đăng nhập</label>
+                    <input type="text" id="username" class="border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Tên đăng nhập"> -->
+
+                    <label for="password" class="text-gray-500">Mật khẩu</label>
+                    <div class="relative flex flex-row w-full">
+                        <input type="password" id="password" th:field="*{passwordHash}" th:value="*{passwordHash}" class="w-full border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Mật khẩu">
+                        <button class="absolute text-gray-500 rounded-lg p-2 focus:outline-none z-10 right-2 h-full" id="btn-show">
+                            <i class="fas fa-eye"></i>
+                        </button>
+                    </div>
+
+                    <div th:if="${#fields.hasErrors('passwordHash')}">
+                        <!-- Error message -->
+                        <p class="text-red-500" th:errors="*{passwordHash}">Lỗi: </p>
+                    </div>
+                    <button class="bg-blue-500 text-white rounded-lg p-2 focus:outline-none hover:bg-blue-400 mt-4">Tạo tài khoản</button>
+
+                    <div class="flex flex-row justify-between items-center mt-2">
+                        <a th:href=="@{/login}" class="text-blue-500">Đăng nhập</a>
+                        <a th:href=="@{/forgot-password}" class="text-blue-500">Quên mật khẩu</a>
+                    </div>
+                </div>
+            </form>
+            <!-- Copyright -->
+            <div class="text-left text-gray-500 text-sm mt-2">
+                <p>© <script>document.write(new Date().getFullYear())</script> iDev4rum. All rights reserved.</p>
+                <p>Designed by <a href="https://dtbao.io.vn/?s=javawww-baitaplon" class="text-blue-500">Duong Thai Bao</a></p>
+                <p class="text-red-500 mt-2"><strong>Notice: </strong>This project is intended for educational use and may overlap with existing copyrighted designs. If any of our work infringes on your copyright, please let us know so we can remove it.</p>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+</div>
+
+
+<script>
+    window.onload = () => {
+        const btnShow = document.getElementById("btn-show");
+        const password = document.getElementById("password");
+
+        btnShow.addEventListener("click", function() {
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        });
+    }
+</script>
+</body>
+
+</html>
