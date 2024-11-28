@@ -25,10 +25,9 @@ public class WebSecurityConfig {
         http
                 .csrf().disable() // Tắt CSRF (nếu không cần)
                 .authorizeHttpRequests(auth -> auth
-                                .requestMatchers("/register", "/login").permitAll()
-                                .requestMatchers("/admin/**").hasRole("ADMIN") // Chỉ ADMIN truy cập
-                                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN") // USER hoặc ADMIN truy cập
-                                .anyRequest().authenticated()
+                                .requestMatchers("/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
+                                .anyRequest().permitAll()
                         // Các yêu cầu khác cần đăng nhập
                 )
                 .formLogin(form -> form

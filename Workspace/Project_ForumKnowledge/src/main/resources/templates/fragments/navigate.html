@@ -1,4 +1,3 @@
-
 <header class="bg-white px-20 py-4 flex justify-between items-center" xmlns:th="http://www.thymeleaf.org">
     <div class="flex items-center justify-center space-x-10">
         <a href="/"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
@@ -23,7 +22,6 @@
 
                 formSearch.addEventListener("keypress", function(e) {
                     if (e.key === "Enter") {
-                        // Do something
                         window.location.href = "/search?q=" + formSearch.value;
                     }
                 });
@@ -32,29 +30,33 @@
 
     </div>
 
+    <!-- Show login and register buttons if currentUser is null -->
     <div class="flex items-center space-x-10" th:if="${currentUser == null}">
         <a href="/login" class="text-gray-500 focus:outline-none">
-            <i class="fas fa-sign-in-alt"></i>
+            <i class="fas fa-sign-in-alt mr-1"></i> Login
         </a>
         <a href="/register" class="text-gray-500 focus:outline-none">
-            <i class="fas fa-user-plus"></i>
+            <i class="fas fa-user-plus mr-1"></i> Register
         </a>
     </div>
+
+    <!-- Show profile and admin options if currentUser is not null -->
     <div class="flex items-center space-x-10" th:if="${currentUser != null}">
-        <a href="write" class="text-gray-500 focus:outline-none space-x-2">
+        <a href="/write" class="text-gray-500 focus:outline-none space-x-2">
             <i class="fas fa-pen"></i>
             <span>Viết bài</span>
         </a>
         <button class="text-gray-500 focus:outline-none">
             <i class="fas fa-bell"></i>
         </button>
-        <div class="relative"  th:if="${currentUser}">
+
+        <!-- Profile dropdown menu -->
+        <div class="relative">
             <button id="btn-profile" class="rounded-full">
-                <img th:src="${currentUser.profilePicture}" alt="User profile image, placeholder image" class="w-8 h-8 rounded-full">
+                <img th:src="${currentUser.profilePicture}" alt="User profile image, placeholder image" class="w-8 h-8 rounded-full" />
             </button>
             <div class="hidden absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" id="menu-bar">
                 <div class="py-1 space-y-1" role="none">
-                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
                     <a href="/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-user"></i><span class="ps-3">Hồ sơ</span></a>
                     <a href="/save" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-bookmark"></i><span class="ps-3">Bài viết đã lưu</span></a>
                     <a th:if="${currentUser.role == 1}" href="/admin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-lock"></i><span class="ps-3">Trang quản trị</span></a>
@@ -75,13 +77,10 @@
                         opacity: 1;
                     }
                 }
-
             </style>
             <script>
                 document.getElementById("btn-profile").addEventListener("click", function() {
-
                     const menuBar = document.getElementById("menu-bar");
-
                     menuBar.classList.toggle("hidden");
                     menuBar.classList.toggle("nav-bar__dropdown-menu-close");
                 });

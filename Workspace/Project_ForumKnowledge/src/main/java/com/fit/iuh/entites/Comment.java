@@ -1,5 +1,6 @@
 package com.fit.iuh.entites;
 
+import com.fit.iuh.utilities.DateFormat;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -84,6 +85,15 @@ public class Comment {
 
 	public void setPost(Post post) {
 		this.post = post;
+	}
+
+
+	public String getDateFormat(){
+		return DateFormat.formatMMMMddyyyy(createdAt != null ? createdAt : new Date());
+	}
+
+	public String getDateTimeFormat(){
+		return DateFormat.formatHHmmssMMMMddyyyy(createdAt != null ? createdAt : new Date());
 	}
 
 	public Comment(int commentId, String content, Date createdAt, Date updatedAt) {

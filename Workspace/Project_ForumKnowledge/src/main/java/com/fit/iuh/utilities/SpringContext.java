@@ -13,9 +13,15 @@ public class SpringContext {
     public static String getCurrentUserEmail() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null && authentication.isAuthenticated()) {
-            org.springframework.security.core.userdetails.User userSecurity = (org.springframework.security.core.userdetails.User)authentication.getPrincipal();
-            return userSecurity.getUsername();
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof org.springframework.security.core.userdetails.User) {
+                org.springframework.security.core.userdetails.User userSecurity = (org.springframework.security.core.userdetails.User) principal;
+                return userSecurity.getUsername(); // trả về email (username)
+            } else {
+                return "";
+            }
         }
-        return ""; // or handle unauthenticated state
+        return ""; // Hoặc xử lý trạng thái không đăng nhập
     }
+
 }

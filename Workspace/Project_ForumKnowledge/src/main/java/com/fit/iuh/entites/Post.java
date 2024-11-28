@@ -2,6 +2,7 @@ package com.fit.iuh.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fit.iuh.enums.PostState;
+import com.fit.iuh.utilities.DateFormat;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -236,6 +237,10 @@ public class Post {
 
 	public void setTopic(Topic topics) {
 		this.topic = topics;
+	}
+	
+	public String getDateFormat(){
+		return DateFormat.formatMMMMddyyyy(createdAt != null ? createdAt : new Date());
 	}
 
 	public Post(int postId, String title, String description, String content, String url, PostState state,

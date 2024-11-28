@@ -2,7 +2,7 @@
 <head lang="vi">
     <title th:text="${post.title + ' | iDev4rum'}">Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -64,7 +64,7 @@
             <div class="flex flex-row gap-2">
                 <span class="text-sm text-gray-500">5 min read</span>
                 <span class="text-sm text-gray-500">·</span>
-                <span class="text-sm text-gray-500" th:text="${post.createdAt}">December 19, 2024</span>
+                <span class="text-sm text-gray-500" th:text="${post.getDateFormat()}">December 19, 2024</span>
             </div>
         </div>
     </div>
@@ -88,7 +88,7 @@
         <div class="flex flex-col bg-white gap-3">
 
             <!-- My comment -->
-            <div class="flex flex-col bg-white gap-3">
+            <div class="flex flex-col bg-white gap-3" th:if="${currentUser != null}">
                 <div class="flex flex-row items-center gap-2">
                     <img
                             th:src="${currentUser.profilePicture}"
@@ -116,6 +116,11 @@
                 </div>
             </div>
 
+            <div class="flex flex-row bg-white gap-1" th:if="${currentUser == null}">
+                <a href="/login" class="text-blue-500">Đăng nhập</a>
+                <span class="text-gray-500">để bình luận</span>
+            </div>
+
 
             <div class="border-t mb-2"></div>
             <div class="flex flex-row">
@@ -141,7 +146,7 @@
                         <a class="flex flex-row gap-2 items-center" href="#">
                             <span class="text-sm font-semibold" th:text="${comment.user.name}"></span>
                             <span class="text-gray-500">·</span>
-                            <span class="text-sm text-gray-500"  th:text="${comment.createdAt}">December 19, 2024</span>
+                            <span class="text-sm text-gray-500"  th:text="${comment.getDateFormat()}">December 19, 2024</span>
                         </a>
                         <p class="text-sm"  th:text="${comment.content}">
 
@@ -208,6 +213,7 @@
         const txtComment = document.getElementById("txt-comment");
         const btnComment = document.getElementById("btn-comment");
 
+        if (txtComment)
         txtComment.addEventListener("input", function () {
             if (txtComment.value.trim() === "") {
                 btnComment.disabled = true;
@@ -220,6 +226,7 @@
             }
         });
 
+        if (btnComment)
         btnComment.addEventListener("click", function() {
             const comment = txtComment.value;
             fetch(`/api/comments/create`, {
