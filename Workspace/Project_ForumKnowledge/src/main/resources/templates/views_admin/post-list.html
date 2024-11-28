@@ -265,7 +265,8 @@
                                     <td th:text="${post.totalDownVote}"></td>
                                     <td th:text="${post.createdAt}"></td>
                                     <td>
-                                        <select class="form-select"
+                                        <select id="state"
+                                                class="form-select"
                                                 th:onchange="'postStateChange(' + ${post.postId} + ', this.value)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
@@ -344,7 +345,17 @@
 <script src="/assets/js/bs-init.js"></script>
 <script src="/assets/js/theme.js"></script>
 <script>
+    let stateValue = document.getElementById('state').value;
+
     function postStateChange(postId, state) {
+        const confirm = window.confirm('Are you sure you want to change the state of this post?');
+
+        if (!confirm) {
+            const stateComboBox = document.getElementById('state');
+            stateComboBox.value = stateValue;
+            return;
+        }
+
         fetch(`http://localhost:8080/api/posts/state-change?id=${postId}&state=${state}`, {
             method: 'PUT'
         }).then(response => {
