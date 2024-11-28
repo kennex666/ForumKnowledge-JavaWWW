@@ -78,6 +78,9 @@ public class UserServiceImpl implements UserService {
             return "Đã có lỗi xảy ra!";
         }
     }
-
-
+  
+    @Override
+    public User findById(int id) {
+        return userRepository.findById(id).get();
+    }
 }
