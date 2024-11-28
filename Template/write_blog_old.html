@@ -1,0 +1,202 @@
+<html>
+  <head lang="vi">
+    <title>Home | iDev4rum</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- charset utff 8 -->
+    <meta charset="UTF-8" />
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+      .cke_notifications_area {
+            display: none !important;
+        }
+        #cke_editor {
+            border: none;
+            overflow: hidden;
+        }
+    </style>
+
+    <script src="https://cdn.ckeditor.com/4.22.1/standard/ckeditor.js"></script>
+  </head>
+  <body class="">
+    <!-- Nav bar -->
+    <header
+      class="bg-white px-20 py-4 flex justify-between items-center sticky top-0"
+    >
+      <div class="flex items-end justify-center space-x-4">
+        <div class="flex justify-center space-x-4">
+          <h1 class="text-2xl font-bold">iDev4rum</h1>
+        </div>
+        <div
+          class="flex items-center justify-center space-x-2 text-sm"
+          style="padding-bottom: 0.2rem"
+        >
+          <p>Trạng thái:</p>
+          <p class="text-gray-500 font-bold" id="text-save-status">Đã lưu</p>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-10">
+        <button
+          id="btn-publish"
+          class="text-white bg-blue-500 focus:outline-none space-x-2 border px-3 py-2 rounded-full"
+        >
+          <i class="fas fa-check"></i>
+          <span>Đăng bài</span>
+        </button>
+        <button class="text-gray-500 focus:outline-none">
+          <i class="fas fa-bell"></i>
+        </button>
+        <img
+          src="https://placehold.co/32x32"
+          alt="User profile image, placeholder image"
+          class="rounded-full"
+        />
+      </div>
+    </header>
+
+    <!-- Blog space -->
+    <div class="container mx-auto px-12 lg:w-10/12">
+      <div class="flex justify-center items-start py-2">
+        <!-- Recommend blog -->
+        <div class="w-2/3 space-y-8">
+          <textarea class="" id="editor"></textarea>
+
+          <style>
+            header {
+              z-index: 1000;
+            }
+            /* Change the editor's background color */
+            /* .editor-toolbar {
+              border: 1px solid #e1e4e8;
+              position: sticky;
+              background-color: #f8f9fa;
+              opacity: 1;
+              z-index: 100;
+            }
+            .editor-toolbar:hover {
+              border: 1px solid #e1e4e8;
+              position: sticky;
+              background-color: #f8f9fa;
+              opacity: 1;
+              z-index: 100; 
+            }
+            .CodeMirror-wrap {
+              border: 1px solid #e1e4e8;
+              font-size: 1.12rem;
+            }
+
+            .editor-statusbar {
+              position: fixed;
+              background-color: #f8f9fa;
+              opacity: 1;
+              z-index: 2
+              bottom: 0;
+              display: flex;
+              justify-content: flex-end;
+              align-items: center;
+            } */
+          </style>
+
+          <script>
+            window.onload = function () {
+              const navSize = document.querySelector("header").offsetHeight;
+
+              const textStatus = document.getElementById("text-save-status");
+
+              var editorToolbar = null;
+
+              var editorStatusbar = null;
+
+              
+              CKEDITOR.replace('editor');
+
+
+            //   simplemde.codemirror.on("change", function () {
+            //     textStatus.innerText = "";
+            //   });
+
+            //   simplemde.codemirror.on("refresh", function () {
+            //     editorToolbar = document.querySelector(".editor-toolbar");
+
+            //     editorStatusbar = document.querySelector(".editor-statusbar");
+            //     editorStatusbar.style.width = editorToolbar.offsetWidth + "px";
+            //   });
+
+              const checkIsSaved = () => {
+                let editorContent = ""; // Current content
+                let autosavedContent =
+                  localStorage.getItem("smde_editorContent"); // Autosaved content
+                if (editorContent === autosavedContent) {
+                  return true;
+                } else {
+                  return false;
+                }
+              };
+
+              
+              setInterval(() => {
+                if (checkIsSaved()) {
+                  textStatus.innerText = "Đã lưu bản nháp";
+                } else {
+                  textStatus.innerText = "Đang lưu bản nháp..";
+                }
+              }, 500);
+
+              window.onscroll = function () {
+                // get size of nav (header)
+
+                var currentScrollPos =
+                  window.pageYOffset || document.documentElement.scrollTop;
+                
+              };
+
+    
+
+              // Publish
+              document
+                .getElementById("btn-publish")
+                .addEventListener("click", function () {
+                  // redirect to submit handle post
+
+                  try {
+                    const content = simplemde.value().trim();
+
+                    fetch("http://localhost:3000/posts", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        content: content,
+                      }),
+                    })
+                      .then((response) => {
+                        if (response.ok) {
+                          alert("Đăng bài thành công!");
+                          window.location.href = "myprofile.html";
+                        } else {
+                          alert("Đăng bài thất bại! Lỗi server");
+                        }
+                      })
+                      .catch((error) => {
+                        alert("Đăng bài thất bại! Lỗi fetch");
+                      });
+                  } catch (error) {
+                    alert("Đăng bài thất bại! Lỗi js");
+                  }
+                });
+            };
+          </script>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

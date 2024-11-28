@@ -1,6 +1,10 @@
 package com.fit.iuh.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 import java.util.List;
@@ -8,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="topics")
+@EntityListeners(AuditingEntityListener.class)  // Kích hoạt Auditing cho entity này
 public class Topic {
 
 	@Id
@@ -22,11 +27,14 @@ public class Topic {
 	private String hashtag;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	@CreatedDate
 	private Date createdAt;
 
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	@LastModifiedDate
 	private Date updatedAt;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
 	private List<Post> posts;
 
@@ -97,14 +105,15 @@ public class Topic {
 		this.posts = posts;
 	}
 
+	public Topic(int tagId, String hashtag, String name) {
+		this.tagId = tagId;
+		this.hashtag = hashtag;
+		this.name = name;
+	}
+
 	public Topic() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public String toString() {
-		return name;
 	}
 
 	@Override
@@ -124,4 +133,15 @@ public class Topic {
 		return tagId == other.tagId;
 	}
 
+	@Override
+	public String toString() {
+		return "Topic{" +
+				"tagId=" + tagId +
+				", name='" + name + '\'' +
+				", hashtag='" + hashtag + '\'' +
+				", createdAt=" + createdAt +
+				", updatedAt=" + updatedAt +
+				", posts=" + posts +
+				'}';
+	}
 }
