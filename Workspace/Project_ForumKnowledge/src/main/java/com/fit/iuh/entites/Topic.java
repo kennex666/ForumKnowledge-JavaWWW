@@ -103,14 +103,15 @@ public class Topic {
 		this.posts = posts;
 	}
 
+	public Topic(int tagId, String hashtag, String name) {
+		this.tagId = tagId;
+		this.hashtag = hashtag;
+		this.name = name;
+	}
+
 	public Topic() {
 		super();
 		// TODO Auto-generated constructor stub
-	}
-
-	@Override
-	public String toString() {
-		return name;
 	}
 
 	@Override
@@ -130,4 +131,15 @@ public class Topic {
 		return tagId == other.tagId;
 	}
 
+	@Override
+	public String toString() {
+		return "Topic{" +
+				"tagId=" + tagId +
+				", name='" + name + '\'' +
+				", hashtag='" + hashtag + '\'' +
+				", createdAt=" + createdAt +
+				", updatedAt=" + updatedAt +
+				", posts=" + posts +
+				'}';
+	}
 }

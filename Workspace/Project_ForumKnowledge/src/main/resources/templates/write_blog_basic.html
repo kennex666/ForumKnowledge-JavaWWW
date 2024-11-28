@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+  <div>
+    <h1>Basic</h1>
+      <div>
+          <form method="post" th:action="@{/save}" th:object="${post}">
+              <input type="hidden" name="id" th:field="*{postId}"> <br>
+              <tr>
+                  <td>Tiêu đề:</td>
+                  <td>
+                      <input type="text" name="content" th:field="*{title}"> <br>
+                  </td>
+              </tr>
+
+              <tr>
+                  <td>Chon chu de</td>
+                  <td>
+                      <select id="topic" name="topic">
+                          <option value="" disabled selected>Chọn chu de</option>
+                          <th:block th:each="danhMuc : ${topics}">
+                              <option th:value="${danhMuc.getTagId()}" th:text="${danhMuc.getName()}" th:field="*{topic.tagId}"></option>
+                          </th:block>
+                      </select>
+                  </td>
+              </tr>
+              <br>
+              <tr>
+                  <td>Mô tả</td>
+                  <td>
+                      <input type="text" name="discription" th:field="*{description}">
+                  </td>
+              </tr>
+              <br>
+              <tr>
+                  <td>
+                      Nội dung:
+                  </td>
+                  <td>
+<!--                      <input type="text" name="content" th:field="*{content}"> <br>-->
+                      <textarea id="content" name="content" th:field="*{content}"></textarea>
+                  </td>
+              </tr>
+              <br>
+              <input type="submit" value="Submit">
+
+          </form>
+      </div>
+  </div>
+</body>
+</html>

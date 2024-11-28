@@ -21,4 +21,6 @@ public interface UserService {
     public void save(User user);
 
     public String registerUser(User user, int role);
+    
+    public User findById(int id);
 }
