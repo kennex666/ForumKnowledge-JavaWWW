@@ -75,6 +75,11 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
+    @GetMapping("/write")
+    public String write() {
+        return "write-post";
+    }
+}
     @GetMapping("/detail")
     public String detail(@RequestParam("id") int id, Model model) {
         Post post = postService.findById(id);

@@ -2,6 +2,9 @@ package com.fit.iuh.entites;
 
 import com.fit.iuh.enums.PostState;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.Date;
 import java.util.List;
@@ -9,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name="posts")
+@EntityListeners(AuditingEntityListener.class)  // Kích hoạt Auditing cho entity này
 public class Post {
 
 	@Id
@@ -48,9 +52,11 @@ public class Post {
 	private int totalView;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
+	@CreatedDate
 	private Date createdAt;
 
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
+	@LastModifiedDate
 	private Date updatedAt;
 
 	@OneToMany(mappedBy = "post", fetch = FetchType.LAZY)
