@@ -85,7 +85,7 @@
                                     <p class="text-sm text-gray-500">
                                         <a class="font-semibold hover:text-black"
                                            th:href="@{/users/user(id=${post.author.userId})}"
-                                           th:text="${user.name}"></a>
+                                           th:text="${post.author.name}"></a>
                                         với chủ đề
                                         <a class="font-semibold hover:text-black"
                                            th:href="@{/topics/topic(id=${post.author.userId})}"
@@ -126,7 +126,8 @@
             <div class="mt-8">
                 <div class="flex flex-col space-y-2">
                     <div class="rounded-full">
-                        <img src="https://placehold.co/150x150" alt="Profile image of Chris Davidson"
+                        <img th:src="@{${'/assets/img/avatars/' + user.profilePicture}}"
+                             alt="User profile image"
                              class="rounded-full w-24 h-24">
                     </div>
                     <div class="flex flex-col space-y-2">
@@ -155,7 +156,8 @@
                         <!-- Bookmark item -->
                         <div class="py-2">
                             <a href="#" class="flex flex-row items-center space-x-2 mb-3 text-sm">
-                                <img src="https://placehold.co/32x32" alt="Profile image of Chris Davidson"
+                                <img th:src="@{${'/assets/img/avatars/' + bookmark.post.author.profilePicture}}"
+                                     alt="User profile image"
                                      class="rounded-full w-6 h-6">
                                 <span class="font-semibold hover:text-gray-500"
                                       th:href="@{/users/user(id=${bookmark.post.author.userId})}"
