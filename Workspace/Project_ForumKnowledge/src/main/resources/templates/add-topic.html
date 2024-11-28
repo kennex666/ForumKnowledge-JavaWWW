@@ -130,6 +130,9 @@
                                     <label class="form-label" for="topicHashtag">Hashtag</label>
                                     <input class="form-control" type="text" id="topicHashtag" th:field="*{hashtag}" required>
                                 </div>
+                                <div th:if="${error}" class="alert alert-danger" role="alert">
+                                    <span th:text="${error}"></span>
+                                </div>
                                 <div class="mb-3">
                                     <button class="btn btn-primary" type="submit">Save Topic</button>
                                     <a class="btn btn-secondary" th:href="@{/admin/topic}">Cancel</a>

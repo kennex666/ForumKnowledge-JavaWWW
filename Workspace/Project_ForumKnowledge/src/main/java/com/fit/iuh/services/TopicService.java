@@ -33,4 +33,6 @@ public interface TopicService {
     public List<Topic> searchByKeyword(String search);
 
     public Page<Topic> searchByKeywordWithPaging(String key, int numberPage, int size);
+
+    public boolean isExist(String name, String hashtag);
 }

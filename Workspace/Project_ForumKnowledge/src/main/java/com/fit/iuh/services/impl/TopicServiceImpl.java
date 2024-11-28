@@ -100,4 +100,9 @@ public class TopicServiceImpl implements TopicService {
         Pageable pageable = PageRequest.of(page, size);
         return topicRepository.findByNameContainingOrHashtagContaining(keyword, keyword, pageable);
     }
+
+    @Override
+    public boolean isExist(String name, String hashtag) {
+        return topicRepository.existsByNameAndHashtag(name, hashtag);
+    }
 }

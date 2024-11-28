@@ -79,9 +79,14 @@ public class AdminController {
 
     // 2.1 Hiển thị form thêm topic
     @PostMapping("/topic/add")
-    public String addTopic(Topic topic) {
+    public String addTopic(Model model,Topic topic) {
         topic.setCreatedAt(new Date(System.currentTimeMillis()));
         topic.setUpdatedAt(new Date(System.currentTimeMillis()));
+        // Kiểm tra xem topic đã tồn tại chưa, nếu topic đã tồn { Name , Hashtag } thì thông báo ra
+        if (topicService.isExist(topic.getName(), topic.getHashtag())) {
+            model.addAttribute("error", "Topic already exists with the same name and hashtag.");
+            return "add-topic";
+        }
         topicService.add(topic);
         return "redirect:/admin/topic";
     }
@@ -132,6 +137,9 @@ public class AdminController {
     /*
     * Comment
     * 1. Hiển thị danh sách comment
+    * 2. Xem chi tiết comment
+    * 3. Xem comment tiêu cực
+    * 4. Xóa comment
     */
     @GetMapping("/comment")
     public String comment(Model model,
@@ -218,7 +226,7 @@ public class AdminController {
     }
 
     /*
-    * Comment different
+    * Componet different
      */
     @GetMapping("/table")
     public String table() { return "table"; }
