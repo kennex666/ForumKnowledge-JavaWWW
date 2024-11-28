@@ -1,31 +1,11 @@
 package com.fit.iuh.repositories;
-
-import com.fit.iuh.entites.BookMark;
-import com.fit.iuh.entites.Comment;
 import com.fit.iuh.entites.Post;
-import com.fit.iuh.entites.PostReport;
-import com.fit.iuh.entites.Reaction;
-import com.fit.iuh.entites.Topic;
-import com.fit.iuh.entites.User;
-import com.fit.iuh.enums.PostState;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
