@@ -15,11 +15,25 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/user")
+    @GetMapping("/user-profile")
     public String getUser(Model model, @RequestParam("id") int id) {
         User user = userService.findUserById(id);
         model.addAttribute("user", user);
         return "views_user/user-profile-main";
+    }
+
+    @GetMapping("/user-posts")
+    public String getUserPosts(Model model, @RequestParam("id") int id) {
+        User user = userService.findUserById(id);
+        model.addAttribute("user", user);
+        return "views_user/user-profile-posts";
+    }
+
+    @GetMapping("/user-about")
+    public String getUserAbout(Model model, @RequestParam("id") int id) {
+        User user = userService.findUserById(id);
+        model.addAttribute("user", user);
+        return "views_user/user-profile-about";
     }
 
 }
