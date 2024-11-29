@@ -1,60 +1,60 @@
 package com.fit.iuh.controllers;
 
+import java.util.Date;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.fit.iuh.entites.BookMark;
+import com.fit.iuh.entites.Post;
+import com.fit.iuh.entites.User;
 import com.fit.iuh.services.BookMarkService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import com.fit.iuh.services.UserService;
+import com.fit.iuh.utilities.SpringContext;
 
 @RestController
-@RequestMapping("/bookmarks")
+@RequestMapping("/api/bookmarks")
 public class BookMarkController {
-
+    
     @Autowired
     private BookMarkService bookMarkService;
+    
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<BookMark>> getBookmarksByUserId(@PathVariable int userId) {
-        List<BookMark> bookmarks = bookMarkService.findAllByUserId(userId);
-        return ResponseEntity.ok(bookmarks);
-    }
+    @PostMapping("/toggle")
+    public ResponseEntity<String> toggleBookmark(@RequestBody Map<String, Integer> requestData) {
+        try {
+            String currentEmail = SpringContext.getCurrentUserEmail();
+            User currentUser = userService.findUserByEmail(currentEmail);
+            if (currentUser == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not authenticated");
+            }
 
-    @GetMapping("/post/{postId}")
-    public ResponseEntity<List<BookMark>> getBookmarksByPostId(@PathVariable int postId) {
-        List<BookMark> bookmarks = bookMarkService.findAllByPostId(postId);
-        return ResponseEntity.ok(bookmarks);
-    }
+            int postId = requestData.get("postId");
+            boolean exists = bookMarkService.existsByUserIdAndPostId(currentUser.getUserId(), postId);
 
-    @GetMapping("/exists")
-    public ResponseEntity<Boolean> checkBookmarkExists(@RequestParam int userId, @RequestParam int postId) {
-        boolean exists = bookMarkService.existsByUserIdAndPostId(userId, postId);
-        return ResponseEntity.ok(exists);
-    }
+            if (exists) {
+                bookMarkService.deleteByUserIdAndPostId(currentUser.getUserId(), postId);
+                return ResponseEntity.ok("Bookmark removed");
+            } else {
+                BookMark bookmark = new BookMark();
+                bookmark.setUser(currentUser);
+                bookmark.setPost(new Post(postId)); 
+                bookmark.setCreatedAt(new Date());
+                bookmark.setUpdatedAt(new Date());
 
-    @GetMapping("/count/{postId}")
-    public ResponseEntity<Long> countBookmarksByPostId(@PathVariable int postId) {
-        long count = bookMarkService.countByPostId(postId);
-        return ResponseEntity.ok(count);
-    }
-
-    @PostMapping
-    public ResponseEntity<BookMark> saveBookmark(@RequestBody BookMark bookMark) {
-        BookMark savedBookmark = bookMarkService.save(bookMark);
-        return ResponseEntity.ok(savedBookmark);
-    }
-
-    @DeleteMapping
-    public ResponseEntity<Void> deleteBookmark(@RequestParam int userId, @RequestParam int postId) {
-        bookMarkService.deleteByUserIdAndPostId(userId, postId);
-        return ResponseEntity.ok().build();
-    }
-
-    @DeleteMapping("/post/{postId}")
-    public ResponseEntity<Void> removeBookmark(@PathVariable int postId) {
-        bookMarkService.removeBookmark(postId);
-        return ResponseEntity.ok().build();
+                bookMarkService.save(bookmark);
+                return ResponseEntity.ok("Bookmark added");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred");
+        }
     }
 }

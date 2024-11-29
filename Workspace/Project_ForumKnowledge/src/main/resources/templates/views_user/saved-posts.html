@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bài viết đã lưu</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <main class="px-20 py-10">
+        <h1 class="text-3xl font-bold mb-8">Bài viết đã lưu</h1>
+        
+        <!-- Danh sách bài viết -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div th:each="bookmark : ${bookmarks}" class="border p-4 rounded-lg shadow-sm bg-white">
+                <a th:href="@{/posts/{id}(id=${bookmark.post.postId})}" class="block">
+                    <h2 th:text="${bookmark.post.title}" class="text-xl font-bold text-gray-800 hover:underline"></h2>
+                </a>
+                <p th:text="${bookmark.post.description}" class="text-gray-600 mt-2 line-clamp-3"></p>
+                <div class="flex items-center justify-between mt-4">
+                    <span th:text="${#dates.format(bookmark.createdAt, 'dd/MM/yyyy')}" class="text-sm text-gray-500"></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nếu không có bài viết -->
+        <p th:if="${#lists.isEmpty(bookmarks)}" class="text-gray-500 mt-10">
+            Bạn chưa lưu bài viết nào!
+        </p>
+    </main>
+</body>
+</html>
