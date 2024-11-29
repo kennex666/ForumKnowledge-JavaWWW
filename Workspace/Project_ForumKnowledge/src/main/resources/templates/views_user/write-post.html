@@ -363,22 +363,22 @@
                     document
                         .getElementById("btn-publish")
                         .addEventListener("click", function () {
-                          // Check input
-                          if (!title.value) {
-                            alert("Vui lòng nhập tiêu đề bài viết!");
-                            title.focus();
-                            return;
-                          }
-                          if (!description.value) {
-                            alert("Vui lòng nhập mô tả ngắn!");
-                            description.focus();
-                            return;
-                          }
-                          if (!simplemde.value().trim()) {
-                            alert("Vui lòng nhập nội dung bài viết!");
-                            simplemde.codemirror.focus();
-                            return;
-                          }
+                            // Check input
+                            if (!title.value) {
+                                alert("Vui lòng nhập tiêu đề bài viết!");
+                                title.focus();
+                                return;
+                            }
+                            if (!description.value) {
+                                alert("Vui lòng nhập mô tả ngắn!");
+                                description.focus();
+                                return;
+                            }
+                            if (!simplemde.value().trim()) {
+                                alert("Vui lòng nhập nội dung bài viết!");
+                                simplemde.codemirror.focus();
+                                return;
+                            }
                             // redirect to submit handle post
 
                             try {
@@ -397,15 +397,15 @@
                                     }),
                                 })
                                     .then((response) => {
-                                       return response.json();
+                                        return response.json();
                                     }).then((data) => {
-                                        if (data && data.errorCode && data.errorCode == 201) {
-                                            alert("Đăng bài thành công!");
-                                            window.location.href = "/";
-                                        } else {
-                                            alert("Đăng bài thất bại: " + data.message);
-                                        }
-                                    })
+                                    if (data && data.errorCode && data.errorCode == 201) {
+                                        alert("Đăng bài thành công!");
+                                        window.location.href = "/";
+                                    } else {
+                                        alert("Đăng bài thất bại: " + data.message);
+                                    }
+                                })
                                     .catch((error) => {
                                         alert("Đăng bài thất bại! Lỗi fetch");
                                     });

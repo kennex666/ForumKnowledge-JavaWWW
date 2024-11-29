@@ -38,9 +38,10 @@ public class CustomUserDetailsService implements UserDetailsService {
         // Chuyển role thành authority
         String role = user.getRole() == 1 ? "ROLE_ADMIN" : "ROLE_USER";
 
+
         // So sánh mật khẩu (đã mã hóa trong database với mật khẩu nhập vào)
         // Thực tế Spring Security tự động làm việc này khi đăng nhập
-        System.out.println("User found");
+        System.out.println("User found - Role" + role);
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPasswordHash(), // Mật khẩu mã hóa

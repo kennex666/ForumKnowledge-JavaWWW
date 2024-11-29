@@ -21,8 +21,8 @@ public class GeminiContentGenerator {
 
     public GeminiResponse generateContent() {
 
-        String apiPath = "D:\\09_ETC\\API_KEY\\gemini_api_key.txt";
-        String apiKey = getAPIKey(apiPath);
+//        String apiPath =   System.getenv("GEMINI_API");
+        String apiKey = System.getenv("GEMINI_API");
         String prompt = getPrompt();
 
         if (apiKey == null || prompt == null) {

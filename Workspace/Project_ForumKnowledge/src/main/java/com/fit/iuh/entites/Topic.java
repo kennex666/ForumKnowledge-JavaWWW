@@ -1,5 +1,6 @@
 package com.fit.iuh.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -33,6 +34,7 @@ public class Topic {
 	@LastModifiedDate
 	private Date updatedAt;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "topic", fetch = FetchType.LAZY)
 	private List<Post> posts;
 

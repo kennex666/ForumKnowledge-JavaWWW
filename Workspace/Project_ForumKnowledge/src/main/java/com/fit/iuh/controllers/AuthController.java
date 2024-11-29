@@ -22,21 +22,21 @@ public class AuthController {
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("title", "Đăng nhập | iDev4rum"); // Truyền tiêu đề trang
-        return "login";
+        return "views_user/login";
     }
 
     @GetMapping("/register")
     public String register(Model model) {
         model.addAttribute("title", "Đăng ký | iDev4rum"); // Truyền tiêu đề trang
         model.addAttribute("user", new User());
-        return "register";
+        return "views_user/register";
     }
 
     @PostMapping("/register")
     public String register(@Valid User user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("title", "Đăng ký | iDev4rum"); // Truyền tiêu đề trang
-            return "register";
+            return "views_user/register";
         }
 
         String registerMessage = URLEncoder.encode(userService.registerUser(user, 0), StandardCharsets.UTF_8);
