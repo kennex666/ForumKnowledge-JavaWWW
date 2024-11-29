@@ -29,7 +29,9 @@ public class PostController {
     private TopicService topicService;
     @Autowired
     private UserService userService;
-  
+    @Autowired
+    private PostReportService postReportService;
+
     @GetMapping
     public String index() {
         return "views_user/blog";
