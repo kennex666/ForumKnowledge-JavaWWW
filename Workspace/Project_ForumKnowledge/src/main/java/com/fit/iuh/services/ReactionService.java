@@ -5,6 +5,7 @@
  */
 package com.fit.iuh.services;
 
+import java.util.Date;
 import java.util.List;
 
 import com.fit.iuh.entites.Reaction;
@@ -13,4 +14,8 @@ public interface ReactionService {
 	public List<Reaction> findAll();
 	public Boolean save(Reaction reaction);
 	public Boolean update(Reaction reaction);
+
+    List<Reaction> getReactionsCreatedInWeek();
+
+	List<Reaction> getReactionsBetweenDates(Date startDate, Date endDate);
 }

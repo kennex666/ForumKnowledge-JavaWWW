@@ -22,11 +22,13 @@ public interface PostReportService {
 
 	public List<PostReport> findByCreatedAtBetween(Date startDate, Date endDate);
 
-    public List<PostReport> findByReporterId(Integer reporterId);
+    List<PostReport> findAll();
 
-    public List<PostReport> findByInspectorId(Integer inspectorId);
+    List<PostReport> getPostReportsCreatedInWeek();
 
-    public List<PostReport> findByPostId(Integer postId);
+    public List<PostReport> findByReporterId(int reporterId);
 
-    public Boolean changeState(Integer postReportId, PostReportState state);
+    public List<PostReport> findByInspectorId(int inspectorId);
+
+    public List<PostReport> findByPostId(int postId);
 }
