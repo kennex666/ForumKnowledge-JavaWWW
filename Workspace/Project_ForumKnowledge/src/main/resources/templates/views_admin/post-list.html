@@ -26,8 +26,10 @@
                         <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Reporter</th>
                             <th>Reason</th>
                             <th>Created at</th>
+                            <th>Updated at</th>
                             <th>State</th>
                         </tr>
                         </thead>
@@ -380,6 +382,10 @@
                 tdId.textContent = report.id;
                 tr.appendChild(tdId);
 
+                const tdReporter = document.createElement('td');
+                tdReporter.textContent = report.reporter.email;
+                tr.appendChild(tdReporter);
+
                 const tdReason = document.createElement('td');
                 tdReason.textContent = report.reason;
                 tr.appendChild(tdReason);
@@ -387,6 +393,10 @@
                 const tdCreatedAt = document.createElement('td');
                 tdCreatedAt.textContent = new Date(report.createdAt).toLocaleString();
                 tr.appendChild(tdCreatedAt);
+
+                const tdUpdatedAt = document.createElement('td');
+                tdUpdatedAt.textContent = new Date(report.updatedAt).toLocaleString();
+                tr.appendChild(tdUpdatedAt);
 
                 const tdState = document.createElement('td');
                 const select = document.createElement('select');
