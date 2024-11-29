@@ -26,9 +26,9 @@ public interface PostReportService {
 
     List<PostReport> getPostReportsCreatedInWeek();
 
-    public List<PostReport> findByReporterId(Integer reporterId);
+    public List<PostReport> findByReporterId(int reporterId);
 
-    public List<PostReport> findByInspectorId(Integer inspectorId);
+    public List<PostReport> findByInspectorId(int inspectorId);
 
-    public List<PostReport> findByPostId(Integer postId);
+    public List<PostReport> findByPostId(int postId);
 }
