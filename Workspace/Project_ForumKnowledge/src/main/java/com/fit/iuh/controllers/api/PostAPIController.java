@@ -138,4 +138,18 @@ public class PostAPIController {
 
         return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Post found!", "errorCode", 200, "data", Map.of("post", post, "author", authorData)));
     }
+
+    @PutMapping("/state-change")
+    public ResponseEntity<Map<String, Object>> stateChange(@RequestParam("id") int id, @RequestParam("state") PostState state) {
+        try {
+            if (postService.changeState(id, state)) {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "State changed successfully!", "errorCode", 200, "data", ""));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error when change state!", "errorCode", 404, "data", ""));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));
+        }
+    }
+    
 }

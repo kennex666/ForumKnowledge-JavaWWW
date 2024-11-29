@@ -8,7 +8,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -26,12 +25,6 @@ public class AdminPostController {
         model.addAttribute("posts", posts);
         model.addAttribute("states", states);
         return "views_admin/post-list";
-    }
-
-    @GetMapping("/state-change")
-    public String stateChange(@RequestParam("id") int id, @RequestParam("state") PostState state) {
-        postService.changeState(id, state);
-        return "redirect:/admin/posts/";
     }
 
 }
