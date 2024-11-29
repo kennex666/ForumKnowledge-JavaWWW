@@ -3,8 +3,11 @@ package com.fit.iuh.entites;
 import java.util.Date;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fit.iuh.enums.PostReportState;
 import jakarta.persistence.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -24,22 +27,27 @@ public class PostReport {
 	@Column(name="reason", nullable = false, unique = false, columnDefinition = "")
 	private String reason;
 
+	@CreatedDate
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	private Date createdAt;
 
+	@LastModifiedDate
 	@Column(name="updated_at", nullable = false, unique = false, columnDefinition = "")
 	private Date updatedAt;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="post_id", referencedColumnName = "post_id")
+	@JsonIgnore
 	private Post post;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="reporter_id", referencedColumnName = "user_id")
+	@JsonIgnore
 	private User reporter;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="inspector_id", nullable = true)
+	@JsonIgnore
 	private User inspector;
 
 	public int getId() {

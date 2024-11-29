@@ -13,27 +13,7 @@
 
 <body id="page-top">
     <div id="wrapper">
-        <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
-            <div class="container-fluid d-flex flex-column p-0"><a class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
-                    <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
-                    <div class="sidebar-brand-text mx-3"><span>iDev4rum</span></div>
-                </a>
-                <hr class="sidebar-divider my-0">
-                <ul class="navbar-nav text-light" id="accordionSidebar">
-                    <li class="nav-item"><a class="nav-link" th:href="@{/static}"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/templates/views_admin/profile}"><i class="fas fa-user"></i><span>Profile</span></a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/templates/views_admin/table}"><i class="fas fa-table"></i><span>Table</span></a></li>
-                    <li class="nav-item"><a class="nav-link active" th:href="@{/templates/views_admin/topic}"><i class="fas fa-table"></i><span>Manage topics</span></a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/templates/views_admin/comment}"><i class="fas fa-comments"></i><span>Manage comments</span></a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/templates/views_admin/login}"><i class="far fa-user-circle"></i><span>Login</span></a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/templates/views_admin/register}"><i class="fas fa-user-circle"></i><span>Register</span></a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/templates/views_admin/forgot-password}"><i class="fas fa-key"></i><span>Forgotten Password</span></a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/templates/views_admin/404}"><i class="fas fa-exclamation-circle"></i><span>Page Not Found</span></a></li>
-                    <li class="nav-item"><a class="nav-link" th:href="@{/templates/views_admin/blank}"><i class="fas fa-window-maximize"></i><span>Blank Page</span></a></li>
-                </ul>
-                <div class="text-center d-none d-md-inline"><button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button></div>
-            </div>
-        </nav>
+        <div th:replace="~{fragments/navbar :: sidebar}"></div>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
                 <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
@@ -124,11 +104,11 @@
                                         <img class="border rounded-circle img-profile" th:src="@{/assets/img/avatars/avatar1.jpeg}">
                                     </a>
                                     <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                        <a class="dropdown-item" th:href="@{/templates/views_admin/profile}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
-                                        <a class="dropdown-item" th:href="@{/templates/views_admin/settings}"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
-                                        <a class="dropdown-item" th:href="@{/templates/views_admin/activity}"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
+                                        <a class="dropdown-item" th:href="@{/admin/profile}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
+                                        <a class="dropdown-item" th:href="@{/admin/settings}"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
+                                        <a class="dropdown-item" th:href="@{/admin/activity}"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
                                         <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" th:href="@{/templates/views_admin/logout}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
+                                        <a class="dropdown-item" th:href="@{/admin/logout}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
                                     </div>
                                 </div>
                             </li>
@@ -141,7 +121,7 @@
                         <div class="card-header py-3 d-flex justify-content-between align-items-center">
                             <p class="text-primary m-0 fw-bold">Topic Info</p>
                             <div>
-                                <a th:href="@{/templates/views_admin/topic/addform}" class="btn btn-success text-white me-2" type="button">Add topic</a>
+                                <a th:href="@{/admin/topic/addform}" class="btn btn-success text-white me-2" type="button">Add topic</a>
                             </div>
                         </div>
                         <div class="card-body">
@@ -263,7 +243,7 @@
                                             <li class="page-item "
                                                 th:each="i : ${#numbers.sequence(0, totalPages-1)}"
                                                 th:classappend="${currentPage == i ? 'active' : ''}">
-                                                <a class="page-link" th:href="@{|/templates/views_admin/topic?numberPage=${i}|}" th:text="${i + 1}">1</a>
+                                                <a class="page-link" th:href="@{|/admin/topic?numberPage=${i}|}" th:text="${i + 1}">1</a>
                                             </li>
                                             <li class="page-item" th:classappend="${currentPage == totalPages-1} ? 'disabled' : ''">
                                                 <a class="page-link" aria-label="Next" th:href="${currentPage < totalPages-1 ? '/admin/topic?numberPage='+(currentPage + 1) : '#'}"><span aria-hidden="true">»</span></a>
@@ -366,13 +346,13 @@
         // Change page size
         function changePage(size) {
             console.log(size);
-            window.location.href = `views_admin/topic?size=${size}`;
+            window.location.href = `/admin/topic?size=${size}`;
         }
 
         // Search topic
         function searchTopic() {
             const search = document.getElementById("search").value;
-            window.location.href = `views_admin/topic?key=${search}`;
+            window.location.href = `/admin/topic?key=${search}`;
         }
     </script>
 </body>

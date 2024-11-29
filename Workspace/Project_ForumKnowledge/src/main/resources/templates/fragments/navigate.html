@@ -1,0 +1,94 @@
+<header th:class="${'px-20 py-4 flex justify-between items-center sticky top-0 ' +
+ ((currentUser != null && currentUser.role == 1) ? 'bg-gray-800 text-white' : 'bg-white')}" xmlns:th="http://www.thymeleaf.org">
+<div class="flex items-center justify-center space-x-10">
+        <a href="/"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
+
+        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
+            <i class="fas fa-search text-gray-500"></i>
+            <input type="text" placeholder="Tìm kiếm..." class="bg-transparent focus:outline-none ml-4 text-black" id="form-search">
+            <script>
+                const formSearch = document.getElementById("form-search");
+
+                formSearch.addEventListener("focus", function() {
+                    formSearch.classList.add("w-64");
+                });
+
+                formSearch.addEventListener("blur", function() {
+                    formSearch.classList.remove("w-64");
+                });
+
+                formSearch.addEventListener("keyup", function() {
+
+                });
+
+                formSearch.addEventListener("keypress", function(e) {
+                    if (e.key === "Enter") {
+                        window.location.href = "/search?q=" + formSearch.value;
+                    }
+                });
+            </script>
+        </div>
+
+    </div>
+
+    <!-- Show login and register buttons if currentUser is null -->
+    <div th:class="${'flex items-center space-x-10 ' +
+ ((currentUser != null && currentUser.role == 1) ? 'text-white' : 'text-gray-500') }"  th:if="${currentUser == null}">
+        <a href="/login" class="focus:outline-none">
+            <i class="fas fa-sign-in-alt mr-1"></i> Login
+        </a>
+        <a href="/register" class="focus:outline-none">
+            <i class="fas fa-user-plus mr-1"></i> Register
+        </a>
+    </div>
+
+    <!-- Show profile and admin options if currentUser is not null -->
+    <div class="flex items-center space-x-10" th:if="${currentUser != null}">
+        <a href="/write" th:class="${'focus:outline-none space-x-2 ' +
+ ((currentUser != null && currentUser.role == 1) ? 'text-white' : 'text-gray-500') }">
+            <i class="fas fa-pen"></i>
+            <span>Viết bài</span>
+        </a>
+        <button th:class="${'focus:outline-none space-x-2 ' +
+ ((currentUser != null && currentUser.role == 1) ? 'text-white' : 'text-gray-500') }">
+            <i class="fas fa-bell"></i>
+        </button>
+
+        <!-- Profile dropdown menu -->
+        <div class="relative">
+            <button id="btn-profile" class="rounded-full">
+                <img th:src="${currentUser.profilePicture}" alt="User profile image, placeholder image" class="w-8 h-8 rounded-full" />
+            </button>
+            <div class="hidden absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1" id="menu-bar">
+                <div class="py-1 space-y-1" role="none">
+                    <a href="/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-user"></i><span class="ps-3">Hồ sơ</span></a>
+                    <a href="/save" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-bookmark"></i><span class="ps-3">Bài viết đã lưu</span></a>
+                    <a th:if="${currentUser.role == 1}" href="/admin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-lock"></i><span class="ps-3">Trang quản trị</span></a>
+                    <a href="/logout" class="border-t block px-4 py-2 text-sm font-semibold mt-2 pt-4 text-red-500" role="menuitem" tabindex="-1"><i class="fa-solid fa-right-from-bracket"></i><span class="ps-3">Đăng xuất</span></a>
+                </div>
+            </div>
+            <style>
+                /* Animation */
+                .nav-bar__dropdown-menu-close {
+                    animation: fadeIn 0.3s;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                    }
+                    to {
+                        opacity: 1;
+                    }
+                }
+            </style>
+            <script>
+                document.getElementById("btn-profile").addEventListener("click", function() {
+                    const menuBar = document.getElementById("menu-bar");
+                    menuBar.classList.toggle("hidden");
+                    menuBar.classList.toggle("nav-bar__dropdown-menu-close");
+                });
+            </script>
+        </div>
+    </div>
+</header>

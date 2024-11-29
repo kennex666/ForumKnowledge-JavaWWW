@@ -1,20 +1,21 @@
 package com.fit.iuh.controllers;
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.entites.PostReport;
 import com.fit.iuh.entites.Topic;
+import com.fit.iuh.enums.PostReportState;
 import com.fit.iuh.enums.PostState;
+import com.fit.iuh.services.PostReportService;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
 import com.fit.iuh.services.UserService;
+import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -28,10 +29,16 @@ public class PostController {
     private TopicService topicService;
     @Autowired
     private UserService userService;
-    @GetMapping("/")
+    @Autowired
+    private PostReportService postReportService;
+
+    @GetMapping
     public String index() {
-        return "index";
+        return "views_user/blog";
     }
+
+
+
     @GetMapping("/write_blog_basic")
     public String writeBlog(Model model) {
         Post post = new Post();
@@ -56,7 +63,7 @@ public class PostController {
         post.setTotalView(10);
 //        post.setTopic(topicService.findById(1));
         post.setAuthor(userService.findById(1));
-
+        
         postService.save(post);
         return "redirect:/";
     }
@@ -72,11 +79,46 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/detail")
-    public String detail(@RequestParam("id") int id, Model model) {
+    @GetMapping("/{id}")
+    public String detail(@PathVariable String id, Model model) {
+        model.addAttribute("currentUser", userService.findUserByEmail(
+                SpringContext.getCurrentUserEmail()
+        ));
+        model.addAttribute("idPost", id.trim());
+
+        Post post = postService.findByIdAndUrl(id.trim());
+        if (post == null){
+            return "redirect:/";
+        }
+
+        model.addAttribute("post", post);
+        System.out.println("ID: " + id);
+        return "views_user/view-post";
+    }
+  
+    @GetMapping("/show_detail/{postId}")
+    public String showDetail(Model model, @PathVariable("postId") int id) {
         Post post = postService.findById(id);
         model.addAttribute("post", post);
-        return "test/detail-test";
+        return "test/show_detail_test";
     }
+    @GetMapping("/report/{postId}")
+    public String report(Model model, @PathVariable("postId") int postId) {
+        Post post = postService.findById(postId);
+        PostReport report = new PostReport();
+        model.addAttribute("post", post);
+        model.addAttribute("report", report);
+        return "test/report";
+    }
+    @PostMapping("/reported/{postId}")
+    public String reported(PostReport postReport , @PathVariable("postId") int postId) {
+        Date now = new Date();
+        postReport.setState(PostReportState.PROCESSING);
+        postReport.setInspector(userService.findById(1));
+        postReport.setReporter(userService.findById(1));
+        postReport.setPost(postService.findById(postId));
+        postReportService.saveOrUpdatePostReport(postReport);
+        return "redirect:/posts/show";
 
+    }
 }

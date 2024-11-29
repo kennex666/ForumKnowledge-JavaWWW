@@ -1,5 +1,6 @@
 package com.fit.iuh.services.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,8 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fit.iuh.entites.Following;
 import com.fit.iuh.repositories.FollowingRepository;
 import com.fit.iuh.services.FollowingService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class FollowingServiceImpl implements FollowingService{
+	@Override
+	public List<Following> getFollowingsBetweenDates(Date startDate, Date endDate) {
+		return followingRepository.getFollowingsBetweenDates(startDate, endDate);
+	}
+
 	@Autowired
 	private FollowingRepository followingRepository;
 	
@@ -33,6 +41,11 @@ public class FollowingServiceImpl implements FollowingService{
 			return !followingRepository.existsById(followId);
 		}
 		return false;
+	}
+
+	@Override
+	public List<Following> getFollowingsCreatedInWeek() {
+		return followingRepository.getFollowingsCreatedInWeek();
 	}
 
 }

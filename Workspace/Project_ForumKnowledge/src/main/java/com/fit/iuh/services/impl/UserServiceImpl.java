@@ -1,6 +1,7 @@
 package com.fit.iuh.services.impl;
 
 import com.fit.iuh.entites.User;
+import com.fit.iuh.enums.UserAccountState;
 import com.fit.iuh.repositories.UserRepository;
 import com.fit.iuh.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,5 +83,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public User findById(int id) {
         return userRepository.findById(id);
+    }
+
+    @Override
+    public void changeState(int id, UserAccountState state) {
+        User user = userRepository.findById(id);
+        user.setAccountState(state);
+        userRepository.save(user);
     }
 }

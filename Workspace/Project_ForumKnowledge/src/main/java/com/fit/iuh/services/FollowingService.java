@@ -1,5 +1,6 @@
 package com.fit.iuh.services;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -10,4 +11,8 @@ public interface FollowingService {
 	public Following save(Following following);
 	public Boolean delete(int followId);
 
+	List<Following> getFollowingsCreatedInWeek();
+
+
+	List<Following> getFollowingsBetweenDates(Date startDate, Date endDate);
 }

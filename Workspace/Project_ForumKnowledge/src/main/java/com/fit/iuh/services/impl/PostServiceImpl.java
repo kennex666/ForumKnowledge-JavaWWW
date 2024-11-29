@@ -9,6 +9,9 @@ import com.fit.iuh.utilities.GeminiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -35,6 +38,7 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postRepository.save(post);
 	}
+
 
 	@Override
 	public Post update(Post post) {
@@ -96,6 +100,27 @@ public class PostServiceImpl implements PostService {
 		}
 	}
 
+	@Override
+	public Page<Post> searchByKeywordWithPaging(String key, int numberPage, int size) {
+		Pageable pageable = PageRequest.of(numberPage, size);
+		return postRepository.searchByKeywordWithPaging(key, pageable);
+	}
+
+	@Override
+	public Page<Post> getPage(int numberPage, int size) {
+		return postRepository.findAll(PageRequest.of(numberPage, size));
+	}
+
+	@Override
+	public Post findByID(int id) {
+		return postRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public List<Post> getPostsCreatedInWeek() {
+		return postRepository.getPostsCreatedInWeek();
+	}
+
 	private boolean isDiff(Date createdAt, Date now) {
 		long oneDay = 24 * 60 * 60 * 1000;
 		long oneMinute = 60 * 1000;
@@ -130,6 +155,35 @@ public class PostServiceImpl implements PostService {
 
 		postRepository.save(post);
 		logger.info("Scheduled Task - Generating Post: Success");
+	}
+
+	@Override
+	public Post findByUrl(String url) {
+		return postRepository.findByUrl(url);
+	}
+
+	@Override
+	public Post findByIdAndUrl(String id) {
+		int postId = -1;
+		Post post = null;
+		String url = id.trim();
+		try {
+			postId = Integer.parseInt(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (postId != -1){
+			post = postRepository.findById(postId).orElse(null);
+		} else {
+			post = postRepository.findByUrl(url);
+		}
+		return post;
+	}
+
+	@Override
+	public Page<Post> findForHome(Pageable pageable) {
+		return postRepository.findForHome(pageable);
 	}
 
 }
