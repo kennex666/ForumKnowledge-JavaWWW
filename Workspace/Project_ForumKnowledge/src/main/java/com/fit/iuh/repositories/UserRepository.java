@@ -12,7 +12,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Query("SELECT u FROM User u WHERE u.name LIKE %:keyword%")
     public List<User> findByNameContaining(String keyword);
 
-    @Query("SELECT u FROM User u WHERE u.email LIKE %:email%")
+    @Query("SELECT u FROM User u WHERE u.email LIKE :email")
     public User findByEmail(String email);
 
     @Query("SELECT u FROM User u WHERE u.userId = :userId")

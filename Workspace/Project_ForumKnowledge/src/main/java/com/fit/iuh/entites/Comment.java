@@ -1,5 +1,7 @@
 package com.fit.iuh.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fit.iuh.utilities.DateFormat;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -30,10 +32,11 @@ public class Comment {
 	@LastModifiedDate
 	private Date updatedAt;
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="user_id", referencedColumnName = "user_id")
 	private User user;
 
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="post_id", referencedColumnName = "post_id")
 	private Post post;
@@ -84,6 +87,15 @@ public class Comment {
 
 	public void setPost(Post post) {
 		this.post = post;
+	}
+
+
+	public String getDateFormat(){
+		return DateFormat.formatMMMMddyyyy(createdAt != null ? createdAt : new Date());
+	}
+
+	public String getDateTimeFormat(){
+		return DateFormat.formatHHmmssMMMMddyyyy(createdAt != null ? createdAt : new Date());
 	}
 
 	public Comment(int commentId, String content, Date createdAt, Date updatedAt) {

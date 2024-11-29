@@ -32,7 +32,7 @@
                     <label for="password" class="text-gray-500">Mật khẩu</label>
                     <div class="relative flex flex-row w-full">
                         <input type="password" id="password" th:field="*{passwordHash}" th:value="*{passwordHash}" class="w-full border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Mật khẩu">
-                        <button class="absolute text-gray-500 rounded-lg p-2 focus:outline-none z-10 right-2 h-full" id="btn-show">
+                        <button type="button" class="absolute text-gray-500 rounded-lg p-2 focus:outline-none z-10 right-2 h-full" id="btn-show">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
@@ -41,7 +41,7 @@
                         <!-- Error message -->
                         <p class="text-red-500" th:errors="*{passwordHash}">Lỗi: </p>
                     </div>
-                    <button class="bg-blue-500 text-white rounded-lg p-2 focus:outline-none hover:bg-blue-400 mt-4">Tạo tài khoản</button>
+                    <button type="submit" class="bg-blue-500 text-white rounded-lg p-2 focus:outline-none hover:bg-blue-400 mt-4">Tạo tài khoản</button>
 
                     <div class="flex flex-row justify-between items-center mt-2">
                         <a th:href=="@{/login}" class="text-blue-500">Đăng nhập</a>

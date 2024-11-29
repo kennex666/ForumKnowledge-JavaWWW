@@ -19,7 +19,7 @@ public class AdminPostController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String index(Model model) {
         List<Post> posts = postService.findAll();
         PostState[] states = PostState.values();
