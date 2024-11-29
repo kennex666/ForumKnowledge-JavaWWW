@@ -19,7 +19,7 @@ public class AdminUserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String index(Model model) {
         List<User> users = userService.getAllUsers();
         UserAccountState[] states = UserAccountState.values();
