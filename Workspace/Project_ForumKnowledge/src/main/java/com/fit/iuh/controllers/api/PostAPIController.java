@@ -1,4 +1,4 @@
- package com.fit.iuh.controllers.api;
+package com.fit.iuh.controllers.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -140,7 +140,7 @@ public class PostAPIController {
     }
 
     @PutMapping("/state-change")
-    public ResponseEntity<Map<String, Object>> stateChange(@RequestParam("id") int id, @RequestParam("state") PostState state) {
+    public ResponseEntity<Map<String, Object>> stateChange(@RequestParam("id") int id, @RequestParam("state") PostState state){
         try {
             if (postService.changeState(id, state)) {
                 return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "State changed successfully!", "errorCode", 200, "data", ""));
@@ -151,5 +151,5 @@ public class PostAPIController {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));
         }
     }
-    
+
 }
