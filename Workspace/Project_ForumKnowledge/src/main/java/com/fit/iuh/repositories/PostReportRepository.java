@@ -28,4 +28,7 @@ public interface PostReportRepository extends JpaRepository<PostReport, Integer>
     @Query("SELECT pr FROM PostReport pr WHERE pr.inspector.userId = :inspectorId")
     public List<PostReport> findByInspectorId(@Param("inspectorId") Integer inspectorId);
 
+    @Query("SELECT pr FROM PostReport pr WHERE pr.post.postId = :postId")
+    public List<PostReport> findByPostId(@Param("postId") Integer postId);
+
 }
