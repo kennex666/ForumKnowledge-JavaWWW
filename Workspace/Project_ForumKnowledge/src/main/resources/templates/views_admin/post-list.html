@@ -14,31 +14,32 @@
 
 <body id="page-top">
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="reportModalLabel">Danh sách Báo cáo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table table-bordered">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Reason</th>
-                        <th>Created at</th>
-                        <th>State</th>
-                    </tr>
-                    </thead>
-                    <tbody id="reportList">
-                    <!-- Các báo cáo sẽ được thêm vào đây -->
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Reason</th>
+                            <th>Created at</th>
+                            <th>State</th>
+                        </tr>
+                        </thead>
+                        <tbody id="reportList" class="align-middle">
+                        <!-- Các báo cáo sẽ được thêm vào đây -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <div id="wrapper">
     <div th:replace="~{fragments/navbar :: sidebar}"></div>
