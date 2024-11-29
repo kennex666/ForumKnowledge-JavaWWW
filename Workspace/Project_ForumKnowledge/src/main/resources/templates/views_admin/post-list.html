@@ -327,7 +327,7 @@
             element.setAttribute('data-state', state);
         }
 
-        fetch(`http://localhost:8080/api/posts/state-change?id=${postId}&state=${state}`, {
+        fetch(`/api/posts/state-change?id=${postId}&state=${state}`, {
             method: 'PUT'
         }).then(response => {
             if (!response.ok) {
@@ -339,7 +339,7 @@
     }
 
     function postReportStateChange(reportId, state) {
-        fetch(`http://localhost:8080/api/post-reports/state-change?id=${reportId}&state=${state}`, {
+        fetch(`/api/post-reports/state-change?id=${reportId}&state=${state}`, {
             method: 'PUT'
         }).then(response => {
             if (!response.ok) {
@@ -355,7 +355,7 @@
         reportList.innerHTML = '';
 
         try {
-            const response = await fetch('http://localhost:8080/api/post-reports/by-post-id/' + postId);
+            const response = await fetch('/api/post-reports/by-post-id/' + postId);
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
