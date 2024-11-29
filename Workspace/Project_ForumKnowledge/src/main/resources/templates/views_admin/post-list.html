@@ -43,6 +43,35 @@
     </div>
 </div>
 
+<div class="modal fade" id="commentModal" tabindex="-1" aria-labelledby="commentModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentModalLabel">Danh sách Bình luận</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Commenter</th>
+                            <th>Content</th>
+                            <th>Created at</th>
+                            <th>Updated at</th>
+                        </tr>
+                        </thead>
+                        <tbody id="commentList" class="align-middle">
+                        <!-- Các báo cáo sẽ được thêm vào đây -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div id="wrapper">
     <div th:replace="~{fragments/navbar :: sidebar}"></div>
     <div class="d-flex flex-column" id="content-wrapper">
@@ -238,7 +267,16 @@
                                     <td th:text="${post.postId}"></td>
                                     <td th:text="${post.title}"></td>
                                     <td th:text="${post.author}? ${post.author.name} : 'Anonymous'"></td>
-                                    <td th:text="${post.totalComments}"></td>
+<!--                                    <td th:text="${post.totalComments}"></td>-->
+                                    <td>
+                                        <button class="btn btn-primary btn-sm"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#commentModal"
+                                                th:onclick="'loadCommentsIntoModal(' + ${post.postId} + ')'"
+                                        >
+                                            <i th:text="${post.comments.size()}"></i>
+                                        </button>
+                                    </td>
                                     <td th:text="${post.totalUpVote}"></td>
                                     <td th:text="${post.totalDownVote}"></td>
                                     <td th:text="${post.createdAt}"></td>
@@ -434,6 +472,51 @@
                 tr.appendChild(tdState);
 
                 reportList.appendChild(tr);
+            });
+
+        } catch (error) {
+            console.error('There has been a problem with your fetch operation:', error);
+        }
+    }
+
+    async function loadCommentsIntoModal(postId) {
+        const commentList = document.getElementById('commentList');
+        commentList.innerHTML = '';
+
+        try {
+            const response = await fetch('/api/posts/' + postId);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+
+            const body = await response.json();
+            const data = body.data;
+            const comments = data.post.comments;
+
+            comments.forEach(comment => {
+                const tr = document.createElement('tr');
+
+                const tdId = document.createElement('td');
+                tdId.textContent = comment.commentId;
+                tr.appendChild(tdId);
+
+                const tdCommenter = document.createElement('td');
+                tdCommenter.textContent = comment.user.email;
+                tr.appendChild(tdCommenter);
+
+                const tdContent = document.createElement('td');
+                tdContent.textContent = comment.content;
+                tr.appendChild(tdContent);
+
+                const tdCreatedAt = document.createElement('td');
+                tdCreatedAt.textContent = new Date(comment.createdAt).toLocaleString();
+                tr.appendChild(tdCreatedAt);
+
+                const tdUpdatedAt = document.createElement('td');
+                tdUpdatedAt.textContent = new Date(comment.updatedAt).toLocaleString();
+                tr.appendChild(tdUpdatedAt);
+
+                commentList.appendChild(tr);
             });
 
         } catch (error) {
