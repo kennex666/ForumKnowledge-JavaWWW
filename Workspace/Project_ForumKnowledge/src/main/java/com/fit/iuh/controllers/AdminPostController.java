@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -19,8 +20,16 @@ public class AdminPostController {
     private PostService postService;
 
     @GetMapping("")
-    public String index(Model model) {
-        List<Post> posts = postService.findAll();
+    public String index(
+            Model model,
+            @RequestParam(name = "skip", defaultValue = "1") int skip,
+            @RequestParam(name = "limit", defaultValue = "10") int limit,
+            @RequestParam(name = "isDesc", defaultValue = "true") boolean isDesc
+    ) {
+        skip = skip < 1 ? 1 : skip;
+        limit = limit < 1 ? 10 : limit;
+
+        List<Post> posts = postService.findPostsWithCondition(skip, limit, isDesc);
         PostState[] states = PostState.values();
         model.addAttribute("posts", posts);
         model.addAttribute("states", states);
