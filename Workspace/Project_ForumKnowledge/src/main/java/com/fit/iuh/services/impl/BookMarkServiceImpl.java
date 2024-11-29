@@ -47,7 +47,7 @@ public class BookMarkServiceImpl implements BookMarkService {
           }
     }
 
-	  @Override
+    @Override
     public void removeBookmark(int postId) {
         bookMarkRepository.deleteByPostId(postId);
     }

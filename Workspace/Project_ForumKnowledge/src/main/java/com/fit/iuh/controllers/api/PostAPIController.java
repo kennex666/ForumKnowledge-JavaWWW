@@ -1,4 +1,4 @@
-package com.fit.iuh.controllers.api;
+ package com.fit.iuh.controllers.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,7 +13,6 @@ import com.fit.iuh.utilities.OpenAI;
 import com.fit.iuh.utilities.SpringContext;
 import com.fit.iuh.utilities.StringToUrl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,6 +38,7 @@ public class PostAPIController {
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "You must login to create post!", "errorCode", 401, "data", null));
         }
         try {
+            String message = "";
             String json = new String(inputStream.readAllBytes());
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(json);
@@ -105,11 +105,14 @@ public class PostAPIController {
                 String statusCode = status.toString();
                 if (!statusCode.contains("200"))
                     return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + response.get("message"), "errorCode", 500, "data", ""));
+                message = "Đăng bài thành công, AI đã kiểm tra nội dung!";
+            } else {
+                message = "Đăng bài thành công, nhưng AI đang bận, không thể kiểm tra nội dung!";
             }
 
             // Lưu bài viết
             postService.save(post);
-            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Post created successfully!", "errorCode", 201, "data", post));
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", message, "errorCode", 201, "data", post));
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));

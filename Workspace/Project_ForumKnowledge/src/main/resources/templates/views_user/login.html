@@ -20,7 +20,7 @@
                     <label for="password" class="text-gray-500">Mật khẩu</label>
                     <div class="relative flex flex-row w-full">
                         <input name="password" type="password" id="password" class="w-full border-2 border-gray-300 rounded-lg p-2 focus:outline-none focus:border-blue-500" placeholder="Mật khẩu" required >
-                        <button class="absolute text-gray-500 rounded-lg p-2 focus:outline-none z-10 right-2 h-full" id="btn-show">
+                        <button type="button" class="absolute text-gray-500 rounded-lg p-2 focus:outline-none z-10 right-2 h-full" id="btn-show">
                             <i class="fas fa-eye"></i>
                         </button>
                     </div>
@@ -35,7 +35,7 @@
                         <label for="remember" class="text-gray-500">Ghi nhớ đăng nhập</label>
                     </div>
 
-                    <button class="bg-blue-500 text-white rounded-lg p-2 focus:outline-none hover:bg-blue-400">Đăng nhập</button>
+                    <button type="submit" class="bg-blue-500 text-white rounded-lg p-2 focus:outline-none hover:bg-blue-400">Đăng nhập</button>
 
                     <div class="flex flex-row justify-between items-center">
                         <a th:href="@{/register}" class="text-blue-500">Đăng ký tài khoản</a>
