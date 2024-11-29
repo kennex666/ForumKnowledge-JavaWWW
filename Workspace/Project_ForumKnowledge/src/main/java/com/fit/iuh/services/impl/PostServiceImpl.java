@@ -188,13 +188,13 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public List<Post> findPostsWithCondition(int skip, int limit, boolean isDesc) {
+	public Page<Post> findPostsWithCondition(int skip, int limit, boolean isDesc) {
 		Pageable pageable = PageRequest.of(
 				skip - 1,
 				limit,
 				isDesc ? Sort.by("postId").descending() : Sort.by("postId").ascending()
 		);
-		return postRepository.findForHome(pageable).getContent();
+		return postRepository.findAllPost(pageable);
 	}
 
 }

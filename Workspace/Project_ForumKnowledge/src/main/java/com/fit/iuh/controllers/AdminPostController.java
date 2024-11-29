@@ -4,6 +4,7 @@ import com.fit.iuh.entites.Post;
 import com.fit.iuh.enums.PostState;
 import com.fit.iuh.services.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,16 +24,20 @@ public class AdminPostController {
     public String index(
             Model model,
             @RequestParam(name = "skip", defaultValue = "1") int skip,
-            @RequestParam(name = "limit", defaultValue = "10") int limit,
-            @RequestParam(name = "isDesc", defaultValue = "true") boolean isDesc
+            @RequestParam(name = "limit", defaultValue = "10") int limit
     ) {
         skip = skip < 1 ? 1 : skip;
         limit = limit < 1 ? 10 : limit;
 
-        List<Post> posts = postService.findPostsWithCondition(skip, limit, isDesc);
+        Page<Post> posts = postService.findPostsWithCondition(skip, limit, true);
         PostState[] states = PostState.values();
-        model.addAttribute("posts", posts);
+
+        model.addAttribute("posts", posts.getContent());
         model.addAttribute("states", states);
+        model.addAttribute("currentPage", posts.getNumber() + 1);
+        model.addAttribute("totalPages", posts.getTotalPages());
+        model.addAttribute("limit", limit);
+        model.addAttribute("baseUrl", "/admin/posts");
         return "views_admin/post-list";
     }
 
