@@ -28,10 +28,13 @@ public class PostController {
     private TopicService topicService;
     @Autowired
     private UserService userService;
-    @GetMapping("/")
+    @GetMapping
     public String index() {
-        return "index";
+        return "views_user/blog";
     }
+
+
+
     @GetMapping("/write_blog_basic")
     public String writeBlog(Model model) {
         Post post = new Post();
@@ -78,5 +81,6 @@ public class PostController {
         model.addAttribute("post", post);
         return "test/detail-test";
     }
+    
 
 }

@@ -33,7 +33,25 @@ public class BookMarkServiceImpl implements BookMarkService {
     public long countByPostId(int postId) {
         return bookMarkRepository.countByPostId(postId);
     }
+  
+    @Override
+    public BookMark save(BookMark bookMark) {
+        return bookMarkRepository.save(bookMark);
+    }
 
+    @Override
+    public void deleteByUserIdAndPostId(int userId, int postId) {
+          BookMark bookmark = bookMarkRepository.findByUserIdAndPostId(userId, postId);
+          if (bookmark != null) {
+              bookMarkRepository.delete(bookmark);
+          }
+    }
+
+	  @Override
+    public void removeBookmark(int postId) {
+        bookMarkRepository.deleteByPostId(postId);
+    }
+  
     @Override
     public List<BookMark> findAll() {
         return bookMarkRepository.findAll();

@@ -13,7 +13,12 @@ public interface BookMarkService {
     public boolean existsByUserIdAndPostId(int userId, int postId);
 
     public long countByPostId(int postId);
-
+    public BookMark save(BookMark bookMark);
+    
+    public void deleteByUserIdAndPostId(int userId, int postId);
+    
+    public void removeBookmark(int postId);
+    
     List<BookMark> findAll();
 
     List<BookMark> getBookMarksCreatedInWeek();

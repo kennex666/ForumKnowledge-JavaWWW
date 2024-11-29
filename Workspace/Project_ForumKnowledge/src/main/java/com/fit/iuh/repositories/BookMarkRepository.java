@@ -23,6 +23,12 @@ public interface BookMarkRepository extends JpaRepository<BookMark, Integer> {
 
     @Query("SELECT COUNT(b) FROM BookMark b WHERE b.post.postId = :postId")
     long countByPostId(@Param("postId") int postId);
+    
+    BookMark findByUserIdAndPostId(int userId, int postId);
+    
+    void deleteByPostId(int postId);
+    
+    List<BookMark> findByPostId(int postId);
 
     // SELECT * FROM bookmarks b WHERE b.created_at >= DATEADD(day, -7, GETDATE()) ORDER BY b.created_at DESC
     @Query(value = "SELECT * FROM bookmarks b WHERE b.created_at >= DATEADD(day, -7, GETDATE()) ORDER BY b.created_at DESC", nativeQuery = true)
