@@ -63,7 +63,7 @@
                 <div class="py-1 space-y-1" role="none">
                     <a href="/profile" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-user"></i><span class="ps-3">Hồ sơ</span></a>
                     <a href="/save" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-bookmark"></i><span class="ps-3">Bài viết đã lưu</span></a>
-                    <a th:if="${currentUser.role == 1}" href="/admin" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-lock"></i><span class="ps-3">Trang quản trị</span></a>
+                    <a th:if="${currentUser.role == 1}" href="/admin/dashboard" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1"><i class="fa-solid fa-lock"></i><span class="ps-3">Trang quản trị</span></a>
                     <a href="/logout" class="border-t block px-4 py-2 text-sm font-semibold mt-2 pt-4 text-red-500" role="menuitem" tabindex="-1"><i class="fa-solid fa-right-from-bracket"></i><span class="ps-3">Đăng xuất</span></a>
                 </div>
             </div>

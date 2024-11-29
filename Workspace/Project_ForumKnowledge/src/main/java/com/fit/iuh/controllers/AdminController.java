@@ -38,12 +38,6 @@ public class AdminController {
 
     @Autowired
     private PostReportService postReportService;
-
-    @GetMapping("/")
-    public String index() {
-        return "views_admin/index";
-    }
-
     /*
       ** Topic
       * 1. Hiển thị danh sách topic
