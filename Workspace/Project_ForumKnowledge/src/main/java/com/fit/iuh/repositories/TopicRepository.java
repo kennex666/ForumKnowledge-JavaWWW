@@ -37,4 +37,6 @@ public interface TopicRepository extends JpaRepository<Topic, Integer> {
     public Page<Topic> searchByKeywordWithPaging(@Param("key") String key, PageRequest of);
 
     Page<Topic> findByNameContainingOrHashtagContaining(String name, String hashtag, Pageable pageable);
+
+    boolean existsByNameAndHashtag(String name, String hashtag);
 }

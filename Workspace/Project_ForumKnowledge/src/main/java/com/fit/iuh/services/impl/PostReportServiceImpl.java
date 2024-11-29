@@ -53,6 +53,15 @@ public class PostReportServiceImpl implements PostReportService {
 	}
 
     @Override
+    public List<PostReport> findAll() {
+        return postReportRepository.findAll();
+    }
+
+    @Override
+    public List<PostReport> getPostReportsCreatedInWeek() {
+        return postReportRepository.getPostReportsCreatedInWeek();
+
+      
     public List<PostReport> findByReporterId(Integer reporterId) {
         return postReportRepository.findByReporterId(reporterId);
     }
