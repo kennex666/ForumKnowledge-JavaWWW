@@ -21,4 +21,14 @@ public interface PostReportService {
 	public List<PostReport> searchByReason(String keyword);
 
 	public List<PostReport> findByCreatedAtBetween(Date startDate, Date endDate);
+
+    List<PostReport> findAll();
+
+    List<PostReport> getPostReportsCreatedInWeek();
+
+    public List<PostReport> findByReporterId(Integer reporterId);
+
+    public List<PostReport> findByInspectorId(Integer inspectorId);
+
+    public List<PostReport> findByPostId(Integer postId);
 }

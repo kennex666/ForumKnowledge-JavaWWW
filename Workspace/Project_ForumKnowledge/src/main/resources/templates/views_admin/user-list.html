@@ -31,7 +31,36 @@
 </div>
 
 <div id="wrapper">
-    <div th:replace="~{fragments/navbar :: sidebar}"></div>
+    <nav class="navbar align-items-start sidebar sidebar-dark accordion bg-gradient-primary p-0 navbar-dark">
+        <div class="container-fluid d-flex flex-column p-0"><a
+                class="navbar-brand d-flex justify-content-center align-items-center sidebar-brand m-0" href="#">
+            <div class="sidebar-brand-icon rotate-n-15"><i class="fas fa-laugh-wink"></i></div>
+            <div class="sidebar-brand-text mx-3"><span>iDev4rum</span></div>
+        </a>
+            <hr class="sidebar-divider my-0">
+            <ul class="navbar-nav text-light" id="accordionSidebar">
+                <li class="nav-item"><a class="nav-link" href=""><i
+                        class="fas fa-tachometer-alt"></i><span>Dashboard</span></a></li>
+                <li class="nav-item"><a class="nav-link" href=""><i class="fas fa-user"></i><span>Profile</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link active" href=""><i
+                        class="fas fa-table"></i><span>Table</span></a></li>
+                <li class="nav-item"><a class="nav-link" href=""><i
+                        class="far fa-user-circle"></i><span>Login</span></a></li>
+                <li class="nav-item"><a class="nav-link" href=""><i class="fas fa-user-circle"></i><span>Register</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href=""><i
+                        class="fas fa-key"></i><span>Forgotten Password</span></a></li>
+                <li class="nav-item"><a class="nav-link" href=""><i class="fas fa-exclamation-circle"></i><span>Page Not Found</span></a>
+                </li>
+                <li class="nav-item"><a class="nav-link" href=""><i
+                        class="fas fa-window-maximize"></i><span>Blank Page</span></a></li>
+            </ul>
+            <div class="text-center d-none d-md-inline">
+                <button class="btn rounded-circle border-0" id="sidebarToggle" type="button"></button>
+            </div>
+        </div>
+    </nav>
     <div class="d-flex flex-column" id="content-wrapper">
         <div id="content">
             <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
@@ -205,66 +234,43 @@
                                 <thead>
                                 <tr>
                                     <th>ID</th>
-                                    <th>Title</th>
-                                    <th>User</th>
-                                    <th>Comments</th>
-                                    <th>UpVotes</th>
-                                    <th>DownVotes</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
                                     <th>Created at</th>
+                                    <th>Updated at</th>
                                     <th>State</th>
-                                    <th>Reports</th>
-                                    <th>Detail</th>
                                 </tr>
                                 </thead>
-                                <tbody th:each="post : ${posts}">
+                                <tbody th:each="user : ${users}">
                                 <tr>
-                                    <td th:text="${post.postId}"></td>
-                                    <td th:text="${post.title}"></td>
-                                    <td th:text="${post.author}? ${post.author.name} : 'Anonymous'"></td>
-                                    <td th:text="${post.totalComments}"></td>
-                                    <td th:text="${post.totalUpVote}"></td>
-                                    <td th:text="${post.totalDownVote}"></td>
-                                    <td th:text="${post.createdAt}"></td>
+                                    <td th:text="${user.userId}"></td>
+                                    <td th:text="${user.name}"></td>
+                                    <td th:text="${user.email}"></td>
+                                    <td th:text="${user.role}"></td>
+                                    <td th:text="${user.createdAt}"></td>
+                                    <td th:text="${user.updatedAt}"></td>
                                     <td>
                                         <select class="form-select"
                                                 th:onchange="'changeState(this.value)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
-                                                    th:value="@{/admin/posts/state-change(id=${post.postId}, state=${state})}"
-                                                    th:selected="${state == post.state}">
+                                                    th:value="@{/admin/users/state-change(id=${user.userId}, state=${state})}"
+                                                    th:selected="${state == user.accountState}">
                                             </option>
                                         </select>
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-danger btn-sm"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#reportModal"
-                                                th:onclick="'loadReportsIntoModal(' + ${post.postId} + ')'"
-                                        >
-                                            <i th:text="${post.postReports.size()}"></i>
-                                        </button>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-primary btn-sm"
-                                           th:href="@{/posts/detail(id=${post.postId})}"
-                                        >
-                                            <i class="fas fa-eye"></i>
-                                        </a>
                                     </td>
                                 </tr>
                                 </tbody>
                                 <tfoot>
                                 <tr>
                                     <td><strong>ID</strong></td>
-                                    <td><strong>Title</strong></td>
-                                    <td><strong>User</strong></td>
-                                    <td><strong>Comments</strong></td>
-                                    <td><strong>UpVotes</strong></td>
-                                    <td><strong>DownVotes</strong></td>
+                                    <td><strong>Name</strong></td>
+                                    <td><strong>Email</strong></td>
+                                    <td><strong>Role</strong></td>
                                     <td><strong>Created at</strong></td>
+                                    <td><strong>Updated at</strong></td>
                                     <td><strong>State</strong></td>
-                                    <td><strong>Reports</strong></td>
-                                    <td><strong>Detail</strong></td>
                                 </tr>
                                 </tfoot>
                             </table>
@@ -306,75 +312,11 @@
 <script src="/assets/js/theme.js"></script>
 <script>
     function changeState(value) {
-        const confirm = window.confirm("Bạn có chắc chắn muốn thay đổi trạng thái bài viết?");
+        const confirm = window.confirm("Bạn có chắc chắn muốn thay đổi trạng thái tài khoản?");
         if (confirm)
             window.location.href = value;
         else
             window.location.reload();
-    }
-
-    async function loadReportsIntoModal(postId) {
-        const reportList = document.getElementById('reportList');
-        reportList.innerHTML = ''; // Xóa dữ liệu cũ trong bảng
-
-        try {
-            const response = await fetch('http://localhost:8080/api/post-reports/by-post-id/' + postId);
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const body = await response.json();
-            const data = body.body;
-            const postReportStates = body.postReportStates;
-
-            // Duyệt qua từng báo cáo và thêm hàng vào bảng
-            data.forEach(report => {
-                const tr = document.createElement('tr');
-
-                // Cột ID
-                const tdId = document.createElement('td');
-                tdId.textContent = report.id;
-                tr.appendChild(tdId);
-
-                // Cột Lý do
-                const tdReason = document.createElement('td');
-                tdReason.textContent = report.reason;
-                tr.appendChild(tdReason);
-
-                // Cột Ngày tạo
-                const tdCreatedAt = document.createElement('td');
-                tdCreatedAt.textContent = new Date(report.createdAt).toLocaleString();
-                tr.appendChild(tdCreatedAt);
-
-                // Cột Trạng thái
-                const tdState = document.createElement('td');
-                const select = document.createElement('select');
-                select.classList.add('form-select'); // Thêm class Bootstrap để đẹp hơn
-
-                // Thêm các giá trị vào combobox
-                postReportStates.forEach(state => {
-                    const option = document.createElement('option');
-                    option.value = state;
-                    option.textContent = state;
-
-                    // Đặt trạng thái được chọn nếu giá trị khớp
-                    if (state === report.state) {
-                        option.selected = true;
-                    }
-
-                    select.appendChild(option);
-                });
-
-                tdState.appendChild(select);
-                tr.appendChild(tdState);
-
-                // Thêm hàng vào bảng
-                reportList.appendChild(tr);
-            });
-
-        } catch (error) {
-            console.error('There has been a problem with your fetch operation:', error);
-        }
     }
 </script>
 </body>

@@ -9,6 +9,9 @@ import com.fit.iuh.utilities.GeminiResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -35,6 +38,7 @@ public class PostServiceImpl implements PostService {
 		// TODO Auto-generated method stub
 		return postRepository.save(post);
 	}
+
 
 	@Override
 	public Post update(Post post) {
@@ -94,6 +98,27 @@ public class PostServiceImpl implements PostService {
 		} else {
 			logger.info("Scheduled Task - Generating Post: Skip");
 		}
+	}
+
+	@Override
+	public Page<Post> searchByKeywordWithPaging(String key, int numberPage, int size) {
+		Pageable pageable = PageRequest.of(numberPage, size);
+		return postRepository.searchByKeywordWithPaging(key, pageable);
+	}
+
+	@Override
+	public Page<Post> getPage(int numberPage, int size) {
+		return postRepository.findAll(PageRequest.of(numberPage, size));
+	}
+
+	@Override
+	public Post findByID(int id) {
+		return postRepository.findById(id).orElse(null);
+	}
+
+	@Override
+	public List<Post> getPostsCreatedInWeek() {
+		return postRepository.getPostsCreatedInWeek();
 	}
 
 	private boolean isDiff(Date createdAt, Date now) {

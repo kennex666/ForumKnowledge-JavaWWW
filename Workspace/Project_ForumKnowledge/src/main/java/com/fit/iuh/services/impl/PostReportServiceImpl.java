@@ -52,5 +52,29 @@ public class PostReportServiceImpl implements PostReportService {
 		return postReportRepository.findByCreateAtBetween(startDate, endDate);
 	}
 
+    @Override
+    public List<PostReport> findAll() {
+        return postReportRepository.findAll();
+    }
+
+    @Override
+    public List<PostReport> getPostReportsCreatedInWeek() {
+        return postReportRepository.getPostReportsCreatedInWeek();
+
+      
+    public List<PostReport> findByReporterId(Integer reporterId) {
+        return postReportRepository.findByReporterId(reporterId);
+    }
+
+    @Override
+    public List<PostReport> findByInspectorId(Integer inspectorId) {
+        return postReportRepository.findByInspectorId(inspectorId);
+    }
+
+    @Override
+    public List<PostReport> findByPostId(Integer postId) {
+        return postReportRepository.findByPostId(postId);
+    }
+
 
 }
