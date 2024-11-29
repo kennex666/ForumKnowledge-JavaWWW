@@ -5,7 +5,10 @@ import com.fit.iuh.enums.UserAccountState;
 import com.fit.iuh.repositories.UserRepository;
 import com.fit.iuh.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -95,4 +98,16 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+    @Override
+    public Page<User> findUsersWithCondition(int skip, int limit, boolean isDesc) {
+        Pageable pageable = PageRequest.of(
+                skip - 1,
+                limit,
+                isDesc ? Sort.by("userId").descending() : Sort.by("userId").ascending()
+        );
+        return userRepository.findAllUsers(pageable);
+    }
+
+
 }
