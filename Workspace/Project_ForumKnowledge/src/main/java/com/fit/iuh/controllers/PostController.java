@@ -1,8 +1,11 @@
 package com.fit.iuh.controllers;
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.entites.PostReport;
 import com.fit.iuh.entites.Topic;
+import com.fit.iuh.enums.PostReportState;
 import com.fit.iuh.enums.PostState;
+import com.fit.iuh.services.PostReportService;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
 import com.fit.iuh.services.UserService;
@@ -26,6 +29,7 @@ public class PostController {
     private TopicService topicService;
     @Autowired
     private UserService userService;
+  
     @GetMapping
     public String index() {
         return "views_user/blog";
@@ -89,6 +93,30 @@ public class PostController {
         System.out.println("ID: " + id);
         return "views_user/view-post";
     }
-    
+  
+    @GetMapping("/show_detail/{postId}")
+    public String showDetail(Model model, @PathVariable("postId") int id) {
+        Post post = postService.findById(id);
+        model.addAttribute("post", post);
+        return "test/show_detail_test";
+    }
+    @GetMapping("/report/{postId}")
+    public String report(Model model, @PathVariable("postId") int postId) {
+        Post post = postService.findById(postId);
+        PostReport report = new PostReport();
+        model.addAttribute("post", post);
+        model.addAttribute("report", report);
+        return "test/report";
+    }
+    @PostMapping("/reported/{postId}")
+    public String reported(PostReport postReport , @PathVariable("postId") int postId) {
+        Date now = new Date();
+        postReport.setState(PostReportState.PROCESSING);
+        postReport.setInspector(userService.findById(1));
+        postReport.setReporter(userService.findById(1));
+        postReport.setPost(postService.findById(postId));
+        postReportService.saveOrUpdatePostReport(postReport);
+        return "redirect:/posts/show";
 
+    }
 }

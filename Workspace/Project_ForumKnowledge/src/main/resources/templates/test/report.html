@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <h1>Report</h1>
+<div>
+    <p>ID: <span th:text="${post.postId}"></span></p>
+    <p>ID: <span th:text="${post.topic}"></span></p>
+    <p>ID: <span th:text="${post.description}"></span></p>
+    <p>ID: <span th:text="${post.content}"></span></p>
+
+    <form method="post" th:action="@{/posts/reported/{id}(id=${post.postId})}" th:object="${report}">
+        <input type="hidden" name="id" th:field="*{id}">
+<!--        <input type="hidden" name="reporterId" th:field="*{post.author.userId}">-->
+<!--        <input type="hidden" name="postId" th:field="*{post.postId}">-->
+        <tr>
+            <td>Ly do</td>
+            <td><input type="text" name="reason" th:field="*{reason}"></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit"></td>
+        </tr>
+    </form>
+
+</div>
+</body>
+</html>
