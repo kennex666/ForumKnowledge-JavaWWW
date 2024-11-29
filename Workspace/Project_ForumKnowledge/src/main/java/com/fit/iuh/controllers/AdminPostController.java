@@ -28,16 +28,18 @@ public class AdminPostController {
     ) {
         skip = skip < 1 ? 1 : skip;
         limit = limit < 1 ? 10 : limit;
+        int[] limits = new int[]{10, 25, 50, 100};
 
         Page<Post> posts = postService.findPostsWithCondition(skip, limit, true);
         PostState[] states = PostState.values();
 
         model.addAttribute("posts", posts.getContent());
-        model.addAttribute("states", states);
         model.addAttribute("currentPage", posts.getNumber() + 1);
         model.addAttribute("totalPages", posts.getTotalPages());
         model.addAttribute("limit", limit);
         model.addAttribute("baseUrl", "/admin/posts");
+        model.addAttribute("states", states);
+        model.addAttribute("limits", limits);
         return "views_admin/post-list";
     }
 

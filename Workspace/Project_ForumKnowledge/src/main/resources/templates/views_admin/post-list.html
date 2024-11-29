@@ -193,14 +193,18 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 text-nowrap">
-                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label
-                                        class="form-label">Show&nbsp;<select
-                                        class="d-inline-block form-select form-select-sm">
-                                    <option value="10" selected="">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>&nbsp;</label></div>
+                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                    <label
+                                        class="form-label">Show&nbsp;
+                                        <select id="limitSelect"
+                                                class="d-inline-block form-select form-select-sm">
+                                            <option th:each="limitValue : ${limits}"
+                                                    th:text="${limitValue}"
+                                                    th:value="${limitValue}"
+                                                    th:selected="${limitValue == limit}"></option>
+                                        </select>&nbsp;
+                                    </label>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
@@ -298,7 +302,6 @@
                                                th:href="@{/admin/posts(skip=${page}, limit=${limit})}"
                                                th:text="${page}"></a>
                                         </li>
-
 
                                         <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
                                                 aria-hidden="true">»</span></a></li>
@@ -428,6 +431,15 @@
             console.error('There has been a problem with your fetch operation:', error);
         }
     }
+
+    document.getElementById("limitSelect").addEventListener("change", function () {
+        const selectedLimit = this.value;
+        const urlParams = new URLSearchParams(window.location.search);
+
+        urlParams.set("limit", selectedLimit);
+
+        window.location.href = window.location.pathname + "?" + urlParams.toString();
+    });
 
 </script>
 </body>
