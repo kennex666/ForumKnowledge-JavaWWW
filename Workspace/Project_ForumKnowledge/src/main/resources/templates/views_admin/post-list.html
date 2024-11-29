@@ -216,7 +216,7 @@
                         </div>
                         <div class="table-responsive table mt-2" id="data" role="grid"
                              aria-describedby="dataTable_info">
-                            <table class="table my-0" id="dataTable">
+                            <table class="table text-center align-middle my-0" id="dataTable">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
@@ -255,15 +255,13 @@
                                         <button class="btn btn-danger btn-sm"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#reportModal"
-                                                th:onclick="'loadReportsIntoModal(' + ${post.postId} + ')'"
-                                        >
+                                                th:onclick="'loadReportsIntoModal(' + ${post.postId} + ')'">
                                             <i th:text="${post.postReports.size()}"></i>
                                         </button>
                                     </td>
                                     <td>
                                         <a class="btn btn-primary btn-sm"
-                                           th:href="@{/posts/detail(id=${post.postId})}"
-                                        >
+                                           th:href="@{/posts/detail(id=${post.postId})}">
                                             <i class="fas fa-eye"></i>
                                         </a>
                                     </td>
