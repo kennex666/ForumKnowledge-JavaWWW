@@ -1,270 +1,181 @@
-<html>
-<head lang="vi">
-    <title>Home | iDev4rum</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- charset utff 8 -->
-    <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-    </style>
-</head>
+<html xmlns:th="">
+<head th:replace="~{/fragments/head :: head}"></head>
 <body class="">
 
-    <!-- Nav bar -->
-    <header class="bg-white px-20 py-4 flex justify-between items-center">
-        <div class="flex items-center justify-center space-x-10">
-            <a href="#"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
+<!-- Nav bar -->
+<header th:replace="~{/fragments/navigate :: header}"></header>
 
-            <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
-                <i class="fas fa-search text-gray-500"></i>
-                <input type="text" placeholder="Tìm kiếm..." class="bg-transparent focus:outline-none ml-4">
+<!-- Blog space -->
+<div class="container mx-auto px-12 lg:w-10/12">
+    <div class="flex justify-between items-start py-4">
+
+        <!-- Recommend blog -->
+        <div class="w-2/3 space-y-8 ">
+            <!-- Bar -->
+            <!-- overflow-x-scroll -->
+            <div class="flex flex-row bg-white space-x-10 items-center pt-3 text-nowrap scrollbar-custom px-5">
+                <!-- plus icon -->
+                <a class="pb-3">
+                    <i class="fas fa-plus opacity-50"></i>
+                </a>
+                <a class="pb-3 border-black border-b-2" href="#">Dành cho bạn</a>
+                <a class="pb-3 text-gray-500 hover:text-black" href="following">Đang theo dõi</a>
+                <a class="pb-3 text-gray-500 hover:text-black" href="following">Java</a>
+                <a class="pb-3 text-gray-500 hover:text-black" href="following">Git</a>
+                <a class="pb-3 text-gray-500 hover:text-black" href="following">Testing</a>
+                <a class="pb-3 text-gray-500 hover:text-black" href="following">Git</a>
+
             </div>
 
-        </div>
-        <div class="flex items-center space-x-10">
-            <button class="text-gray-500 focus:outline-none space-x-2">
-                <i class="fas fa-pen"></i>
-                <span>Viết bài</span>
-            </button>
-            <button class="text-gray-500 focus:outline-none">
-                <i class="fas fa-bell"></i>
-            </button>
-            <img src="https://placehold.co/32x32" alt="User profile image, placeholder image" class="rounded-full">
-        </div>
-    </header>
-    
-    <!-- Blog space -->
-    <div class="container mx-auto px-12 lg:w-10/12">
-        <div class="flex justify-between items-start py-4">
 
-            <!-- Recommend blog -->
-            <div class="w-2/3 space-y-8 ">
-                <!-- Bar -->
-                 <!-- overflow-x-scroll -->
-                <div class="flex flex-row bg-white space-x-10 items-center pt-3 text-nowrap scrollbar-custom px-5">
-                    <!-- plus icon -->
-                    <a class="pb-3">
-                        <i class="fas fa-plus opacity-50"></i>
+            <!-- Post suggest -->
+            <div class="flex flex-col space-y-3" th:each="post : ${postsPage.content}">
+                <!-- post item -->
+                <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">
+                    <div class="w-4/6">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <div>
+                                <div class="flex flex-row items-center space-x-2 mb-3">
+                                    <a class="font-semibold hover:text-black" th:href="@{'/author/' + ${post.author.userId}}">
+                                        <img th:src="${post.author.profilePicture}" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
+                                    </a>
+                                    <p class="text-sm text-gray-500"><a class="font-semibold hover:text-black" th:href="@{'/author/' + ${post.author.userId}}" th:text="${post.author.name}"></a> với chủ đề <a class="font-semibold hover:text-black" th:href="@{'/topics/' + ${post.author.userId}}" th:text="${post.topic.name}">Java</a></p>
+                                </div>
+                                <div>
+                                    <a th:href="@{'/posts/' + ${post.url}}" class="text-2xl font-bold" th:text="${post.title}">Hướng sự kiện Java cơ bản cùng Netbeans</a>
+                                </div>
+                            </div>
+                        </div>
+                        <a th:href="@{'/posts/' + ${post.url}}" class="" th:text="${post.description}">Trong chủ đề này, tôi sẽ giới thiệu đến bạn Java - Hướng sự kiện trong 05 phút</a>
+                        <a th:href="@{'/posts/' + ${post.url}}" class="flex items-center justify-between mt-4 text-gray-600">
+                            <div class="flex items-center">
+                                <i class="far fa-star"></i>
+                                <span class="ml-2" th:text="${post.getDateFormat()}">Apr 17, 2023</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span th:text="${post.totalUpVote}">18.8K</span>
+                                <i class="far fa-thumbs-up ml-2"></i>
+                                <span class="ml-2" th:text="${post.totalComments}">304</span>
+                                <i class="far fa-comment ml-2"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <a href="#" class="w-2/6 flex flex-row justify-center items-center">
+                        <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-lg w-fit">
                     </a>
-                    <a class="pb-3 border-black border-b-2" href="#">Dành cho bạn</a>
-                    <a class="pb-3 text-gray-500 hover:text-black" href="following">Đang theo dõi</a>
-                    <a class="pb-3 text-gray-500 hover:text-black" href="following">Java</a>
-                    <a class="pb-3 text-gray-500 hover:text-black" href="following">Git</a>
-                    <a class="pb-3 text-gray-500 hover:text-black" href="following">Testing</a>
-                    <a class="pb-3 text-gray-500 hover:text-black" href="following">Git</a>
-
                 </div>
 
 
-                <!-- Post suggest -->
-                <div class="flex flex-col space-y-3">
-
-                    <!-- post item -->
-                    <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">
-                        <div class="w-4/6">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <div>
-                                    <div class="flex flex-row items-center space-x-2 mb-3">
-                                        <a class="font-semibold hover:text-black" href="author/baoduong">
-                                            <img src="https://placehold.co/32x32" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
-                                        </a>
-                                        <p class="text-sm text-gray-500"><a class="font-semibold hover:text-black" href="author/baoduong">Bao Duong</a> với chủ đề <a class="font-semibold hover:text-black" href="author/baoduong">Java</a></p>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-2xl font-bold">Hướng sự kiện Java cơ bản cùng Netbeans</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#" class="">Trong chủ đề này, tôi sẽ giới thiệu đến bạn Java - Hướng sự kiện trong 05 phút</a>
-                            <a  href="#" class="flex items-center justify-between mt-4 text-gray-600">
-                                <div class="flex items-center">
-                                    <i class="far fa-star"></i>
-                                    <span class="ml-2">Apr 17, 2023</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span>18.8K</span>
-                                    <i class="far fa-thumbs-up ml-2"></i>
-                                    <span class="ml-2">304</span>
-                                    <i class="far fa-comment ml-2"></i>
-                                </div>
-                            </a>
-                        </div>
-                        <a href="#" class="w-2/6 flex flex-row justify-center items-center">
-                            <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-lg w-fit">
-                        </a>
-                    </div>
-
-                    <!-- post item -->
-                    <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">
-                        <div class="w-4/6">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <div>
-                                    <div class="flex flex-row items-center space-x-2 mb-3">
-                                        <a class="font-semibold hover:text-black" href="author/baoduong">
-                                            <img src="https://placehold.co/32x32" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
-                                        </a>
-                                        <p class="text-sm text-gray-500"><a class="font-semibold hover:text-black" href="author/baoduong">Bao Duong</a> với chủ đề <a class="font-semibold hover:text-black" href="author/baoduong">Java</a></p>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-2xl font-bold">Hướng sự kiện Java cơ bản cùng Netbeans</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#" class="">Trong chủ đề này, tôi sẽ giới thiệu đến bạn Java - Hướng sự kiện trong 05 phút</a>
-                            <a  href="#" class="flex items-center justify-between mt-4 text-gray-600">
-                                <div class="flex items-center">
-                                    <i class="far fa-star"></i>
-                                    <span class="ml-2">Apr 17, 2023</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span>18.8K</span>
-                                    <i class="far fa-thumbs-up ml-2"></i>
-                                    <span class="ml-2">304</span>
-                                    <i class="far fa-comment ml-2"></i>
-                                </div>
-                            </a>
-                        </div>
-                        <a href="#" class="w-2/6 flex flex-row justify-center items-center">
-                            <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-lg w-fit">
-                        </a>
-                    </div>
-
-
-                    <!-- post item -->
-                    <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">
-                        <div class="w-4/6">
-                            <div class="flex items-center space-x-2 mb-2">
-                                <div>
-                                    <div class="flex flex-row items-center space-x-2 mb-3">
-                                        <a class="font-semibold hover:text-black" href="author/baoduong">
-                                            <img src="https://placehold.co/32x32" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
-                                        </a>
-                                        <p class="text-sm text-gray-500"><a class="font-semibold hover:text-black" href="author/baoduong">Bao Duong</a> với chủ đề <a class="font-semibold hover:text-black" href="author/baoduong">Java</a></p>
-                                    </div>
-                                    <div>
-                                        <a href="#" class="text-2xl font-bold">Hướng sự kiện Java cơ bản cùng Netbeans</a>
-                                    </div>
-                                </div>
-                            </div>
-                            <a href="#" class="">Trong chủ đề này, tôi sẽ giới thiệu đến bạn Java - Hướng sự kiện trong 05 phút</a>
-                            <a  href="#" class="flex items-center justify-between mt-4 text-gray-600">
-                                <div class="flex items-center">
-                                    <i class="far fa-star"></i>
-                                    <span class="ml-2">Apr 17, 2023</span>
-                                </div>
-                                <div class="flex items-center">
-                                    <span>18.8K</span>
-                                    <i class="far fa-thumbs-up ml-2"></i>
-                                    <span class="ml-2">304</span>
-                                    <i class="far fa-comment ml-2"></i>
-                                </div>
-                            </a>
-                        </div>
-                        <a href="#" class="w-2/6 flex flex-row justify-center items-center">
-                            <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-lg w-fit">
-                        </a>
-                    </div>
-
-
-                </div>
-                
             </div>
 
-            <!-- Spons -->
-            <div class="w-1/3 pl-4 space-y-12">
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <h3 class="font-semibold mb-5">Đã lưu gần đây</h3>
-                    <div class="space-y-5">
-                        <div class="mb-3 space-y-5">
-                            <!-- Bookmark item -->
-                            <div class="py-2">
-                                <a href="#" class="flex flex-row items-center space-x-2 mb-3 text-sm">
-                                    <img src="https://placehold.co/32x32" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
-                                    <span class="font-semibold hover:text-gray-500" href="author/baoduong">Bao Duong</span>
-                                </a>
-                                <a href="#">
-                                    <h2 class="font-semibold">Hướng sự kiện Java cơ bản cùng Netbeans</h2>
-                                </a>
-                                <div class="flex items-center space-x-2 text-xs mt-2">
-                                    <p>
-                                        <a href="#">Apr 17, 2023</a>
-                                    </p>
+            <!-- Phân trang -->
+            <div class="flex flex-row gap-3 justify-end mb-6 px-4">
+                <ul class="flex flex-row gap-3 items-center">
+                    <li th:if="${postsPage.hasPrevious()}">
+                        <a th:href="@{/(page=${postsPage.number - 1})}">Trang trước</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(0, postsPage.totalPages - 1)}">
+                        <a th:href="@{/(page=${i})}" th:text="${i + 1}"></a>
+                    </li>
+                    <li th:if="${postsPage.hasNext()}">
+                        <a th:href="@{/(page=${postsPage.number + 1})}">Trang sau</a>
+                    </li>
+                </ul>
+            </div>
 
-                                    <p>·</p>
 
-                                    <p>
-                                        <a href="#">Chủ đề Java</a>
-                                    </p>
-                                </div>
+        </div>
+
+        <!-- Spons -->
+        <div class="w-1/3 pl-4 space-y-12">
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="font-semibold mb-5">Đã lưu gần đây</h3>
+                <div class="space-y-5">
+                    <div class="mb-3 space-y-5">
+                        <!-- Bookmark item -->
+                        <div class="py-2">
+                            <a href="#" class="flex flex-row items-center space-x-2 mb-3 text-sm">
+                                <img src="https://placehold.co/32x32" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
+                                <span class="font-semibold hover:text-gray-500" href="author/baoduong">Bao Duong</span>
+                            </a>
+                            <a href="#">
+                                <h2 class="font-semibold">Hướng sự kiện Java cơ bản cùng Netbeans</h2>
+                            </a>
+                            <div class="flex items-center space-x-2 text-xs mt-2">
+                                <p>
+                                    <a href="#">Apr 17, 2023</a>
+                                </p>
+
+                                <p>·</p>
+
+                                <p>
+                                    <a href="#">Chủ đề Java</a>
+                                </p>
                             </div>
-
-                            <!-- Bookmark item -->
-                            <div class="py-2">
-                                <a href="#" class="flex flex-row items-center space-x-2 mb-3 text-sm">
-                                    <img src="https://placehold.co/32x32" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
-                                    <span class="font-semibold hover:text-gray-500" href="author/baoduong">Bao Duong</span>
-                                </a>
-                                <a href="#">
-                                    <h2 class="font-semibold">Hướng sự kiện Java cơ bản cùng Netbeans</h2>
-                                </a>
-                                <div class="flex items-center space-x-2 text-xs mt-2">
-                                    <p>
-                                        <a href="#">Apr 17, 2023</a>
-                                    </p>
-
-                                    <p>·</p>
-
-                                    <p>
-                                        <a href="#">Chủ đề Java</a>
-                                    </p>
-                                </div>
-                            </div>
-
-                            
                         </div>
-                    </div>
-                    <a href="#" class="text-blue-500 text-sm hover:text-blue-400">See the full list</a>
-                </div>
 
-                <div class="bg-white p-4 rounded-lg shadow">
-                    <h3 class="font-semibold mb-5">Chủ đề cho bạn</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <!-- border item -->
-                        <a href="#" class="items-center px-4 py-1 rounded-full bg-gray-100">
-                           Java
-                        </a>
-                        <a href="#" class="items-center px-4 py-1 rounded-full bg-gray-100">
-                           GitHub
-                        </a>
-                        <a href="#" class="items-center px-4 py-1 rounded-full bg-gray-100">
-                           Nsfw
-                        </a>
+                        <!-- Bookmark item -->
+                        <div class="py-2">
+                            <a href="#" class="flex flex-row items-center space-x-2 mb-3 text-sm">
+                                <img src="https://placehold.co/32x32" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
+                                <span class="font-semibold hover:text-gray-500" href="author/baoduong">Bao Duong</span>
+                            </a>
+                            <a href="#">
+                                <h2 class="font-semibold">Hướng sự kiện Java cơ bản cùng Netbeans</h2>
+                            </a>
+                            <div class="flex items-center space-x-2 text-xs mt-2">
+                                <p>
+                                    <a href="#">Apr 17, 2023</a>
+                                </p>
+
+                                <p>·</p>
+
+                                <p>
+                                    <a href="#">Chủ đề Java</a>
+                                </p>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
+                <a href="#" class="text-blue-500 text-sm hover:text-blue-400">See the full list</a>
+            </div>
 
-                <!-- Ads -->
-                <div class="bg-yellow-100 px-6 py-4 rounded-lg shadow">
-                    <h3 class="font-semibold mb-4 text-lg">Trở thành tác giả tại iDev4rum</h3>
-                    <ul class="space-y-2">
-                        <li>Tăng độ nổi tiếng</li>
-                        <li>Chia sẻ kiến thức</li>
-                        <li>Mở rộng networking</li>
-                    </ul>
-                    <button class="bg-black text-white px-4 py-2 rounded-full mt-6 text-sm">Viết bài ngay</button>
+            <div class="bg-white p-4 rounded-lg shadow">
+                <h3 class="font-semibold mb-5">Chủ đề cho bạn</h3>
+                <div class="flex flex-wrap gap-2">
+                    <!-- border item -->
+                    <a href="#" class="items-center px-4 py-1 rounded-full bg-gray-100">
+                        Java
+                    </a>
+                    <a href="#" class="items-center px-4 py-1 rounded-full bg-gray-100">
+                        GitHub
+                    </a>
+                    <a href="#" class="items-center px-4 py-1 rounded-full bg-gray-100">
+                        Nsfw
+                    </a>
                 </div>
-                <!-- Copyright -->
-                <div class="text-left mt-8 text-gray-500 text-sm">
-                    <p>© <script>document.write(new Date().getFullYear())</script> iDev4rum. All rights reserved.</p>
-                    <p>Designed by <a href="https://dtbao.io.vn/?s=javawww-baitaplon" class="text-blue-500">Duong Thai Bao</a></p>
-                    <p class="text-red-500 mt-6"><strong>Notice: </strong>This project is intended for educational use and may overlap with existing copyrighted designs. If any of our work infringes on your copyright, please let us know so we can remove it.</p>
-                </div>
+            </div>
+
+            <!-- Ads -->
+            <div class="bg-yellow-100 px-6 py-4 rounded-lg shadow">
+                <h3 class="font-semibold mb-4 text-lg">Trở thành tác giả tại iDev4rum</h3>
+                <ul class="space-y-2">
+                    <li>Tăng độ nổi tiếng</li>
+                    <li>Chia sẻ kiến thức</li>
+                    <li>Mở rộng networking</li>
+                </ul>
+                <button class="bg-black text-white px-4 py-2 rounded-full mt-6 text-sm">Viết bài ngay</button>
+            </div>
+            <!-- Copyright -->
+            <div class="text-left mt-8 text-gray-500 text-sm">
+                <p>© <script>document.write(new Date().getFullYear())</script> iDev4rum. All rights reserved.</p>
+                <p>Designed by <a href="https://dtbao.io.vn/?s=javawww-baitaplon" class="text-blue-500">Duong Thai Bao</a></p>
+                <p class="text-red-500 mt-6"><strong>Notice: </strong>This project is intended for educational use and may overlap with existing copyrighted designs. If any of our work infringes on your copyright, please let us know so we can remove it.</p>
             </div>
         </div>
     </div>
+</div>
 </body>
 </html>

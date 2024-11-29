@@ -6,15 +6,13 @@ import com.fit.iuh.enums.PostState;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
 import com.fit.iuh.services.UserService;
+import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
@@ -59,7 +57,7 @@ public class PostController {
         post.setTotalView(10);
 //        post.setTopic(topicService.findById(1));
         post.setAuthor(userService.findById(1));
-
+        
         postService.save(post);
         return "redirect:/";
     }
@@ -75,11 +73,21 @@ public class PostController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-    @GetMapping("/detail")
-    public String detail(@RequestParam("id") int id, Model model) {
-        Post post = postService.findById(id);
+    @GetMapping("/{id}")
+    public String detail(@PathVariable String id, Model model) {
+        model.addAttribute("currentUser", userService.findUserByEmail(
+                SpringContext.getCurrentUserEmail()
+        ));
+        model.addAttribute("idPost", id.trim());
+
+        Post post = postService.findByIdAndUrl(id.trim());
+        if (post == null){
+            return "redirect:/";
+        }
+
         model.addAttribute("post", post);
-        return "test/detail-test";
+        System.out.println("ID: " + id);
+        return "views_user/view-post";
     }
     
 

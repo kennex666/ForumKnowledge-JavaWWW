@@ -36,4 +36,10 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query(value = "SELECT * FROM posts p WHERE p.created_at >= DATEADD(day, -7, GETDATE()) ORDER BY p.created_at DESC", nativeQuery = true)
 	List<Post> getPostsCreatedInWeek();
+
+	@Query("SELECT p FROM Post p WHERE p.url = :url")
+	public Post findByUrl(@Param("url") String url);
+
+	@Query("SELECT p FROM Post p ORDER BY p.createdAt DESC")
+	public Page<Post> findForHome(Pageable pageable);
 }

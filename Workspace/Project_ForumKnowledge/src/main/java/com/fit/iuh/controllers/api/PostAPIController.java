@@ -4,17 +4,19 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fit.iuh.entites.Post;
 import com.fit.iuh.entites.Topic;
+import com.fit.iuh.entites.User;
 import com.fit.iuh.enums.PostState;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
 import com.fit.iuh.services.UserService;
+import com.fit.iuh.utilities.OpenAI;
+import com.fit.iuh.utilities.SpringContext;
 import com.fit.iuh.utilities.StringToUrl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -32,6 +34,10 @@ public class PostAPIController {
 
     @PostMapping("/create")
     public ResponseEntity<Map<String, Object>> createPost(InputStream inputStream) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        if (currentEmail.isBlank()){
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "You must login to create post!", "errorCode", 401, "data", null));
+        }
         try {
             String json = new String(inputStream.readAllBytes());
             ObjectMapper objectMapper = new ObjectMapper();
@@ -61,7 +67,7 @@ public class PostAPIController {
             post.setTotalDownVote(0);
             post.setTotalShare(0);
             post.setTotalView(0);
-            post.setAuthor(userService.findById(1));
+            post.setAuthor(userService.findUserByEmail(currentEmail));
 
             String url = StringToUrl.convertToUrlFormat(title + "-" + System.currentTimeMillis());
 
@@ -87,12 +93,46 @@ public class PostAPIController {
             }
 
             post.setTopic(topic);
+
+            // Trước khi lưu để GPT kiểm tra lại:
+            String jsonOpenAI = OpenAI.autoReview(post.getContent(), "post");
+            System.out.println(jsonOpenAI);
+            Map<String, Object> response = OpenAI.parseJson(jsonOpenAI);
+
+            System.out.println(response.get("status"));
+            if (response.containsKey("status")) {
+                Double status = (Double) response.get("status");
+                String statusCode = status.toString();
+                if (!statusCode.contains("200"))
+                    return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + response.get("message"), "errorCode", 500, "data", ""));
+            }
+
             // Lưu bài viết
             postService.save(post);
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Post created successfully!", "errorCode", 201, "data", post));
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));
         }
     }
 
+    // Getpost by ID or URL
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Map<String, Object>> getPostById(@PathVariable String id){
+        Post post = postService.findByIdAndUrl(id.trim());
+
+        if (post == null){
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Post not found!", "errorCode", 404, "data", ""));
+        }
+
+        User author = post.getAuthor();
+
+        if (author == null){
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Author not found!", "errorCode", 404, "data", ""));
+        }
+
+        Map authorData = Map.of("id", post.getAuthor().getUserId(), "name", post.getAuthor().getName(), "email", post.getAuthor().getEmail());
+
+        return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Post found!", "errorCode", 200, "data", Map.of("post", post, "author", authorData)));
+    }
 }

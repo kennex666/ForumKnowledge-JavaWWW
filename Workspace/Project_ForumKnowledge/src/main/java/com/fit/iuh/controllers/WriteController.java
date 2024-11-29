@@ -3,6 +3,7 @@ package com.fit.iuh.controllers;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.services.TopicService;
 import com.fit.iuh.services.UserService;
+import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

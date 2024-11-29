@@ -157,4 +157,33 @@ public class PostServiceImpl implements PostService {
 		logger.info("Scheduled Task - Generating Post: Success");
 	}
 
+	@Override
+	public Post findByUrl(String url) {
+		return postRepository.findByUrl(url);
+	}
+
+	@Override
+	public Post findByIdAndUrl(String id) {
+		int postId = -1;
+		Post post = null;
+		String url = id.trim();
+		try {
+			postId = Integer.parseInt(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if (postId != -1){
+			post = postRepository.findById(postId).orElse(null);
+		} else {
+			post = postRepository.findByUrl(url);
+		}
+		return post;
+	}
+
+	@Override
+	public Page<Post> findForHome(Pageable pageable) {
+		return postRepository.findForHome(pageable);
+	}
+
 }

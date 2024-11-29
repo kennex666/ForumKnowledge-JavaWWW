@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fit.iuh.enums.UserAccountState;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -51,6 +52,7 @@ public class User {
 	@Column(name="title", nullable = true, unique = false, columnDefinition = "")
 	private String title;
 
+	@JsonIgnore
 	@Column(name="password_hash", nullable = false, unique = false, columnDefinition = "")
 	@Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
 	private String passwordHash;
@@ -69,30 +71,39 @@ public class User {
 	@LastModifiedDate
 	private Date updatedAt;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "reporter", fetch = FetchType.LAZY)
 	private List<PostReport> reporters;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "inspector", fetch = FetchType.LAZY)
 	private List<PostReport> inspectors;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<BanList> banList;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<BookMark> bookMarks;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Comment> comments;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
 	private List<Reaction> reactions;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
 	private List<Post> posts;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "followed", fetch = FetchType.LAZY)
 	private List<Following> followers;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "follower", fetch = FetchType.LAZY)
 	private List<Following> followings;
 
