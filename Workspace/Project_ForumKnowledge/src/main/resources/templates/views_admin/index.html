@@ -96,7 +96,7 @@
                                     <span th:each="label : ${monthLabels}" th:text="${label}" style="display: none;" id="monthLabel"></span>
                                     <span th:each="interaction : ${monthlyInteractions}" th:text="${interaction}" style="display: none;" id="monthInteraction"></span>
                                     <div class="d-flex align-items-center">
-                                        <select class="form-select form-select-sm me-2" style="width: 150px;">
+                                        <select class="form-select form-select-sm me-2" style="width: 150px;" id="timeRangeSelect">
                                             <option value="30">30 days</option>
                                             <option value="90">3 months</option>
                                             <option value="180">6 months</option>
@@ -250,60 +250,84 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Lấy dữ liệu từ các thẻ span ẩn
-            const monthLabels = Array.from(document.querySelectorAll('#monthLabel')).map(el => el.innerText);
-            const monthlyInteractions = Array.from(document.querySelectorAll('#monthInteraction')).map(el => parseInt(el.innerText));
+            const allMonthLabels = Array.from(document.querySelectorAll('#monthLabel')).map(el => el.innerText);
+            const allMonthlyInteractions = Array.from(document.querySelectorAll('#monthInteraction')).map(el => parseInt(el.innerText));
             
+            let currentChart = null;
             const ctx = document.getElementById('interactionsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    // labels là các tháng trong năm
-                    labels: monthLabels,
-                    datasets: [{
-                        label: 'Total Interactions',
-                        fill: true,
-                        // data là số lượng interactions trong các tháng
-                        data: monthlyInteractions,
-                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
-                        borderColor: 'rgba(78, 115, 223, 1)'
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    scales: {
-                        xAxes: [{
-                            gridLines: {
-                                color: 'rgb(234, 236, 244)',
-                                drawBorder: false,
-                                drawTicks: false,
-                                borderDash: [2],
-                                zeroLineBorderDash: [2],
-                                drawOnChartArea: false
-                            },
-                            ticks: {
-                                fontColor: '#858796',
-                                padding: 20
-                            }
-                        }],
-                        yAxes: [{
-                            gridLines: {
-                                color: 'rgb(234, 236, 244)',
-                                drawBorder: false,
-                                drawTicks: false,
-                                borderDash: [2],
-                                zeroLineBorderDash: [2]
-                            },
-                            ticks: {
-                                fontColor: '#858796',
-                                padding: 20
-                            }
-                        }]
-                    }
+
+            function updateChart(days) {
+                // Tính số tháng cần lấy ceil là làm tròn lên
+                const monthsToShow = Math.ceil(days / 30);
+                
+                // Lấy dữ liệu của số tháng tương ứng từ cuối mảng
+                const labels = allMonthLabels.slice(-monthsToShow);
+                const data = allMonthlyInteractions.slice(-monthsToShow);
+
+                // Hủy biểu đồ cũ nếu tồn tại
+                if (currentChart) {
+                    currentChart.destroy();
                 }
+
+                // Tạo biểu đồ mới
+                currentChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Interactions',
+                            fill: true,
+                            data: data,
+                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                            borderColor: 'rgba(78, 115, 223, 1)'
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    color: 'rgb(234, 236, 244)',
+                                    drawBorder: false,
+                                    drawTicks: false,
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2],
+                                    drawOnChartArea: false
+                                },
+                                ticks: {
+                                    fontColor: '#858796',
+                                    padding: 20
+                                }
+                            }],
+                            yAxes: [{
+                                gridLines: {
+                                    color: 'rgb(234, 236, 244)',
+                                    drawBorder: false,
+                                    drawTicks: false,
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2]
+                                },
+                                ticks: {
+                                    fontColor: '#858796',
+                                    padding: 20
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+
+            // Xử lý sự kiện thay đổi select
+            document.getElementById('timeRangeSelect').addEventListener('change', function(e) {
+                const days = parseInt(e.target.value);
+                updateChart(days);
             });
+
+            // Khởi tạo biểu đồ ban đầu với 30 ngày
+            updateChart(30);
         });
     </script>
     <script>
