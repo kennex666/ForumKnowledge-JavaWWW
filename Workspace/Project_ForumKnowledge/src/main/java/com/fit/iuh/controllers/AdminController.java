@@ -216,6 +216,7 @@ public class AdminController {
         }
         model.addAttribute("negativeCommentCounts", negativeCommentCounts);
 
+        model.addAttribute("totalAllComments", commentService.findAll().size());
         return "views_admin/comment";
     }
 

@@ -61,8 +61,10 @@
                                 <div class="card-body">
                                     <div class="row no-gutters align-items-center">
                                         <div class="col mr-2">
-                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Reported Posts</div>
-                                            <div class="h5 mb-0 font-weight-bold text-warning">12</div>
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Total Comments</div>
+                                            <div class="h5 mb-0 font-weight-bold text-warning">
+                                                <span th:text="${totalAllComments}">12</span>
+                                            </div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-flag fa-2x text-gray-300"></i></div>
