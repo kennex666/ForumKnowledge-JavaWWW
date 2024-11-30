@@ -260,8 +260,7 @@ public class AdminController {
     * Dashboard
      */
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        //
+    public String dashboard(Model model, @RequestParam(defaultValue = "all") String type) {
         String currentEmail = SpringContext.getCurrentUserEmail();
         User currentUser = userService.findUserByEmail(currentEmail);
         model.addAttribute("currentUser", currentUser);
@@ -307,17 +306,17 @@ public class AdminController {
         List<PostReport> postReportsInWeek = postReportService.getPostReportsCreatedInWeek();
         model.addAttribute("postReportsInWeek", postReportsInWeek);
 
-        // Tính toán tương tác cho 4 tháng gần nhất
-        int[] monthlyInteractions = new int[4];
-        String[] monthLabels = new String[4];
+        // Tính toán tương tác cho 12 tháng gần nhất
+        int[] monthlyInteractions = new int[12];
+        String[] monthLabels = new String[12];
         
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
         
-        // Lùi về 3 tháng trước để bắt đầu tính (vì tháng hiện tại là tháng thứ 4)
-        cal.add(Calendar.MONTH, -3);
+        // Lùi về 12 tháng trước
+        cal.add(Calendar.MONTH, -11);
         
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 12; i++) {
             // Set ngày đầu tháng
             cal.set(Calendar.DAY_OF_MONTH, 1);
             cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -342,12 +341,20 @@ public class AdminController {
             List<Reaction> monthReactions = reactionService.getReactionsBetweenDates(startDate, endDate);
             List<BookMark> monthBookmarks = bookmarkService.getBookMarksBetweenDates(startDate, endDate);
             List<Following> monthFollows = followingService.getFollowingsBetweenDates(startDate, endDate);
-            
+            List<User> monthMembers = userService.getUsersBetweenDates(startDate, endDate);
+
             // Tính tổng tương tác
-            monthlyInteractions[i] = monthComments.size() + 
-                                    monthReactions.size() + 
-                                    monthBookmarks.size() + 
-                                    monthFollows.size();
+            if (type == null || type.equals("all")) {
+                monthlyInteractions[i] = monthComments.size() + monthReactions.size() + monthBookmarks.size() + monthFollows.size();
+            } else if (type.equals("comments")) {
+                monthlyInteractions[i] = monthComments.size();
+            } else if (type.equals("reactions")) {
+                monthlyInteractions[i] = monthReactions.size();
+            } else if (type.equals("bookmarks")) {
+                monthlyInteractions[i] = monthBookmarks.size();
+            } else if (type.equals("members")) {
+                monthlyInteractions[i] = monthMembers.size();
+            }
             
             // Chuyển sang tháng tiếp theo
             cal.add(Calendar.MONTH, 1);
