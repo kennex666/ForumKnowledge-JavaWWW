@@ -97,7 +97,6 @@
                                     <span th:each="interaction : ${monthlyInteractions}" th:text="${interaction}" style="display: none;" id="monthInteraction"></span>
                                     <div class="d-flex align-items-center">
                                         <select class="form-select form-select-sm me-2" style="width: 150px;" id="timeRangeSelect">
-                                            <option value="30">30 days</option>
                                             <option value="90">3 months</option>
                                             <option value="180">6 months</option>
                                             <option value="365">1 year</option>
@@ -290,7 +289,7 @@
             });
 
             // Khởi tạo biểu đồ ban đầu với 30 ngày
-            updateChart(30);
+            updateChart(90);
         });
     </script>
     <script>
