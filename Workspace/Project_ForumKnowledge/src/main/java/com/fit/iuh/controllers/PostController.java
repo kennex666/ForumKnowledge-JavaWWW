@@ -80,10 +80,7 @@ public class PostController {
     public String detail(@PathVariable String id, Model model) {
         User currentUser = userService.findUserByEmail(SpringContext.getCurrentUserEmail());
         model.addAttribute("currentUser", currentUser);
-
-
-
-
+        
         model.addAttribute("idPost", id.trim());
 
         Post post = postService.findByIdAndUrl(id.trim());

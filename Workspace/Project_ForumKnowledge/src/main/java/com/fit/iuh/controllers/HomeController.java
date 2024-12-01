@@ -26,6 +26,14 @@ public class HomeController {
         this.userService = userService;
     }
 
+    @GetMapping("/profile")
+    public String profile(Model model) {
+        User currentUser = userService.findUserByEmail(
+                SpringContext.getCurrentUserEmail()
+        );
+        return "redirect:/author/" + currentUser.getUserId();
+    }
+
     @GetMapping({"", "/home"})
         public String home(Model model, @RequestParam(defaultValue = "0") int page, @RequestParam(value = "tab", required = false) String tab) {
         Pageable pageable = PageRequest.of(page, 10);  // 10 bài viết mỗi trang

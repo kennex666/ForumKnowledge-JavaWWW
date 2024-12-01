@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -179,6 +180,7 @@ public class PostServiceImpl implements PostService {
 		} else {
 			post = postRepository.findByUrl(url);
 		}
+		Collections.reverse(post.getComments());
 		return post;
 	}
 

@@ -60,8 +60,17 @@ public class User {
 	@Column(name="profile_picture", nullable = true, unique = false, columnDefinition = "")
 	private String profilePicture;
 
+	@Column(name="cover_picture", nullable = true, unique = false, columnDefinition = "")
+	private String coverPicture;
+
 	@Column(name="bio", nullable = true, unique = false, columnDefinition = "")
 	private String bio;
+
+	@Column(name="description", nullable = true, unique = false, columnDefinition = "")
+	private String description;
+
+	@Column(name="username", nullable = true, unique = false, columnDefinition = "")
+	private String username;
 
 	@Column(name="created_at", nullable = false, unique = false, columnDefinition = "")
 	@CreatedDate

@@ -131,7 +131,10 @@
 
             <div class="border-t mt-2"></div>
             <!-- Coment frame -->
-            <div class="flex flex-col mt-4 gap-8" id="comments" th:each="comment:${post.comments}">
+            <div class="flex flex-col mt-4 gap-8" id="comments" th:if="${post.comments.size() <= 0}">
+
+            </div>
+            <div class="flex flex-col mt-4 gap-8" id="comments"  th:if="${post.comments.size() > 0}" th:each="comment:${post.comments}">
                 <!-- Comment item -->
                 <div class="flex flex-row gap-4 items-center">
                     <a href="#">
