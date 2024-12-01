@@ -58,12 +58,9 @@ public class PostGenerateService {
     }
 
     private boolean isDiff(Date createdAt, Date now) {
-        long oneDay = 24 * 60 * 60 * 1000;
-        long oneMinute = 60 * 1000;
-
         long diff = now.getTime() - createdAt.getTime();
         logger.info("Scheduled Task - Generating Post: Time difference from last post: {} seconds", diff / 1000);
-        return diff >= oneMinute;
+        return diff >= ONE_MINUTE;
     }
 
     private void createNewPost() {
