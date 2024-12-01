@@ -314,6 +314,9 @@
             });
     };
 
+    function edit(){
+        window.location.href = `/write?id=${postSearch}`;
+    }
     function vote(type){
         fetch(`/api/vote/${postSearch}?type=${type ? 1 : 0}`, {
             method: "GET",

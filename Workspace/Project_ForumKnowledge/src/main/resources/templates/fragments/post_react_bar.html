@@ -39,5 +39,8 @@
         >
             <i class="fas fa-share"></i>
         </button>
+        <button th:if="${isOwner}" class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none" onclick="edit()">
+            <i class="fas fa-pen"></i>
+        </button>
     </div>
 </div>
