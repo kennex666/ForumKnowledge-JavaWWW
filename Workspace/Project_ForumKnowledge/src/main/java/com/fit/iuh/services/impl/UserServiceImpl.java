@@ -5,10 +5,14 @@ import com.fit.iuh.enums.UserAccountState;
 import com.fit.iuh.repositories.UserRepository;
 import com.fit.iuh.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -86,9 +90,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void changeState(int id, UserAccountState state) {
+    public Boolean changeState(int id, UserAccountState state) {
         User user = userRepository.findById(id);
-        user.setAccountState(state);
-        userRepository.save(user);
+        if (user != null) {
+            user.setAccountState(state);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
+    }
+
+    public Page<User> findUsersWithCondition(int skip, int limit, boolean isDesc) {
+        Pageable pageable = PageRequest.of(
+                skip - 1,
+                limit,
+                isDesc ? Sort.by("userId").descending() : Sort.by("userId").ascending()
+        );
+        return userRepository.findAllUsers(pageable);
+    }
+
+
+    public List<User> getUsersBetweenDates(Date startDate, Date endDate) {
+        return userRepository.findByCreatedAtBetween(startDate, endDate);
     }
 }

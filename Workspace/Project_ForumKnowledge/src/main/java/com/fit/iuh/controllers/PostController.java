@@ -1,14 +1,9 @@
 package com.fit.iuh.controllers;
 
-import com.fit.iuh.entites.Post;
-import com.fit.iuh.entites.PostReport;
-import com.fit.iuh.entites.Topic;
+import com.fit.iuh.entites.*;
 import com.fit.iuh.enums.PostReportState;
 import com.fit.iuh.enums.PostState;
-import com.fit.iuh.services.PostReportService;
-import com.fit.iuh.services.PostService;
-import com.fit.iuh.services.TopicService;
-import com.fit.iuh.services.UserService;
+import com.fit.iuh.services.*;
 import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,6 +26,8 @@ public class PostController {
     private UserService userService;
     @Autowired
     private PostReportService postReportService;
+    @Autowired
+    private ReactionService reactionService;
 
     @GetMapping
     public String index() {
@@ -81,9 +78,9 @@ public class PostController {
 
     @GetMapping("/{id}")
     public String detail(@PathVariable String id, Model model) {
-        model.addAttribute("currentUser", userService.findUserByEmail(
-                SpringContext.getCurrentUserEmail()
-        ));
+        User currentUser = userService.findUserByEmail(SpringContext.getCurrentUserEmail());
+        model.addAttribute("currentUser", currentUser);
+        
         model.addAttribute("idPost", id.trim());
 
         Post post = postService.findByIdAndUrl(id.trim());
@@ -93,6 +90,16 @@ public class PostController {
 
         model.addAttribute("post", post);
         System.out.println("ID: " + id);
+
+        if (currentUser != null){
+            Reaction reaction = reactionService.hasUserVoted(currentUser.getUserId(), post.getPostId());
+
+            if (reaction != null){
+                model.addAttribute("reaction", reaction.getType().toString());
+            } else {
+                model.addAttribute("reaction", "");
+            }
+        }
         return "views_user/view-post";
     }
   

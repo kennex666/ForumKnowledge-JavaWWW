@@ -6,10 +6,7 @@ import com.fit.iuh.services.PostReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -17,7 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/post-reports")
-public class PostReportAPI {
+public class PostReportAPIController {
 
     @Autowired
     private PostReportService postReportService;
@@ -39,6 +36,19 @@ public class PostReportAPI {
             response.put("status", HttpStatus.INTERNAL_SERVER_ERROR.value());
             response.put("message", "Error: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+    @PutMapping("/state-change")
+    public ResponseEntity<Map<String, Object>> changeState(@RequestParam("id") int id, @RequestParam("state") PostReportState state) {
+        try {
+            if (postReportService.changeState(id, state)) {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "State changed successfully!", "errorCode", 200, "data", ""));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "State change failed!", "errorCode", 400, "data", ""));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));
         }
     }
 

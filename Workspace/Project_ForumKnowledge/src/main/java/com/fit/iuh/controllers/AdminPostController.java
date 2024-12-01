@@ -1,9 +1,13 @@
 package com.fit.iuh.controllers;
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.entites.User;
 import com.fit.iuh.enums.PostState;
 import com.fit.iuh.services.PostService;
+import com.fit.iuh.services.UserService;
+import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,19 +23,35 @@ public class AdminPostController {
     @Autowired
     private PostService postService;
 
-    @GetMapping("")
-    public String index(Model model) {
-        List<Post> posts = postService.findAll();
-        PostState[] states = PostState.values();
-        model.addAttribute("posts", posts);
-        model.addAttribute("states", states);
-        return "views_admin/post-list";
-    }
+    @Autowired
+    private UserService userService;
 
-    @GetMapping("/state-change")
-    public String stateChange(@RequestParam("id") int id, @RequestParam("state") PostState state) {
-        postService.changeState(id, state);
-        return "redirect:/admin/posts/";
+    @GetMapping("")
+    public String index(
+            Model model,
+            @RequestParam(name = "skip", defaultValue = "1") int skip,
+            @RequestParam(name = "limit", defaultValue = "10") int limit
+    ) {
+        skip = skip < 1 ? 1 : skip;
+        limit = limit < 1 ? 10 : limit;
+        int[] limits = new int[]{10, 25, 50, 100};
+
+        Page<Post> posts = postService.findPostsWithCondition(skip, limit, true);
+        PostState[] states = PostState.values();
+
+        model.addAttribute("posts", posts.getContent());
+        model.addAttribute("currentPage", posts.getNumber() + 1);
+        model.addAttribute("totalPages", posts.getTotalPages());
+        model.addAttribute("limit", limit);
+        model.addAttribute("baseUrl", "/admin/posts");
+        model.addAttribute("states", states);
+        model.addAttribute("limits", limits);
+        
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+        
+        return "views_admin/post-list";
     }
 
 }

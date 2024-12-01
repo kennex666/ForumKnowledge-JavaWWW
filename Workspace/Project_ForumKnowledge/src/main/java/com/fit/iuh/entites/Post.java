@@ -1,6 +1,7 @@
 package com.fit.iuh.entites;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fit.iuh.enums.PostState;
 import com.fit.iuh.utilities.DateFormat;
 import jakarta.persistence.*;
@@ -215,6 +216,7 @@ public class Post {
 		this.reactions = reactions;
 	}
 
+	@JsonProperty("comments")
 	public List<Comment> getComments() {
 		return comments;
 	}

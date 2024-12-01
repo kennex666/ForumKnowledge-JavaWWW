@@ -2,7 +2,7 @@
 <head lang="vi">
     <title th:text="${post.title + ' | iDev4rum'}">Home</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="/assets/css/style.css" />
     <link
             rel="stylesheet"
             href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css"
@@ -23,128 +23,7 @@
 </head>
 <body class="pb-12">
 <!-- Nav bar -->
-<header class="bg-white px-20 py-4 flex justify-between items-center">
-    <div class="flex items-center justify-center space-x-10">
-        <a href="/"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
-
-        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
-            <i class="fas fa-search text-gray-500"></i>
-            <input
-                    type="text"
-                    placeholder="Tìm kiếm..."
-                    class="bg-transparent focus:outline-none ml-4"
-                    id="form-search"
-            />
-            <script>
-                const formSearch = document.getElementById("form-search");
-
-                formSearch.addEventListener("focus", function () {
-                    formSearch.classList.add("w-64");
-                });
-
-                formSearch.addEventListener("blur", function () {
-                    formSearch.classList.remove("w-64");
-                });
-
-                formSearch.addEventListener("keyup", function () {});
-
-                formSearch.addEventListener("keypress", function (e) {
-                    if (e.key === "Enter") {
-                        // Do something
-                        window.location.href = "/search?q=" + formSearch.value;
-                    }
-                });
-            </script>
-        </div>
-    </div>
-    <div class="flex items-center space-x-10">
-        <a href="write" class="text-gray-500 focus:outline-none space-x-2">
-            <i class="fas fa-pen"></i>
-            <span>Viết bài</span>
-        </a>
-        <button class="text-gray-500 focus:outline-none">
-            <i class="fas fa-bell"></i>
-        </button>
-        <div class="relative">
-            <button id="btn-profile" class="rounded-full">
-                <img
-                        src="https://placehold.co/32x32"
-                        alt="User profile image, placeholder image"
-                        class="w-8 h-8 rounded-full"
-                />
-            </button>
-            <div
-                    class="hidden absolute right-0 z-10 mt-2 w-40 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="menu-button"
-                    tabindex="-1"
-                    id="menu-bar"
-            >
-                <div class="py-1 space-y-1" role="none">
-                    <!-- Active: "bg-gray-100 text-gray-900", Not Active: "text-gray-700" -->
-                    <a
-                            href="/profile"
-                            class="block px-4 py-2 text-sm text-gray-700"
-                            role="menuitem"
-                            tabindex="-1"
-                    ><i class="fa-solid fa-user"></i
-                    ><span class="ps-3">Hồ sơ</span></a
-                    >
-                    <a
-                            href="/admin"
-                            class="block px-4 py-2 text-sm text-gray-700"
-                            role="menuitem"
-                            tabindex="-1"
-                    ><i class="fa-solid fa-bookmark"></i
-                    ><span class="ps-3">Bài viết đã lưu</span></a
-                    >
-                    <a
-                            href="/admin"
-                            class="block px-4 py-2 text-sm text-gray-700"
-                            role="menuitem"
-                            tabindex="-1"
-                    ><i class="fa-solid fa-lock"></i
-                    ><span class="ps-3">Trang quản trị</span></a
-                    >
-                    <a
-                            href="/logout"
-                            class="border-t block px-4 py-2 text-sm font-semibold mt-2 pt-4 text-red-500"
-                            role="menuitem"
-                            tabindex="-1"
-                    ><i class="fa-solid fa-right-from-bracket"></i
-                    ><span class="ps-3">Đăng xuất</span></a
-                    >
-                </div>
-            </div>
-            <style>
-                /* Animation */
-                .nav-bar__dropdown-menu-close {
-                    animation: fadeIn 0.3s;
-                }
-
-                @keyframes fadeIn {
-                    from {
-                        opacity: 0;
-                    }
-                    to {
-                        opacity: 1;
-                    }
-                }
-            </style>
-            <script>
-                document
-                    .getElementById("btn-profile")
-                    .addEventListener("click", function () {
-                        const menuBar = document.getElementById("menu-bar");
-
-                        menuBar.classList.toggle("hidden");
-                        menuBar.classList.toggle("nav-bar__dropdown-menu-close");
-                    });
-            </script>
-        </div>
-    </div>
-</header>
+<header th:replace="~{/fragments/navigate :: header}"></header>
 
 <!-- Blog space -->
 <div class="container mx-auto px-12 lg:w-5/12 w-full mt-12">
@@ -153,7 +32,6 @@
     <div class="flex flex-col">
         <div class="flex flex-col gap-3">
             <h3 class="text-4xl font-semibold" th:text="${post.title}">
-
             </h3>
             <p class="text-lg" th:text="${post.description}">
 
@@ -173,7 +51,7 @@
         <div class="flex flex-col justify-center">
             <!-- Name -->
             <div class="flex flex-row gap-2 items-center">
-                <span class="text-sm" th:text="${post.author.name}"></span>
+                <a th:href="@{'/author/' + ${post.author.userId}}" class="text-sm" th:text="${post.author.name}"></a>
                 <!-- dot center -->
                 <span class="text-gray-500">·</span>
                 <button class="text-blue-500 focus:outline-none text-sm">
@@ -185,7 +63,7 @@
             <div class="flex flex-row gap-2">
                 <span class="text-sm text-gray-500">5 min read</span>
                 <span class="text-sm text-gray-500">·</span>
-                <span class="text-sm text-gray-500" th:text="${post.createdAt}">December 19, 2024</span>
+                <span class="text-sm text-gray-500" th:text="${post.getDateFormat()}">December 19, 2024</span>
             </div>
         </div>
     </div>
@@ -201,7 +79,7 @@
     <div th:replace="~{/fragments/post_react_bar :: div}"></div>
 
     <!-- Comment space -->
-    <div class="flex flex-col mt-8">
+    <div class="flex flex-col mt-8" id="comment-view">
         <h3 class="text-2xl font-semibold mb-6">Bình luận của độc giả</h3>
 
 
@@ -209,7 +87,7 @@
         <div class="flex flex-col bg-white gap-3">
 
             <!-- My comment -->
-            <div class="flex flex-col bg-white gap-3">
+            <div class="flex flex-col bg-white gap-3" th:if="${currentUser != null}">
                 <div class="flex flex-row items-center gap-2">
                     <img
                             th:src="${currentUser.profilePicture}"
@@ -237,6 +115,11 @@
                 </div>
             </div>
 
+            <div class="flex flex-row bg-white gap-1" th:if="${currentUser == null}">
+                <a href="/login" class="text-blue-500">Đăng nhập</a>
+                <span class="text-gray-500">để bình luận</span>
+            </div>
+
 
             <div class="border-t mb-2"></div>
             <div class="flex flex-row">
@@ -253,7 +136,7 @@
                 <div class="flex flex-row gap-4 items-center">
                     <a href="#">
                         <img
-                                src="https://placehold.co/32x32"
+                                th:src="${comment.user.profilePicture}"
                                 alt="User image"
                                 class="w-10 h-10 rounded-full"
                         />
@@ -262,7 +145,7 @@
                         <a class="flex flex-row gap-2 items-center" href="#">
                             <span class="text-sm font-semibold" th:text="${comment.user.name}"></span>
                             <span class="text-gray-500">·</span>
-                            <span class="text-sm text-gray-500"  th:text="${comment.createdAt}">December 19, 2024</span>
+                            <span class="text-sm text-gray-500"  th:text="${comment.getDateFormat()}">December 19, 2024</span>
                         </a>
                         <p class="text-sm"  th:text="${comment.content}">
 
@@ -278,6 +161,8 @@
 <script type="text/javascript" src="/assets/js/drawdown.js"></script>
 <script>
 
+
+    var postSearch = 0;
     // Định nghĩa các style cho các phần tử Markdown
     const markdownStyles = {
         h1: ["text-3xl", "font-bold", "mt-6", "mb-4"],
@@ -322,13 +207,12 @@
         return applyMarkdownStyles(markdownStyles, div);
     }
 
-
-
     window.onload = () => {
-        const postSearch = document.getElementById("postSearch").value;
+        postSearch = document.getElementById("postSearch").value;
         const txtComment = document.getElementById("txt-comment");
         const btnComment = document.getElementById("btn-comment");
 
+        if (txtComment)
         txtComment.addEventListener("input", function () {
             if (txtComment.value.trim() === "") {
                 btnComment.disabled = true;
@@ -341,21 +225,22 @@
             }
         });
 
+        if (btnComment)
         btnComment.addEventListener("click", function() {
-                const comment = txtComment.value;
-                fetch(`/api/comments/create`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        content: comment,
-                        idPost: postSearch,
-                    }),
-                })
-                    .then((res) => res.json())
-                    .then((data) => {
-                        const commentData = data.data.comment;
+            const comment = txtComment.value;
+            fetch(`/api/comments/create`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    content: comment,
+                    idPost: postSearch,
+                }),
+            })
+                .then((res) => res.json())
+                .then((data) => {
+                        const commentData = data.data;
                         const comments = document.getElementById("comments");
 
                         const commentItem = document.createElement("div");
@@ -363,7 +248,7 @@
                         commentItem.innerHTML = `
                             <a href="#">
                                 <img
-                                    src="https://placehold.co/32x32"
+                                    src="${commentData.user.profilePicture}"
                                     alt="User image"
                                     class="w-10 h-10 rounded-full"
                                 />
@@ -378,11 +263,12 @@
                             </div>
                         `;
 
-                        comments.appendChild(commentItem);
+                        // Push to top
+                        comments.insertBefore(commentItem, comments.firstChild);
                         txtComment.value = "";
-            }
-        )
-    });
+                    }
+                )
+        });
 
 
         fetch(`/api/posts/${postSearch}`)
@@ -392,5 +278,18 @@
                 document.getElementById("post-container").innerHTML = createContent(postData.content);
             });
     };
+
+    function vote(type){
+        fetch(`/api/vote/${postSearch}?type=${type ? 1 : 0}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        })
+            .then((res) => res.json())
+            .then((data) => {
+                console.log(data);
+            });
+    }
 </script>
 </html>

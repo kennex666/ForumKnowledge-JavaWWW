@@ -18,17 +18,18 @@
                 <a class="pb-3">
                     <i class="fas fa-plus opacity-50"></i>
                 </a>
-                <a class="pb-3 border-black border-b-2" href="#">Dành cho bạn</a>
-                <a class="pb-3 text-gray-500 hover:text-black" href="following">Đang theo dõi</a>
-                <a class="pb-3 text-gray-500 hover:text-black" href="following">Java</a>
-                <a class="pb-3 text-gray-500 hover:text-black" href="following">Git</a>
-                <a class="pb-3 text-gray-500 hover:text-black" href="following">Testing</a>
-                <a class="pb-3 text-gray-500 hover:text-black" href="following">Git</a>
-
+                <a th:class="${tab.equalsIgnoreCase('home') ? 'pb-3 border-black border-b-2' : 'pb-3 text-gray-500 hover:text-black'}" th:href="@{/}">Dành cho bạn</a>
+                <a th:class="${tab.equalsIgnoreCase('following') ? 'pb-3 border-black border-b-2' : 'pb-3 text-gray-500 hover:text-black'}" th:href="@{/(tab='following')}">Đang theo dõi</a>
             </div>
 
 
             <!-- Post suggest -->
+            <div class="flex flex-row items-center justify-center" th:if="${postsPage.content.size() <= 0}">
+                <div class="flex flex-col items-center space-y-4">
+                    <h2 class="text-2xl font-semibold">Không có bài viết nào</h2>
+                    <p class="text-gray-500 text-center">Hãy theo dõi một số tác giả để xem bài viết của họ</p>
+                </div>
+            </div>
             <div class="flex flex-col space-y-3" th:each="post : ${postsPage.content}">
                 <!-- post item -->
                 <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">

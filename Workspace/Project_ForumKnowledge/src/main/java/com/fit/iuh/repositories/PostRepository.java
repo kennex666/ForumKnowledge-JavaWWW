@@ -42,4 +42,11 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query("SELECT p FROM Post p ORDER BY p.createdAt DESC")
 	public Page<Post> findForHome(Pageable pageable);
+
+	@Query("SELECT p FROM Post p")
+	public Page<Post> findAllPost(Pageable pageable);
+
+	@Query("SELECT p FROM Post p JOIN p.author.followers f WHERE f.followed.userId = :userId")
+	public Page<Post> findForFollowing(Pageable pageable, int userId);
+
 }
