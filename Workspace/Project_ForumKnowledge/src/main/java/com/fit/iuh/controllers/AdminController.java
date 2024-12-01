@@ -381,23 +381,40 @@ public class AdminController {
         // Tính số bài viết còn lại cho Others
         long othersCount = totalPosts - top5PostsCount;
 
-		/*
-		 * // // Thêm top 5 topics // sortedTopics.stream().limit(5).forEach(entry -> {
-		 * // double percentage = (entry.getValue() * 100.0) / totalPosts; //
-		 * topicStats.add(new TopicStats( // entry.getKey().getName(), //
-		 * entry.getValue().intValue(), // Math.round(percentage * 10.0) / 10.0 // ));
-		 * // }); // // // Thêm Others nếu có // if (othersCount > 0) { // double
-		 * othersPercentage = (othersCount * 100.0) / totalPosts; // topicStats.add(new
-		 * TopicStats( // "Others", // (int) othersCount, // Math.round(othersPercentage
-		 * * 10.0) / 10.0 // )); // }
-		 * 
-		 * model.addAttribute("topicStats", topicStats);
-		 * 
-		 * // // Thêm phân tích insights // List<DataInsight> insights = analyzeData( //
-		 * totalInteractions, // totalInteractionsInWeek, // postReports, //
-		 * processingReports, // topicStats, // monthlyInteractions // ); // //
-		 * model.addAttribute("insights", insights);
-		 */        
+        // Thêm top 5 topics
+        sortedTopics.stream().limit(5).forEach(entry -> {
+            double percentage = (entry.getValue() * 100.0) / totalPosts;
+            topicStats.add(new TopicStats(
+                entry.getKey().getName(),
+                entry.getValue().intValue(),
+                Math.round(percentage * 10.0) / 10.0
+            ));
+        });
+
+        // Thêm Others nếu có
+        if (othersCount > 0) {
+            double othersPercentage = (othersCount * 100.0) / totalPosts;
+            topicStats.add(new TopicStats(
+                "Others",
+                (int) othersCount,
+                Math.round(othersPercentage * 10.0) / 10.0
+            ));
+        }
+
+        model.addAttribute("topicStats", topicStats);
+        
+        // Thêm phân tích insights
+        List<DataInsight> insights = analyzeData(
+            totalInteractions, 
+            totalInteractionsInWeek,
+            postReports,
+            processingReports,
+            topicStats,
+            monthlyInteractions
+        );
+        
+        model.addAttribute("insights", insights);
+        
         return "views_admin/index";
     }
 

@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.fit.iuh.entites.BookMark;
 import com.fit.iuh.entites.User;
@@ -28,13 +30,16 @@ public class SavedPostsController {
     public String getSavedPosts(Model model) {
         String currentEmail = SpringContext.getCurrentUserEmail();
         User currentUser = userService.findUserByEmail(currentEmail);
-
-        if (currentUser == null) {
-            return "redirect:/login";
-        }
         List<BookMark> bookmarks = bookMarkService.findAllByUserId(currentUser.getUserId());
         model.addAttribute("bookmarks", bookmarks);
-
         return "views_user/saved-posts"; 
+    }
+    
+    @PostMapping("/delete")
+    public String deleteBookmark(@RequestParam("postId") int postId) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        bookMarkService.deleteByUserIdAndPostId(currentUser.getUserId(), postId);
+        return "redirect:/save";
     }
 }
