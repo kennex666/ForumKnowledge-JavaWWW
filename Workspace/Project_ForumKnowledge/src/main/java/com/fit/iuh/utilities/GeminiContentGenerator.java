@@ -103,6 +103,7 @@ public class GeminiContentGenerator {
         GeminiResponse response = generator.generateContent();
 
         System.out.println("Title: " + response.getTitle());
+        System.out.println("Topic: " + response.getTopic());
         System.out.println("Description: " + response.getDescription());
         System.out.println("Content: " + response.getContent());
     }

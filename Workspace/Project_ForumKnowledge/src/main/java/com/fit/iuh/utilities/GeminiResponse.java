@@ -7,6 +7,7 @@ import jakarta.xml.bind.annotation.XmlRootElement;
 public class GeminiResponse {
 
     private String title;
+    private String topic;
     private String description;
     private String content;
 
@@ -18,6 +19,15 @@ public class GeminiResponse {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    @XmlElement
+    public String getTopic() {
+        return topic;
+    }
+
+    public void setTopic(String topic) {
+        this.topic = topic;
     }
 
     @XmlElement
