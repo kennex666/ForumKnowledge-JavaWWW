@@ -1,5 +1,6 @@
 package com.fit.iuh.services;
 
+import com.fit.iuh.entites.Following;
 import com.fit.iuh.entites.User;
 import com.fit.iuh.enums.UserAccountState;
 import org.springframework.data.domain.Page;
@@ -24,7 +25,7 @@ public interface UserService {
     public void save(User user);
 
     public String registerUser(User user, int role);
-    
+
     public User findById(int id);
 
     public Boolean changeState(int id, UserAccountState state);
@@ -35,4 +36,10 @@ public interface UserService {
     List<User> getUsersBetweenDates(Date startDate, Date endDate);
 
     public void edit(User user);
+
+    public List<Following> isFollowing(int currentUserId, int userId);
+
+    public void follow(int currentUserId, int userId);
+
+    public void unfollow(int currentUserId, int userId);
 }

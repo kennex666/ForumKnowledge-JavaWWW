@@ -46,7 +46,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query("SELECT p FROM Post p")
 	public Page<Post> findAllPost(Pageable pageable);
 
-	@Query("SELECT p FROM Post p JOIN p.author.followers f WHERE f.followed.userId = :userId")
+	@Query("SELECT p FROM Post p JOIN p.author.followers f WHERE f.follower.userId = :userId")
 	public Page<Post> findForFollowing(Pageable pageable, int userId);
 
 	@Query("SELECT p FROM Post p WHERE p.author.userId = :userId")

@@ -34,12 +34,10 @@ public class UserController {
                 SpringContext.getCurrentUserEmail()
         );
 
-        if (user == null)
-            throw new ResourceNotFoundException("User not found");
-
         model.addAttribute("postsPage", postService.findForUser(pageable, user.getUserId()));
         model.addAttribute("user", user);
-        model.addAttribute("currentUser", user);
+        model.addAttribute("currentUser", currentUser);
+        model.addAttribute("isFollowing", userService.isFollowing(currentUser.getUserId(), user.getUserId()).size() > 0);
         if (tab != null) {
             if (tab.equals("about")) {
                 return "views_user/user-profile-about";

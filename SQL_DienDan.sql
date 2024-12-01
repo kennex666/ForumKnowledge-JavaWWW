@@ -3,25 +3,25 @@ use iDev4rum
 SET IDENTITY_INSERT users ON;
 INSERT INTO users (user_id, name, role, account_state, email, title, password_hash, profile_picture, bio, created_at, updated_at) VALUES
 (1, 'Alice', 1, 'EXPIRED', 'alice@example.com', 'Developer', 'hash01', 'pic1.jpg', 'Bio of Alice', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(2, 'Bob', 2, 'BANNED', 'bob@example.com', 'Manager', 'hash02', 'pic2.jpg', 'Bio of Bob', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(2, 'Bob', 0, 'BANNED', 'bob@example.com', 'Manager', 'hash02', 'pic2.jpg', 'Bio of Bob', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (3, 'Charlie', 1, 'RESTRICTED', 'charlie@example.com', 'Analyst', 'hash03', 'pic3.jpg', 'Bio of Charlie', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(4, 'David', 2, 'EXPIRED', 'david@example.com', 'Designer', 'hash04', 'pic4.jpg', 'Bio of David', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(4, 'David', 0, 'EXPIRED', 'david@example.com', 'Designer', 'hash04', 'pic4.jpg', 'Bio of David', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (5, 'Eve', 1, 'BANNED', 'eve@example.com', 'Engineer', 'hash05', 'pic5.jpg', 'Bio of Eve', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(6, 'Frank', 2, 'RESTRICTED', 'frank@example.com', 'Architect', 'hash06', 'pic6.jpg', 'Bio of Frank', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(6, 'Frank', 0, 'RESTRICTED', 'frank@example.com', 'Architect', 'hash06', 'pic6.jpg', 'Bio of Frank', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (7, 'Grace', 1, 'EXPIRED', 'grace@example.com', 'Scientist', 'hash07', 'pic7.jpg', 'Bio of Grace', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(8, 'Hannah', 2, 'BANNED', 'hannah@example.com', 'Teacher', 'hash08', 'pic8.jpg', 'Bio of Hannah', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(8, 'Hannah', 0, 'BANNED', 'hannah@example.com', 'Teacher', 'hash08', 'pic8.jpg', 'Bio of Hannah', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (9, 'Ivy', 1, 'RESTRICTED', 'ivy@example.com', 'Doctor', 'hash09', 'pic9.jpg', 'Bio of Ivy', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(10, 'Jack', 2, 'EXPIRED', 'jack@example.com', 'Lawyer', 'hash10', 'pic10.jpg', 'Bio of Jack', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(10, 'Jack', 0, 'EXPIRED', 'jack@example.com', 'Lawyer', 'hash10', 'pic10.jpg', 'Bio of Jack', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (11, 'Kathy', 1, 'BANNED', 'kathy@example.com', 'Nurse', 'hash11', 'pic11.jpg', 'Bio of Kathy', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(12, 'Leo', 2, 'RESTRICTED', 'leo@example.com', 'Pilot', 'hash12', 'pic12.jpg', 'Bio of Leo', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(12, 'Leo', 0, 'RESTRICTED', 'leo@example.com', 'Pilot', 'hash12', 'pic12.jpg', 'Bio of Leo', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (13, 'Mona', 1, 'EXPIRED', 'mona@example.com', 'Artist', 'hash13', 'pic13.jpg', 'Bio of Mona', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(14, 'Nina', 2, 'BANNED', 'nina@example.com', 'Chef', 'hash14', 'pic14.jpg', 'Bio of Nina', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(14, 'Nina', 0, 'BANNED', 'nina@example.com', 'Chef', 'hash14', 'pic14.jpg', 'Bio of Nina', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (15, 'Oscar', 1, 'RESTRICTED', 'oscar@example.com', 'Writer', 'hash15', 'pic15.jpg', 'Bio of Oscar', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(16, 'Paul', 2, 'EXPIRED', 'paul@example.com', 'Musician', 'hash16', 'pic16.jpg', 'Bio of Paul', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(16, 'Paul', 0, 'EXPIRED', 'paul@example.com', 'Musician', 'hash16', 'pic16.jpg', 'Bio of Paul', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (17, 'Quinn', 1, 'BANNED', 'quinn@example.com', 'Actor', 'hash17', 'pic17.jpg', 'Bio of Quinn', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(18, 'Rita', 2, 'RESTRICTED', 'rita@example.com', 'Director', 'hash18', 'pic18.jpg', 'Bio of Rita', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
+(18, 'Rita', 0, 'RESTRICTED', 'rita@example.com', 'Director', 'hash18', 'pic18.jpg', 'Bio of Rita', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
 (19, 'Sam', 1, 'EXPIRED', 'sam@example.com', 'Producer', 'hash19', 'pic19.jpg', 'Bio of Sam', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP),
-(20, 'Tina', 2, 'BANNED', 'tina@example.com', 'Editor', 'hash20', 'pic20.jpg', 'Bio of Tina', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+(20, 'Tina', 0, 'BANNED', 'tina@example.com', 'Editor', 'hash20', 'pic20.jpg', 'Bio of Tina', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 SET IDENTITY_INSERT users OFF;
 GO
 
