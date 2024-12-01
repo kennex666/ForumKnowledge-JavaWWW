@@ -40,7 +40,16 @@
                                     <a class="font-semibold hover:text-black" th:href="@{'/author/' + ${post.author.userId}}">
                                         <img th:src="${post.author.profilePicture}" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
                                     </a>
-                                    <p class="text-sm text-gray-500"><a class="font-semibold hover:text-black" th:href="@{'/author/' + ${post.author.userId}}" th:text="${post.author.name}"></a> với chủ đề <a class="font-semibold hover:text-black" th:href="@{'/topics/' + ${post.author.userId}}" th:text="${post.topic.name}">Java</a></p>
+                                    <p class="text-sm text-gray-500">
+                                        <a class="font-semibold hover:text-black"
+                                           th:href="@{author/{userId}(userId=${post.author.userId})}"
+                                           th:text="${post.author.name}">
+                                        </a> với chủ đề
+                                        <a class="font-semibold hover:text-black"
+                                           th:href="@{'/topics/' + ${post.author.userId}}"
+                                           th:text="${post.topic.name}">Java
+                                        </a>
+                                    </p>
                                 </div>
                                 <div>
                                     <a th:href="@{'/posts/' + ${post.url}}" class="text-2xl font-bold" th:text="${post.title}">Hướng sự kiện Java cơ bản cùng Netbeans</a>
