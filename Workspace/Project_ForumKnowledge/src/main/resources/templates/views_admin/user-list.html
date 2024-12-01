@@ -142,8 +142,15 @@
                             <div class="col-md-6">
                                 <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
                                     <ul class="pagination">
-                                        <li class="page-item disabled"><a class="page-link" aria-label="Previous"
-                                                                          href="#"><span aria-hidden="true">«</span></a>
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               aria-label="Previous"
+                                               th:classappend="${currentPage == 1} ? 'disabled' : ''"
+                                               th:href="@{/admin/users(skip=${currentPage - 1}, limit=${limit})}">
+                                                <span aria-hidden="true">
+                                                    «
+                                                </span>
+                                            </a>
                                         </li>
 
                                         <li th:each="page : ${#numbers.sequence(1, totalPages)}"
@@ -154,8 +161,16 @@
                                                th:text="${page}"></a>
                                         </li>
 
-                                        <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
-                                                aria-hidden="true">»</span></a></li>
+                                        <li class="page-item">
+                                            <a class="page-link"
+                                               aria-label="Next"
+                                               th:classappend="${currentPage == totalPages} ? 'disabled' : ''"
+                                               th:href="@{/admin/users(skip=${currentPage + 1}, limit=${limit})}">
+                                                <span aria-hidden="true">
+                                                    »
+                                                </span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </nav>
                             </div>
