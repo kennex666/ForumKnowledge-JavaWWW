@@ -3,6 +3,7 @@ package com.fit.iuh.controllers;
 import com.fit.iuh.entites.User;
 import com.fit.iuh.enums.UserAccountState;
 import com.fit.iuh.services.UserService;
+import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,12 +20,17 @@ public class AdminUserController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("/")
+    @GetMapping("")
     public String index(Model model) {
         List<User> users = userService.getAllUsers();
         UserAccountState[] states = UserAccountState.values();
         model.addAttribute("users", users);
         model.addAttribute("states", states);
+        
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+        
         return "views_admin/user-list";
     }
 
