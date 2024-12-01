@@ -58,8 +58,8 @@
                         <p class="text-sm text-gray-500" th:text="${user.bio}"></p>
                     </div>
                     <div class="flex flex-row space-x-2">
-                        <a class="bg-blue-400 rounded-full px-4 py-2 text-white text-sm font-bold">Follow</a>
-                        <a href="mailto:me@dtbao.io.vn" class="flex">
+                        <button type="button" th:class="${ (isFollowing ? 'bg-red-400' : 'bg-blue-400') + ' rounded-full px-4 py-2 text-white text-sm font-bold'}" th:data-userid="${user.userId}"
+                                th:data-currentstate="${currentState}" onclick="follow(this)" th:text="${(isFollowing ? 'Huỷ theo dõi' : 'Theo dõi')}">Follow</button>                        <a href="mailto:me@dtbao.io.vn" class="flex">
                             <div class="bg-blue-400 rounded-full w-9 text-white text-sm font-bold flex justify-center items-center">
                                 <i class="fa-regular fa-envelope"></i>
                             </div>
@@ -115,6 +115,43 @@
             </div>
         </div>
     </div>
+
+    <script th:inline="javascript">
+
+        var currentState = [[${isFollowing}]];
+        var followedId = [[${user.userId}]];
+        function follow(element){
+
+            fetch('/api/users/following?id=' + followedId, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            }).then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                    if(data.errorCode == 200){
+                        if(currentState == false){
+                            element.innerHTML = 'Huỷ theo dõi';
+                            element.classList.toggle('bg-blue-400', false);
+                            element.classList.toggle('bg-red-400', true);
+                            currentState = true;
+                        }else{
+                            element.innerHTML = 'Theo dõi';
+                            element.classList.toggle('bg-blue-400', true);
+                            element.classList.toggle('bg-red-400', false);
+                            currentState = false;
+                        }
+                    } else {
+                        alert(data.message);
+                    }
+                }).catch((error) => {
+                console.log(error)
+                alert('Error: ' + error);
+            });
+        }
+    </script>
+
 </div>
 </body>
 </html>

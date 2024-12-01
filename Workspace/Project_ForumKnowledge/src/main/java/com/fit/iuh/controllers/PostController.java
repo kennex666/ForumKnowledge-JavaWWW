@@ -88,7 +88,16 @@ public class PostController {
             return "redirect:/";
         }
 
+        boolean isFollowing = false;
+        if (currentUser != null){
+            isFollowing = userService.isFollowing(currentUser.getUserId(), post.getAuthor().getUserId()).size() > 0;
+        }
+
+        boolean isOwner = post.getAuthor().getUserId() == currentUser.getUserId();
+
         model.addAttribute("post", post);
+        model.addAttribute("isFollowing", isFollowing);
+        model.addAttribute("isOwner", isOwner);
         System.out.println("ID: " + id);
 
         if (currentUser != null){
