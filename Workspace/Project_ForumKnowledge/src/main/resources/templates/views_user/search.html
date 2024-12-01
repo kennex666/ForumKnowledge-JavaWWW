@@ -5,6 +5,15 @@
 <!-- Nav bar -->
 <header th:replace="~{/fragments/navigate :: header}"></header>
 
+<style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+</style>
 <!-- Blog space -->
 <div class="container mx-auto px-12 lg:w-10/12">
     <div class="flex justify-between items-start pt-12">
@@ -27,10 +36,19 @@
             </div>
 
             <!-- Post suggest -->
-            <div class="flex flex-row items-center justify-center" th:if="${searchPosts.content.size() <= 0}">
-                <div class="flex flex-col items-center space-y-4">
+            <div th:class="${'flex flex-row px-6 py-4 max-w-full ' + (gptContent ? '' : 'items-center justify-center')}" th:if="${searchPosts.content.size() <= 0}">
+                <div th:if="${gptContent}" id="gpt-container">
+                    <svg class="animate-spin h-8 w-8 py-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke-width="4" class="text-blue-500 opacity-25" />
+                        <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke="currentColor" stroke-width="4" class="text-blue-500" /></svg>
+                    <h2 class="text-2xl font-semibold">Chờ chút!</h2>
+                    <p class="text-gray-500 text-center">iDevAI đang tìm nội dung cho bạn...</p>
+
+                </div>
+                <div th:if="${!gptContent}" class="flex flex-col items-center space-y-4">
                     <h2 class="text-2xl font-semibold">Không có bài viết nào</h2>
                     <p class="text-gray-500 text-center">Hãy theo dõi một số tác giả để xem bài viết của họ</p>
+                    <p class="text-gray-500 text-center">Bạn có thể thử hỏi thanh chat của chúng tôi đó ;)</p>
                 </div>
             </div>
             <div class="flex flex-col space-y-3" th:each="post : ${searchPosts.content}">
@@ -130,5 +148,69 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="/assets/js/drawdown.js"></script>
+<script th:inline="javascript">
+    var queryString = "";
+    const markdownStyles = {
+        h1: ["text-3xl", "font-bold", "mt-6", "mb-4"],
+        h2: ["text-2xl", "font-semibold", "mt-5", "mb-3"],
+        h3: ["text-xl", "font-medium", "mt-4", "mb-2"],
+        p: ["text-base", "text-gray-700", "mt-2", "mb-4", "leading-relaxed"],
+        ul: ["list-disc", "list-inside", "pl-5", "mt-2", "mb-4"],
+        ol: ["list-decimal", "list-inside", "pl-5", "mt-2", "mb-4"],
+        li: ["text-gray-700", "mb-2"],
+        a: ["text-blue-500", "hover:underline"],
+        code: ["text-red-600", "font-mono", "px-1", "py-0.5", "rounded"],
+        pre: ["bg-gray-100", "p-4", "rounded-md", "overflow-x-auto", "my-4"],
+        blockquote: [
+            "border-l-4",
+            "border-blue-300",
+            "pl-4",
+            "italic",
+            "text-gray-600",
+            "my-4",
+        ],
+    };
+
+    function applyMarkdownStyles(styles, parentElement) {
+        for (const [selector, classList] of Object.entries(styles)) {
+            if (typeof selector === "string" && Array.isArray(classList)) {
+                // Chỉ áp dụng class cho các phần tử con trong parentElement
+                parentElement
+                    .querySelectorAll(selector)
+                    .forEach((el) => el.classList.add(...classList));
+            } else {
+                console.warn(`Invalid selector or classList for: ${selector}`);
+            }
+        }
+        return parentElement.outerHTML;
+    }
+
+    function createContent(content) {
+        const div = document.createElement("div");
+        div.innerHTML = markdown(content);
+
+        div.classList.add("mt-2");
+        return applyMarkdownStyles(markdownStyles, div);
+    }
+
+    window.onload = () => {
+
+        if (document.getElementById("gpt-container") ) {
+            queryString = document.getElementById("form-search").value.trim();
+            if (queryString.length > 0)
+            fetch(`/api/search-gpt?q=${encodeURI(queryString.trim())}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    document.getElementById("gpt-container").innerHTML = createContent(data.data);
+
+                    document.getElementById("gpt-container").classList = "flex flex-col space-y-2";
+                });
+        }
+
+    }
+
+</script>
 </body>
 </html>

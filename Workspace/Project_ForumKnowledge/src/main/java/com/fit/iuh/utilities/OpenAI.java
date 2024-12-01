@@ -74,6 +74,21 @@ public class OpenAI {
         }
     }
 
+    public static String generateContent(String query){
+        try {
+            List chatCompletion = new ArrayList<>();
+            chatCompletion.add(
+                    Map.of("role", "system", "content", "Bạn là một nhà văn, bạn có thể viết hướng dẫn về mọi lĩnh vực. Bạn luôn sử dụng Markdown cho mọi bài viết. Người dùng sẽ hỏi bạn, và nhiệm vụ của bạn là sử dụng ý tưởng đó để viết thành bài viết."));
+            chatCompletion.add(
+                    Map.of("role", "user", "content", query)
+            );
+            return callGPT(query, chatCompletion);
+//            return "**Hello**\n# Hello";
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new Gson().toJson(Map.of("status", 100, "message", "Unexpected GPT error!"));
+        }
+    }
 
     public static String autoReview(String content, String type) throws Exception {
         try {

@@ -2,7 +2,9 @@ package com.fit.iuh.controllers;
 
 import com.fit.iuh.entites.User;
 import com.fit.iuh.services.PostService;
+import com.fit.iuh.utilities.OpenAI;
 import com.fit.iuh.utilities.SpringContext;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -24,6 +26,7 @@ public class SearchController {
     public String search(Model model, @Param("q") String q, @RequestParam(defaultValue = "keyword", required = false) String tab, @RequestParam(defaultValue = "0") int page) {
         Pageable pageable = PageRequest.of(0, 5);  // 10 bài viết mỗi trang
         model.addAttribute("rcmPost", postService.findForHome(pageable));
+        boolean gptContent = false;
 
         model.addAttribute("title", "Tìm kiếm | iDev4rum");
         model.addAttribute("q", q);
@@ -37,8 +40,13 @@ public class SearchController {
         } else if (tabStr.equals("tag")) {
             model.addAttribute("searchPosts", postService.getPostByTopic(pageable, q));
         } else {
-            model.addAttribute("searchPosts", postService.searchKeyword(pageable, q));
+            Page postPage = postService.searchKeyword(pageable, q);
+            if (postPage.getContent().size() < 1) {
+                gptContent = true;
+            }
+            model.addAttribute("searchPosts", postPage);
         }
+        model.addAttribute("gptContent", gptContent);
 
         return "views_user/search";
     }
