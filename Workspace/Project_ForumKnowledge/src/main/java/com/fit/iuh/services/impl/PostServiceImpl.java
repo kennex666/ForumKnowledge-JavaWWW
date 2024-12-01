@@ -197,4 +197,10 @@ public class PostServiceImpl implements PostService {
 		return postRepository.findAllPost(pageable);
 	}
 
+	@Override
+	public Page<Post> findForFollowing(Pageable pageable, int userId) {
+		return postRepository.findForFollowing(pageable, userId);
+	}
+
+
 }

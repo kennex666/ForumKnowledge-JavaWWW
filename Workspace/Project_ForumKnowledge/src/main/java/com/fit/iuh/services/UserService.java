@@ -30,8 +30,7 @@ public interface UserService {
     public Boolean changeState(int id, UserAccountState state);
 
     public Page<User> findUsersWithCondition(int skip, int limit, boolean isDesc);
-  
-    public void changeState(int id, UserAccountState state);
+
 
     List<User> getUsersBetweenDates(Date startDate, Date endDate);
 }
