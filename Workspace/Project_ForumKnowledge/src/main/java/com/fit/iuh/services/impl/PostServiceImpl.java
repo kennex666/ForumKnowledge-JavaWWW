@@ -1,8 +1,10 @@
 package com.fit.iuh.services.impl;
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.entites.Topic;
 import com.fit.iuh.enums.PostState;
 import com.fit.iuh.repositories.PostRepository;
+import com.fit.iuh.repositories.TopicRepository;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.utilities.GeminiContentGenerator;
 import com.fit.iuh.utilities.GeminiResponse;
@@ -24,6 +26,9 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostRepository postRepository;
+
+	@Autowired
+	private TopicRepository topicRepository;
 
 	@Autowired
 	private GeminiContentGenerator geminiContentGenerator;
@@ -154,6 +159,14 @@ public class PostServiceImpl implements PostService {
 		post.setTotalView(0);
 		post.setCreatedAt(new Date());
 		post.setUpdatedAt(new Date());
+
+		List<Topic> topics = topicRepository.findByNameContaining(content.getTopic());
+		if (!topics.isEmpty()) {
+			post.setTopic(topics.get(0));
+		} else {
+			logger.error("Scheduled Task - Generating Post: Unable to find topic");
+			return;
+		}
 
 		postRepository.save(post);
 		logger.info("Scheduled Task - Generating Post: Success");
