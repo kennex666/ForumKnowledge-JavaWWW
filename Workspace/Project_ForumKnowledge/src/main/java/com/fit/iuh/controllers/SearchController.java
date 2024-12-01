@@ -28,8 +28,9 @@ public class SearchController {
         model.addAttribute("title", "Tìm kiếm | iDev4rum");
         model.addAttribute("q", q);
 
-
         String tabStr = tab == null ? "keyword" : tab.isBlank() ? "keyword" : tab;
+
+        model.addAttribute("tab", tabStr);
 
         if (tabStr.equals("author")) {
             model.addAttribute("searchPosts", postService.getPostByAuthor(pageable, q));
