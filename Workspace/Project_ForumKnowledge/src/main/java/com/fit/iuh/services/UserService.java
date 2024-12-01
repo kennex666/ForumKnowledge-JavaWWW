@@ -31,6 +31,7 @@ public interface UserService {
 
     public Page<User> findUsersWithCondition(int skip, int limit, boolean isDesc);
 
+    public List<User> getUsersBetweenDates(Date startDate, Date endDate);
 
-    List<User> getUsersBetweenDates(Date startDate, Date endDate);
+    public Boolean changeRole(int id, int role);
 }

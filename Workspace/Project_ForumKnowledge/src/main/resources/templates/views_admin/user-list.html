@@ -202,6 +202,29 @@
         });
     }
 
+    function userRoleChange(userId, element) {
+        const confirm = window.confirm("Are you sure to change the role of this user?");
+        const roleUserValue  = element.getAttribute('data-role');
+        const role = element.value;
+
+        if (!confirm) {
+            element.value = roleUserValue;
+            return;
+        } else {
+            element.setAttribute('data-role', role);
+        }
+
+        fetch(`/api/users/role-change?id=${userId}&role=${role}`, {
+            method: 'PUT'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        }).catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
+    }
+
     document.getElementById("limitSelect").addEventListener("change", function () {
         const selectedLimit = this.value;
         const urlParams = new URLSearchParams(window.location.search);

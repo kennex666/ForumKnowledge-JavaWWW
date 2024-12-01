@@ -32,4 +32,17 @@ public class UserAPIController {
         }
     }
 
+    @PutMapping("/role-change")
+    public ResponseEntity<Map<String, Object>> changeRole(@RequestParam("id") int id, @RequestParam("role") int role) {
+        try {
+            if (userService.changeRole(id, role)) {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Change role successfully!", "errorCode", 200, "data", ""));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error when change role!", "errorCode", 404, "data", ""));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));
+        }
+    }
+
 }

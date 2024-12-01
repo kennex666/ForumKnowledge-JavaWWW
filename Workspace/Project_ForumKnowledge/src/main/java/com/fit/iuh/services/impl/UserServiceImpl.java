@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -112,5 +113,21 @@ public class UserServiceImpl implements UserService {
 
     public List<User> getUsersBetweenDates(Date startDate, Date endDate) {
         return userRepository.findByCreatedAtBetween(startDate, endDate);
+    }
+
+    @Override
+    public Boolean changeRole(int id, int role) {
+        int[] validRoles = {0, 1};
+        boolean isValidRole = Arrays.stream(validRoles).anyMatch(r -> r == role);
+        if (!isValidRole)
+            id = 0;
+
+        User user = userRepository.findById(id);
+        if (user != null) {
+            user.setRole(role);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }
