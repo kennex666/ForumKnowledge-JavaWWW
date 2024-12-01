@@ -70,54 +70,7 @@
 
 
             <!-- Post suggest -->
-            <div class="flex flex-col space-y-3" th:each="post : ${user.posts}">
-                <!-- post item -->
-                <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">
-                    <div class="w-4/6">
-                        <div class="flex items-center space-x-2 mb-2">
-                            <div>
-                                <div class="flex flex-row items-center space-x-2 mb-3">
-                                    <a class="font-semibold hover:text-black" th:href="@{/users/user(id=${post.author.userId})}">
-                                        <img th:src="@{${'/assets/img/avatars/' + post.author.profilePicture}}"
-                                             alt="User profile image"
-                                             class="rounded-full w-6 h-6">
-                                    </a>
-                                    <p class="text-sm text-gray-500">
-                                        <a class="font-semibold hover:text-black"
-                                           th:href="@{/users/user(id=${post.author.userId})}"
-                                           th:text="${post.author.name}"></a>
-                                        với chủ đề
-                                        <a class="font-semibold hover:text-black"
-                                           th:href="@{/topics/topic(id=${post.author.userId})}"
-                                           th:text="${post.topic.name}"></a>
-                                    </p>
-                                </div>
-                                <div>
-                                    <a href="#" class="text-2xl font-bold" th:text="${post.title}"></a>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="#" class="" th:text="${post.description}"></a>
-                        <a href="#" class="flex items-center justify-between mt-4 text-gray-600">
-                            <div class="flex items-center">
-                                <i class="far fa-star"></i>
-                                <span class="ml-2" th:text="${#dates.format(post.createdAt, 'MMM dd, yyyy')}"></span>
-                            </div>
-                            <div class="flex items-center">
-                                <span th:text="${post.totalUpVote} > 1000 ? ${post.totalUpVote / 1000 + 'K'} : ${post.totalUpVote}"></span>
-                                <i class="far fa-thumbs-up ml-2"></i>
-                                <span th:text="${post.comments.size()} > 1000 ? ${post.comments.size() / 1000 + 'K'} : ${post.comments.size()}"></span>
-                                <i class="far fa-comment ml-2"></i>
-                            </div>
-                        </a>
-                    </div>
-                    <a href="#" class="w-2/6 flex flex-row justify-center items-center">
-                        <img th:src="@{${'/assets/img/dogs/image1.jpeg'}}"
-                             alt="Image of a blog post"
-                             class="rounded-lg w-fit">
-                    </a>
-                </div>
-            </div>
+            <div th:replace="fragments/post_component :: div"></div>
         </div>
 
         <!-- Profile -->
