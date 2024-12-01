@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fit.iuh.enums.PostReportState;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
@@ -98,6 +99,7 @@ public class PostReport {
 		this.post = post;
 	}
 
+	@JsonProperty("reporter")
 	public User getReporter() {
 		return reporter;
 	}

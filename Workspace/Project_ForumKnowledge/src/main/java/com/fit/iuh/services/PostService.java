@@ -58,4 +58,7 @@ public interface PostService {
 
     // Method get all article
     public Page<Post> findForHome(Pageable pageable);
+
+    // Method get all article with limit, skip and sort desc
+    public Page<Post> findPostsWithCondition(int skip, int limit, boolean isDesc);
 }

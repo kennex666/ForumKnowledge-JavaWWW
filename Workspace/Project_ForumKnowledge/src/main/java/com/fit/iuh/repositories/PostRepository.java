@@ -42,4 +42,7 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 
 	@Query("SELECT p FROM Post p ORDER BY p.createdAt DESC")
 	public Page<Post> findForHome(Pageable pageable);
+
+	@Query("SELECT p FROM Post p")
+	public Page<Post> findAllPost(Pageable pageable);
 }

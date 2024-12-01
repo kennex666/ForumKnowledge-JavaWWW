@@ -5,6 +5,7 @@ import com.fit.iuh.enums.UserAccountState;
 import com.fit.iuh.services.UserService;
 import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,23 +22,31 @@ public class AdminUserController {
     private UserService userService;
 
     @GetMapping("")
-    public String index(Model model) {
-        List<User> users = userService.getAllUsers();
+    public String index(
+            Model model,
+            @RequestParam(name = "skip", defaultValue = "1") int skip,
+            @RequestParam(name = "limit", defaultValue = "10") int limit
+    ) {
+        skip = skip < 1 ? 1 : skip;
+        limit = limit < 1 ? 10 : limit;
+        int[] limits = new int[]{10, 25, 50, 100};
+
+        Page<User> users = userService.findUsersWithCondition(skip, limit, true);
         UserAccountState[] states = UserAccountState.values();
-        model.addAttribute("users", users);
+
+        model.addAttribute("users", users.getContent());
+        model.addAttribute("currentPage", users.getNumber() + 1);
+        model.addAttribute("totalPages", users.getTotalPages());
+        model.addAttribute("limit", limit);
+        model.addAttribute("baseUrl", "/admin/users");
         model.addAttribute("states", states);
+        model.addAttribute("limits", limits);
         
         String currentEmail = SpringContext.getCurrentUserEmail();
         User currentUser = userService.findUserByEmail(currentEmail);
         model.addAttribute("currentUser", currentUser);
         
         return "views_admin/user-list";
-    }
-
-    @GetMapping("/state-change")
-    public String changeState(@RequestParam("id") int id, @RequestParam("state") UserAccountState state) {
-        userService.changeState(id, state);
-        return "redirect:/admin/users/";
     }
 
 }

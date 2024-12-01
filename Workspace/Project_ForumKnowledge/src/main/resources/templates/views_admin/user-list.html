@@ -13,18 +13,29 @@
 </head>
 
 <body id="page-top">
-<!-- Modal -->
 <div class="modal fade" id="reportModal" tabindex="-1" aria-labelledby="reportModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="reportModalLabel">Danh sách Báo cáo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <ul id="reportList">
-                    <!-- Các báo cáo sẽ được thêm vào đây -->
-                </ul>
+                <div class="table-responsive">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Reason</th>
+                            <th>Created at</th>
+                            <th>State</th>
+                        </tr>
+                        </thead>
+                        <tbody id="reportList" class="align-middle">
+                        <!-- Các báo cáo sẽ được thêm vào đây -->
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -44,14 +55,18 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6 text-nowrap">
-                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable"><label
-                                        class="form-label">Show&nbsp;<select
-                                        class="d-inline-block form-select form-select-sm">
-                                    <option value="10" selected="">10</option>
-                                    <option value="25">25</option>
-                                    <option value="50">50</option>
-                                    <option value="100">100</option>
-                                </select>&nbsp;</label></div>
+                                <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                                    <label
+                                            class="form-label">Show&nbsp;
+                                        <select id="limitSelect"
+                                                class="d-inline-block form-select form-select-sm">
+                                            <option th:each="limitValue : ${limits}"
+                                                    th:text="${limitValue}"
+                                                    th:value="${limitValue}"
+                                                    th:selected="${limitValue == limit}"></option>
+                                        </select>&nbsp;
+                                    </label>
+                                </div>
                             </div>
                             <div class="col-md-6">
                                 <div class="text-md-end dataTables_filter" id="dataTable_filter"><label
@@ -62,7 +77,7 @@
                         </div>
                         <div class="table-responsive table mt-2" id="data" role="grid"
                              aria-describedby="dataTable_info">
-                            <table class="table my-0" id="dataTable">
+                            <table class="table text-center align-middle my-0" id="dataTable">
                                 <thead>
                                 <tr>
                                     <th>ID</th>
@@ -84,10 +99,11 @@
                                     <td th:text="${user.updatedAt}"></td>
                                     <td>
                                         <select class="form-select"
-                                                th:onchange="'changeState(this.value)'">
+                                                th:data-state="${user.accountState}"
+                                                th:onchange="'userStateChange(' + ${user.userId} + ', this)'">
                                             <option th:each="state : ${states}"
                                                     th:text="${state}"
-                                                    th:value="@{/admin/users/state-change(id=${user.userId}, state=${state})}"
+                                                    th:value="${state}"
                                                     th:selected="${state == user.accountState}">
                                             </option>
                                         </select>
@@ -109,8 +125,7 @@
                         </div>
                         <div class="row">
                             <div class="col-md-6 align-self-center">
-                                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing
-                                    1 to 10 of 27</p>
+                                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite"></p>
                             </div>
                             <div class="col-md-6">
                                 <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
@@ -118,9 +133,15 @@
                                         <li class="page-item disabled"><a class="page-link" aria-label="Previous"
                                                                           href="#"><span aria-hidden="true">«</span></a>
                                         </li>
-                                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+
+                                        <li th:each="page : ${#numbers.sequence(1, totalPages)}"
+                                            class="page-item"
+                                            th:classappend="${page == currentPage} ? 'active' : ''">
+                                            <a class="page-link"
+                                               th:href="@{/admin/users(skip=${page}, limit=${limit})}"
+                                               th:text="${page}"></a>
+                                        </li>
+
                                         <li class="page-item"><a class="page-link" aria-label="Next" href="#"><span
                                                 aria-hidden="true">»</span></a></li>
                                     </ul>
@@ -143,13 +164,37 @@
 <script src="/assets/js/bs-init.js"></script>
 <script src="/assets/js/theme.js"></script>
 <script>
-    function changeState(value) {
-        const confirm = window.confirm("Bạn có chắc chắn muốn thay đổi trạng thái tài khoản?");
-        if (confirm)
-            window.location.href = value;
-        else
-            window.location.reload();
+    function userStateChange(userId, element) {
+        const confirm = window.confirm("Are you sure to change the state of this user?");
+        const stateUserValue  = element.getAttribute('data-state');
+        const state = element.value;
+
+        if (!confirm) {
+            element.value = stateUserValue;
+            return;
+        } else {
+            element.setAttribute('data-state', state);
+        }
+
+        fetch(`/api/users/state-change?id=${userId}&state=${state}`, {
+            method: 'PUT'
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+        }).catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+        });
     }
+
+    document.getElementById("limitSelect").addEventListener("change", function () {
+        const selectedLimit = this.value;
+        const urlParams = new URLSearchParams(window.location.search);
+
+        urlParams.set("limit", selectedLimit);
+
+        window.location.href = window.location.pathname + "?" + urlParams.toString();
+    });
 </script>
 </body>
 </html>

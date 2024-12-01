@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -184,6 +185,16 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public Page<Post> findForHome(Pageable pageable) {
 		return postRepository.findForHome(pageable);
+	}
+
+	@Override
+	public Page<Post> findPostsWithCondition(int skip, int limit, boolean isDesc) {
+		Pageable pageable = PageRequest.of(
+				skip - 1,
+				limit,
+				isDesc ? Sort.by("postId").descending() : Sort.by("postId").ascending()
+		);
+		return postRepository.findAllPost(pageable);
 	}
 
 }
