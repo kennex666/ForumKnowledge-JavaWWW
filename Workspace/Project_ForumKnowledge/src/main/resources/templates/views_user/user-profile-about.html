@@ -68,11 +68,12 @@
                 </div>
             </div>
 
-            <div class="py-12">
+            <div class="py-12" th:if="${currentUser == null}"><a href="/login">Đăng nhập để sử dụng chức năng</a></div>
+
+            <div class="py-12" th:if="${currentUser != null}">
                 <h3 class="font-semibold mb-5">Đã lưu gần đây</h3>
                 <div class="space-y-5">
-                    <div class="mb-3 space-y-5" th:if="${currentUser == null}"><a href="/login">Đăng nhập để sử dụng chức năng</a></div>
-                    <div class="mb-3 space-y-5" th:if="${currentUser != null}" th:each="bookmark : ${currentUser.bookMarks}">
+                    <div class="mb-3 space-y-5" th:each="bookmark : ${currentUser.bookMarks}">
                         <!-- Bookmark item -->
                         <div class="py-2">
                             <a th:href="@{'/author/' + ${bookmark.post.author.userId}}" class="flex flex-row items-center space-x-2 mb-3 text-sm">
