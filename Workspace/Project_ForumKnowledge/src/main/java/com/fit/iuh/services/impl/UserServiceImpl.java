@@ -12,6 +12,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -99,7 +100,6 @@ public class UserServiceImpl implements UserService {
         return false;
     }
 
-    @Override
     public Page<User> findUsersWithCondition(int skip, int limit, boolean isDesc) {
         Pageable pageable = PageRequest.of(
                 skip - 1,
@@ -110,4 +110,7 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    public List<User> getUsersBetweenDates(Date startDate, Date endDate) {
+        return userRepository.findByCreatedAtBetween(startDate, endDate);
+    }
 }

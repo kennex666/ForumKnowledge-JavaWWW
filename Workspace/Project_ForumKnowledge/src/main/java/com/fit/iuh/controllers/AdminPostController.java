@@ -1,8 +1,11 @@
 package com.fit.iuh.controllers;
 
 import com.fit.iuh.entites.Post;
+import com.fit.iuh.entites.User;
 import com.fit.iuh.enums.PostState;
 import com.fit.iuh.services.PostService;
+import com.fit.iuh.services.UserService;
+import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -19,6 +22,9 @@ public class AdminPostController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private UserService userService;
 
     @GetMapping("")
     public String index(
@@ -40,6 +46,11 @@ public class AdminPostController {
         model.addAttribute("baseUrl", "/admin/posts");
         model.addAttribute("states", states);
         model.addAttribute("limits", limits);
+        
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+        
         return "views_admin/post-list";
     }
 

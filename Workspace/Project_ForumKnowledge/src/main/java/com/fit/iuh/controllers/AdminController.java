@@ -4,6 +4,7 @@ import com.fit.iuh.entites.*;
 import com.fit.iuh.enums.PostReportState;
 import com.fit.iuh.services.*;
 import com.fit.iuh.utilities.CommentUtils;
+import com.fit.iuh.utilities.SpringContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -39,11 +40,8 @@ public class AdminController {
     @Autowired
     private PostReportService postReportService;
 
-    @GetMapping("/")
-    public String index() {
-        return "views_admin/index";
-    }
-
+    @Autowired
+    private UserService userService;
     /*
       ** Topic
       * 1. Hiển thị danh sách topic
@@ -54,13 +52,15 @@ public class AdminController {
       * 4. Sửa topic
       * 5. Xóa topic
      */
-
     // 1. Hiển thị danh sách topic
     @GetMapping("/topic")
     public String topic(Model model,
                         @RequestParam(defaultValue = "0") int numberPage,
                         @RequestParam(defaultValue = "10") int size,
                         @RequestParam(required = false) String key) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
 
         Page<Topic> page;
         if (key != null && !key.trim().isEmpty()) {
@@ -85,6 +85,10 @@ public class AdminController {
     // 2. Thêm topic
     @GetMapping("/topic/addform")
     public String addTopicForm(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+
         model.addAttribute("topic", new Topic());
         return "views_admin/add-topic";
     }
@@ -92,6 +96,10 @@ public class AdminController {
     // 2.1 Hiển thị form thêm topic
     @PostMapping("/topic/add")
     public String addTopic(Model model,Topic topic) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+
         topic.setCreatedAt(new Date(System.currentTimeMillis()));
         topic.setUpdatedAt(new Date(System.currentTimeMillis()));
         // Kiểm tra xem topic đã tồn tại chưa, nếu topic đã tồn { Name , Hashtag } thì thông báo ra
@@ -106,6 +114,9 @@ public class AdminController {
     // 3. Xem chi tiết topic
     @GetMapping("/topic/detail/{id}")
     public String viewTopic(@PathVariable int id, Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
 
         Topic topic = topicService.getById(id);
         model.addAttribute("topic", topic);
@@ -155,6 +166,9 @@ public class AdminController {
                           @RequestParam(defaultValue = "0") int numberPage,
                           @RequestParam(defaultValue = "10") int size,
                           @RequestParam(required = false) String key) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
 
         Page<Post> page;
         if (key != null && !key.trim().isEmpty()) {
@@ -202,11 +216,16 @@ public class AdminController {
         }
         model.addAttribute("negativeCommentCounts", negativeCommentCounts);
 
+        model.addAttribute("totalAllComments", commentService.findAll().size());
         return "views_admin/comment";
     }
 
     @GetMapping("/view-comment/{id}")
     public String viewComment(@PathVariable int id, Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+
         Post post = postService.findByID(id);
         model.addAttribute("post", post);
         return "views_admin/view-comment";
@@ -214,6 +233,10 @@ public class AdminController {
 
     @GetMapping("/comment/negative")
     public String negativeComment(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+
         List<Comment> negativeComments = new ArrayList<>();
         List<Post> posts = postService.findAll();
         for (Post post : posts) {
@@ -238,8 +261,11 @@ public class AdminController {
     * Dashboard
      */
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        
+    public String dashboard(Model model, @RequestParam(defaultValue = "all") String type) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+
         // Thong ke so luong post 
         List<Post> posts = postService.findAll();
         model.addAttribute("posts", posts);
@@ -281,17 +307,17 @@ public class AdminController {
         List<PostReport> postReportsInWeek = postReportService.getPostReportsCreatedInWeek();
         model.addAttribute("postReportsInWeek", postReportsInWeek);
 
-        // Tính toán tương tác cho 4 tháng gần nhất
-        int[] monthlyInteractions = new int[4];
-        String[] monthLabels = new String[4];
+        // Tính toán tương tác cho 12 tháng gần nhất
+        int[] monthlyInteractions = new int[12];
+        String[] monthLabels = new String[12];
         
         Calendar cal = Calendar.getInstance();
         SimpleDateFormat monthFormat = new SimpleDateFormat("MMM");
         
-        // Lùi về 3 tháng trước để bắt đầu tính (vì tháng hiện tại là tháng thứ 4)
-        cal.add(Calendar.MONTH, -3);
+        // Lùi về 12 tháng trước
+        cal.add(Calendar.MONTH, -11);
         
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 12; i++) {
             // Set ngày đầu tháng
             cal.set(Calendar.DAY_OF_MONTH, 1);
             cal.set(Calendar.HOUR_OF_DAY, 0);
@@ -316,12 +342,20 @@ public class AdminController {
             List<Reaction> monthReactions = reactionService.getReactionsBetweenDates(startDate, endDate);
             List<BookMark> monthBookmarks = bookmarkService.getBookMarksBetweenDates(startDate, endDate);
             List<Following> monthFollows = followingService.getFollowingsBetweenDates(startDate, endDate);
-            
+            List<User> monthMembers = userService.getUsersBetweenDates(startDate, endDate);
+
             // Tính tổng tương tác
-            monthlyInteractions[i] = monthComments.size() + 
-                                    monthReactions.size() + 
-                                    monthBookmarks.size() + 
-                                    monthFollows.size();
+            if (type == null || type.equals("all")) {
+                monthlyInteractions[i] = monthComments.size() + monthReactions.size() + monthBookmarks.size() + monthFollows.size();
+            } else if (type.equals("comments")) {
+                monthlyInteractions[i] = monthComments.size();
+            } else if (type.equals("reactions")) {
+                monthlyInteractions[i] = monthReactions.size();
+            } else if (type.equals("bookmarks")) {
+                monthlyInteractions[i] = monthBookmarks.size();
+            } else if (type.equals("members")) {
+                monthlyInteractions[i] = monthMembers.size();
+            }
             
             // Chuyển sang tháng tiếp theo
             cal.add(Calendar.MONTH, 1);
@@ -541,35 +575,58 @@ public class AdminController {
     * Comment different
      */
     @GetMapping("/table")
-    public String table() { return "views_admin/table"; }
+    public String table(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
+        return "views_admin/table";
+    }
 
     @GetMapping("/login")
-    public String login() {
+    public String login(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
         return "views_admin/login";
     }
 
     @GetMapping("/register")
-    public String register() {
+    public String register(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
         return "views_admin/register";
     }
 
     @GetMapping("/forgot-password")
-    public String forgotPassword() {
+    public String forgotPassword(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
         return "views_admin/forgot-password";
     }
 
     @GetMapping("/404")
-    public String error404() {
+    public String error404(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
         return "views_admin/404";
     }
 
     @GetMapping("/blank")
-    public String blank() {
+    public String blank(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
         return "views_admin/blank";
     }
 
     @GetMapping("/profile")
-    public String profile() {
+    public String profile(Model model) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        User currentUser = userService.findUserByEmail(currentEmail);
+        model.addAttribute("currentUser", currentUser);
         return "views_admin/profile";
     }
 }

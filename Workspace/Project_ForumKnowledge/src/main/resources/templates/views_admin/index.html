@@ -16,105 +16,10 @@
         <div th:replace="~{fragments/navbar :: sidebar}"></div>
         <div class="d-flex flex-column" id="content-wrapper">
             <div id="content">
-                <nav class="navbar navbar-expand bg-white shadow mb-4 topbar">
-                    <div class="container-fluid"><button class="btn btn-link d-md-none rounded-circle me-3" id="sidebarToggleTop" type="button"><i class="fas fa-bars"></i></button>
-                        <form class="d-none d-sm-inline-block me-auto ms-md-3 my-2 my-md-0 mw-100 navbar-search">
-                            <div class="input-group"><input class="bg-light form-control border-0 small" type="text" placeholder="Search for ..."><button class="btn btn-primary py-0" type="button"><i class="fas fa-search"></i></button></div>
-                        </form>
-                        <ul class="navbar-nav flex-nowrap ms-auto">
-                            <li class="nav-item dropdown d-sm-none no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><i class="fas fa-search"></i></a>
-                                <div class="dropdown-menu dropdown-menu-end p-3 animated--grow-in" aria-labelledby="searchDropdown">
-                                    <form class="me-auto navbar-search w-100">
-                                        <div class="input-group"><input class="bg-light border-0 form-control small" type="text" placeholder="Search for ..."><button class="btn btn-primary" type="button"><i class="fas fa-search"></i></button></div>
-                                    </form>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">3+</span><i class="fas fa-bell fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-primary icon-circle"><i class="fas fa-file-alt text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 12, 2019</span>
-                                                <p>A new monthly report is ready to download!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-success icon-circle"><i class="fas fa-donate text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 7, 2019</span>
-                                                <p>$290.29 has been deposited into your account!</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="me-3">
-                                                <div class="bg-warning icon-circle"><i class="fas fa-exclamation-triangle text-white"></i></div>
-                                            </div>
-                                            <div><span class="small text-gray-500">December 2, 2019</span>
-                                                <p>Spending Alert: We've noticed unusually high spending for your account.</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown no-arrow mx-1">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="badge bg-danger badge-counter">7</span><i class="fas fa-envelope fa-fw"></i></a>
-                                    <div class="dropdown-menu dropdown-menu-end dropdown-list animated--grow-in">
-                                        <h6 class="dropdown-header">alerts center</h6><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" th:src="@{assets/img/avatars/avatar4.jpeg}">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Hi there! I am wondering if you can help me with a problem I've been having.</span></div>
-                                                <p class="small text-gray-500 mb-0">Emily Fowler - 58m</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" th:src="@{/assets/img/avatars/avatar2.jpeg}">
-                                                <div class="status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>I have the photos that you ordered last month!</span></div>
-                                                <p class="small text-gray-500 mb-0">Jae Chun - 1d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" th:src="@{/assets/img/avatars/avatar3.jpeg}">
-                                                <div class="bg-warning status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Last month's report looks great, I am very happy with the progress so far, keep up the good work!</span></div>
-                                                <p class="small text-gray-500 mb-0">Morgan Alvarez - 2d</p>
-                                            </div>
-                                        </a><a class="dropdown-item d-flex align-items-center" href="#">
-                                            <div class="dropdown-list-image me-3"><img class="rounded-circle" th:src="@{/assets/img/avatars/avatar5.jpeg}">
-                                                <div class="bg-success status-indicator"></div>
-                                            </div>
-                                            <div class="fw-bold">
-                                                <div class="text-truncate"><span>Am I a good boy? The reason I ask is because someone told me that people say this to all dogs, even if they aren't good...</span></div>
-                                                <p class="small text-gray-500 mb-0">Chicken the Dog · 2w</p>
-                                            </div>
-                                        </a><a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
-                                    </div>
-                                </div>
-                                <div class="shadow dropdown-list dropdown-menu dropdown-menu-end" aria-labelledby="alertsDropdown"></div>
-                            </li>
-                            <div class="d-none d-sm-block topbar-divider"></div>
-                            <li class="nav-item dropdown no-arrow">
-                                <div class="nav-item dropdown no-arrow"><a class="dropdown-toggle nav-link" aria-expanded="false" data-bs-toggle="dropdown" href="#"><span class="d-none d-lg-inline me-2 text-gray-600 small">Valerie Luna</span><img class="border rounded-circle img-profile" th:src="@{/assets/img/avatars/avatar1.jpeg}"></a>
-                                    <div class="dropdown-menu shadow dropdown-menu-end animated--grow-in">
-                                        <a class="dropdown-item" th:href="@{/templates/views_admin/profile}"><i class="fas fa-user fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Profile</a>
-                                        <a class="dropdown-item" th:href="@{/templates/views_admin/settings}"><i class="fas fa-cogs fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Settings</a>
-                                        <a class="dropdown-item" th:href="@{/templates/views_admin/activity}"><i class="fas fa-list fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Activity log</a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" th:href="@{/templates/views_admin/logout}"><i class="fas fa-sign-out-alt fa-sm fa-fw me-2 text-gray-400"></i>&nbsp;Logout</a>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                <div th:replace="~{fragments/head_admin :: topbar}"></div>
                 <div class="container-fluid">
                     <div class="d-sm-flex justify-content-between align-items-center mb-4">
-                        <h3 class="text-dark mb-0">Dashboard</h3><a class="btn btn-primary btn-sm d-none d-sm-inline-block" role="button" href="#"><i class="fas fa-download fa-sm text-white-50"></i>&nbsp;Generate Report</a>
+                        <h3 class="text-dark mb-0">Dashboard</h3>
                     </div>
                     <div class="row">
                         <div class="col-md-6 col-xl-3 mb-4">
@@ -190,10 +95,25 @@
                                     <h6 class="text-primary fw-bold m-0">Interactions Overview</h6>
                                     <span th:each="label : ${monthLabels}" th:text="${label}" style="display: none;" id="monthLabel"></span>
                                     <span th:each="interaction : ${monthlyInteractions}" th:text="${interaction}" style="display: none;" id="monthInteraction"></span>
-                                    <div class="dropdown no-arrow"><button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button"><i class="fas fa-ellipsis-v text-gray-400"></i></button>
-                                        <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
-                                            <p class="text-center dropdown-header">dropdown header:</p><a class="dropdown-item" href="#">&nbsp;Action</a><a class="dropdown-item" href="#">&nbsp;Another action</a>
-                                            <div class="dropdown-divider"></div><a class="dropdown-item" href="#">&nbsp;Something else here</a>
+                                    <div class="d-flex align-items-center">
+                                        <select class="form-select form-select-sm me-2" style="width: 150px;" id="timeRangeSelect">
+                                            <option value="90">3 months</option>
+                                            <option value="180">6 months</option>
+                                            <option value="365">1 year</option>
+                                        </select>
+                                        <div class="dropdown no-arrow">
+                                            <button class="btn btn-link btn-sm dropdown-toggle" aria-expanded="false" data-bs-toggle="dropdown" type="button">
+                                                <i class="fas fa-ellipsis-v text-gray-400"></i>
+                                            </button>
+                                            <div class="dropdown-menu shadow dropdown-menu-end animated--fade-in">
+                                                <p class="text-center dropdown-header">Select type you want to see</p>
+                                                <a class="dropdown-item" th:href="@{/admin/dashboard(type='posts')}">&nbsp;Follow posts</a>
+                                                <a class="dropdown-item" th:href="@{/admin/dashboard(type='reactions')}">&nbsp;Follow reation</a>
+                                                <a class="dropdown-item" th:href="@{/admin/dashboard(type='members')}">&nbsp;Follow members</a>
+                                                <a class="dropdown-item" th:href="@{/admin/dashboard(type='comments')}">&nbsp;Follow comments</a>
+                                                <div class="dropdown-divider"></div>
+                                                <a class="dropdown-item" th:href="@{/admin/dashboard(type='all')}">&nbsp;Interactions</a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -264,43 +184,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="card shadow mb-4">
-                                <div class="card-header py-3">
-                                    <h6 class="text-primary fw-bold m-0">Todo List</h6>
-                                </div>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col me-2">
-                                                <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">10:30 AM</span>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-1"><label class="form-check-label" for="formCheck-1"></label></div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col me-2">
-                                                <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">11:30 AM</span>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-2"><label class="form-check-label" for="formCheck-2"></label></div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <div class="row g-0 align-items-center">
-                                            <div class="col me-2">
-                                                <h6 class="mb-0"><strong>Lunch meeting</strong></h6><span class="text-xs">12:30 AM</span>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="form-check"><input class="form-check-input" type="checkbox" id="formCheck-3"><label class="form-check-label" for="formCheck-3"></label></div>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
                         </div>
                         <div class="col">
                             <div class="row">
@@ -329,58 +212,84 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Lấy dữ liệu từ các thẻ span ẩn
-            const monthLabels = Array.from(document.querySelectorAll('#monthLabel')).map(el => el.innerText);
-            const monthlyInteractions = Array.from(document.querySelectorAll('#monthInteraction')).map(el => parseInt(el.innerText));
+            const allMonthLabels = Array.from(document.querySelectorAll('#monthLabel')).map(el => el.innerText);
+            const allMonthlyInteractions = Array.from(document.querySelectorAll('#monthInteraction')).map(el => parseInt(el.innerText));
             
+            let currentChart = null;
             const ctx = document.getElementById('interactionsChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: monthLabels,
-                    datasets: [{
-                        label: 'Total Interactions',
-                        fill: true,
-                        data: monthlyInteractions,
-                        backgroundColor: 'rgba(78, 115, 223, 0.05)',
-                        borderColor: 'rgba(78, 115, 223, 1)'
-                    }]
-                },
-                options: {
-                    maintainAspectRatio: false,
-                    legend: {
-                        display: false
-                    },
-                    scales: {
-                        xAxes: [{
-                            gridLines: {
-                                color: 'rgb(234, 236, 244)',
-                                drawBorder: false,
-                                drawTicks: false,
-                                borderDash: [2],
-                                zeroLineBorderDash: [2],
-                                drawOnChartArea: false
-                            },
-                            ticks: {
-                                fontColor: '#858796',
-                                padding: 20
-                            }
-                        }],
-                        yAxes: [{
-                            gridLines: {
-                                color: 'rgb(234, 236, 244)',
-                                drawBorder: false,
-                                drawTicks: false,
-                                borderDash: [2],
-                                zeroLineBorderDash: [2]
-                            },
-                            ticks: {
-                                fontColor: '#858796',
-                                padding: 20
-                            }
-                        }]
-                    }
+
+            function updateChart(days) {
+                // Tính số tháng cần lấy ceil là làm tròn lên
+                const monthsToShow = Math.ceil(days / 30);
+                
+                // Lấy dữ liệu của số tháng tương ứng từ cuối mảng
+                const labels = allMonthLabels.slice(-monthsToShow);
+                const data = allMonthlyInteractions.slice(-monthsToShow);
+
+                // Hủy biểu đồ cũ nếu tồn tại
+                if (currentChart) {
+                    currentChart.destroy();
                 }
+
+                // Tạo biểu đồ mới
+                currentChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Total Interactions',
+                            fill: true,
+                            data: data,
+                            backgroundColor: 'rgba(78, 115, 223, 0.05)',
+                            borderColor: 'rgba(78, 115, 223, 1)'
+                        }]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        legend: {
+                            display: false
+                        },
+                        scales: {
+                            xAxes: [{
+                                gridLines: {
+                                    color: 'rgb(234, 236, 244)',
+                                    drawBorder: false,
+                                    drawTicks: false,
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2],
+                                    drawOnChartArea: false
+                                },
+                                ticks: {
+                                    fontColor: '#858796',
+                                    padding: 20
+                                }
+                            }],
+                            yAxes: [{
+                                gridLines: {
+                                    color: 'rgb(234, 236, 244)',
+                                    drawBorder: false,
+                                    drawTicks: false,
+                                    borderDash: [2],
+                                    zeroLineBorderDash: [2]
+                                },
+                                ticks: {
+                                    fontColor: '#858796',
+                                    padding: 20
+                                }
+                            }]
+                        }
+                    }
+                });
+            }
+
+            // Xử lý sự kiện thay đổi select
+            document.getElementById('timeRangeSelect').addEventListener('change', function(e) {
+                const days = parseInt(e.target.value);
+                updateChart(days);
             });
+
+            // Khởi tạo biểu đồ ban đầu với 30 ngày
+            updateChart(90);
         });
     </script>
     <script>

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
@@ -28,4 +29,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     @Query("SELECT u FROM User u")
     public Page<User> findAllUsers(Pageable pageable);
+  
+    @Query("SELECT u FROM User u WHERE u.createdAt BETWEEN :startDate AND :endDate")
+    List<User> findByCreatedAtBetween(Date startDate, Date endDate);
 }
