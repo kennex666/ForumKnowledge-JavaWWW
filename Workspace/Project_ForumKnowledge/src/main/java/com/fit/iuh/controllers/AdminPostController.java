@@ -26,7 +26,7 @@ public class AdminPostController {
     @Autowired
     private UserService userService;
 
-    @GetMapping("")
+    @GetMapping({"", "/"})
     public String index(
             Model model,
             @RequestParam(name = "skip", defaultValue = "1") int skip,
