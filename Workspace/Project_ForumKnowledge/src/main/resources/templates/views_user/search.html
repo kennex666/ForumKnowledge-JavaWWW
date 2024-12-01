@@ -21,9 +21,9 @@
 
             <div class="flex flex-row space-x-10 items-center text-nowrap scrollbar-custom px-5 mt-7 mb-6">
                 <!-- plus icon -->
-                <a class="pb-3 border-black border-b-2" href="#">Bài viết</a>
-                <a class="pb-3 text-gray-500 hover:text-black" href="search_author.html">Tác giả</a>
-                <a class="pb-3 text-gray-500 hover:text-black" href="myprofile_about.html">Chủ đề</a>
+                <a th:class="${tab}" th:href="@{/search(tab='keyword',q=${param.q})}">Bài viết</a>
+                <a class="pb-3 text-gray-500 hover:text-black" th:href="@{/search(tab='author',q=${param.q})}">Tác giả</a>
+                <a class="pb-3 text-gray-500 hover:text-black" th:href="@{/search(tab='tag',q=${param.q})}">Chủ đề</a>
             </div>
 
             <!-- Post suggest -->
