@@ -41,9 +41,6 @@ public interface PostService {
     // Method get top article by created date
     public Post findTopByOrderByCreatedAtDesc();
 
-    // Method check and generate article
-    public void checkAndGeneratePost();
-
     Page<Post> searchByKeywordWithPaging(String key, int numberPage, int size);
 
     Page<Post> getPage(int numberPage, int size);

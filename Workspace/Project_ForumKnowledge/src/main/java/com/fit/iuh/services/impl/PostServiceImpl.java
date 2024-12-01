@@ -2,9 +2,11 @@ package com.fit.iuh.services.impl;
 
 import com.fit.iuh.entites.Post;
 import com.fit.iuh.entites.Topic;
+import com.fit.iuh.entites.User;
 import com.fit.iuh.enums.PostState;
 import com.fit.iuh.repositories.PostRepository;
 import com.fit.iuh.repositories.TopicRepository;
+import com.fit.iuh.repositories.UserRepository;
 import com.fit.iuh.services.PostService;
 import com.fit.iuh.utilities.GeminiContentGenerator;
 import com.fit.iuh.utilities.GeminiResponse;
@@ -26,14 +28,6 @@ import java.util.Optional;
 public class PostServiceImpl implements PostService {
     @Autowired
     private PostRepository postRepository;
-
-	@Autowired
-	private TopicRepository topicRepository;
-
-	@Autowired
-	private GeminiContentGenerator geminiContentGenerator;
-
-	private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);
 
     @Override
     public List<Post> search(String keyword) {
@@ -97,17 +91,6 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public void checkAndGeneratePost() {
-		Date now = new Date();
-		Optional<Post> latestPost  = postRepository.findTopByOrderByCreatedAtDesc();
-		if (latestPost.isEmpty() || isDiff(latestPost.get().getCreatedAt(), now)) {
-			createNewPost();
-		} else {
-			logger.info("Scheduled Task - Generating Post: Skip");
-		}
-	}
-
-	@Override
 	public Page<Post> searchByKeywordWithPaging(String key, int numberPage, int size) {
 		Pageable pageable = PageRequest.of(numberPage, size);
 		return postRepository.searchByKeywordWithPaging(key, pageable);
@@ -126,50 +109,6 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public List<Post> getPostsCreatedInWeek() {
 		return postRepository.getPostsCreatedInWeek();
-	}
-
-	private boolean isDiff(Date createdAt, Date now) {
-		long oneDay = 24 * 60 * 60 * 1000;
-		long oneMinute = 60 * 1000;
-
-		long diff = now.getTime() - createdAt.getTime();
-        logger.info("Scheduled Task - Generating Post: Time difference from last post: {} seconds", diff / 1000);
-		return diff >= oneMinute;
-	}
-
-	private void createNewPost() {
-		logger.info("Scheduled Task - Generating Post: Begin to generate new post");
-		GeminiResponse content = geminiContentGenerator.generateContent();
-
-		if (content == null) {
-			logger.error("Scheduled Task - Generating Post: Unable to generate content");
-			return;
-		}
-
-		Post post = new Post();
-		post.setTitle(content.getTitle());
-		post.setDescription(content.getDescription());
-		post.setContent(content.getContent());
-		post.setUrl("");
-		post.setState(PostState.PUBLISHED);
-		post.setTotalComments(0);
-		post.setTotalUpVote(0);
-		post.setTotalDownVote(0);
-		post.setTotalShare(0);
-		post.setTotalView(0);
-		post.setCreatedAt(new Date());
-		post.setUpdatedAt(new Date());
-
-		List<Topic> topics = topicRepository.findByNameContaining(content.getTopic());
-		if (!topics.isEmpty()) {
-			post.setTopic(topics.get(0));
-		} else {
-			logger.error("Scheduled Task - Generating Post: Unable to find topic");
-			return;
-		}
-
-		postRepository.save(post);
-		logger.info("Scheduled Task - Generating Post: Success");
 	}
 
 	@Override
