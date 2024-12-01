@@ -30,6 +30,7 @@ public class AdminUserController {
         skip = skip < 1 ? 1 : skip;
         limit = limit < 1 ? 10 : limit;
         int[] limits = new int[]{10, 25, 50, 100};
+        int[] roles = new int[]{0, 1, 2};
 
         Page<User> users = userService.findUsersWithCondition(skip, limit, true);
         UserAccountState[] states = UserAccountState.values();
@@ -40,6 +41,7 @@ public class AdminUserController {
         model.addAttribute("limit", limit);
         model.addAttribute("baseUrl", "/admin/users");
         model.addAttribute("states", states);
+        model.addAttribute("roles", roles);
         model.addAttribute("limits", limits);
         
         String currentEmail = SpringContext.getCurrentUserEmail();

@@ -82,10 +82,11 @@
                                 <tr>
                                     <th>ID</th>
                                     <th>Name</th>
+                                    <th>Username</th>
                                     <th>Email</th>
+<!--                                    <th>Created at</th>-->
+<!--                                    <th>Updated at</th>-->
                                     <th>Role</th>
-                                    <th>Created at</th>
-                                    <th>Updated at</th>
                                     <th>State</th>
                                 </tr>
                                 </thead>
@@ -93,10 +94,23 @@
                                 <tr>
                                     <td th:text="${user.userId}"></td>
                                     <td th:text="${user.name}"></td>
+                                    <td th:text="${user.username != null ? user.username : 'N/A'}"></td>
                                     <td th:text="${user.email}"></td>
-                                    <td th:text="${user.role}"></td>
-                                    <td th:text="${user.createdAt}"></td>
-                                    <td th:text="${user.updatedAt}"></td>
+<!--                                    <td th:text="${user.createdAt}"></td>-->
+<!--                                    <td th:text="${user.updatedAt}"></td>-->
+                                    <td>
+                                        <select class="form-select"
+                                                th:data-role="${user.role}"
+                                                th:onchange="'userRoleChange(' + ${user.userId} + ', this)'"
+                                        >
+                                            <option th:each="role : ${roles}"
+                                                    th:text="${role == 0 ? 'User' : (role == 1 ? 'Admin' : 'Unknown')}"
+                                                    th:value="${role}"
+                                                    th:selected="${role == user.role}"
+                                            >
+                                            </option>
+                                        </select>
+                                    </td>
                                     <td>
                                         <select class="form-select"
                                                 th:data-state="${user.accountState}"
@@ -114,10 +128,11 @@
                                 <tr>
                                     <td><strong>ID</strong></td>
                                     <td><strong>Name</strong></td>
+                                    <td><strong>Username</strong></td>
                                     <td><strong>Email</strong></td>
+<!--                                    <td><strong>Created at</strong></td>-->
+<!--                                    <td><strong>Updated at</strong></td>-->
                                     <td><strong>Role</strong></td>
-                                    <td><strong>Created at</strong></td>
-                                    <td><strong>Updated at</strong></td>
                                     <td><strong>State</strong></td>
                                 </tr>
                                 </tfoot>
