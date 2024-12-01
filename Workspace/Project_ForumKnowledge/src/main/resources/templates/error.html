@@ -1,0 +1,42 @@
+<html>
+<head lang="vi" xmlns:th="http://www.thymeleaf.org">
+    <title th:text="${title + ' | iDev4rum'}"></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- charset utff 8 -->
+    <meta charset="UTF-8">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+    </style>
+</head>
+<body class="flex flex-col h-screen">
+
+<!-- Nav bar -->
+<header th:replace="~{/fragments/navigate :: header}"></header>
+
+<div class="flex flex-row justify-center items-center pt-8">
+    <!-- Stage -->
+    <div class="flex flex-col justify-center items-center gap-6">
+
+        <div class="flex flex-col px-8 pt-4 pb-8 border border-gray-300 rounded-lg"  style="width: 30vw;">
+
+            <img src="/assets/img/error.jpg" class="h-42 object-contain">
+            <h1><span class="text-lg font-bold" th:text="${code}">404</span><span>:</span><span class="text-lg">th:text="${codeName}">KHÔNG TÌM THẤY</span></h1>
+            <p th:text="${message}">Xin lỗi, nội dung bạn vừa yêu cầu không tồn tại!</p>
+
+        </div>
+
+        <a href="/" class="text-blue-500 text-center">
+            <div class="border border-blue-500 rounded-md px-6 py-2 flex flex-row justify-center items-center " style="width: 30vw;">
+                <p>Quay lại trang chủ</p>
+            </div>
+        </a>
+    </div>
+</div>
+
+</body>
+</html>
