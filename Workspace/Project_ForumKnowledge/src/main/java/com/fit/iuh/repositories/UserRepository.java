@@ -4,6 +4,7 @@ import com.fit.iuh.entites.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -32,4 +33,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
   
     @Query("SELECT u FROM User u WHERE u.createdAt BETWEEN :startDate AND :endDate")
     List<User> findByCreatedAtBetween(Date startDate, Date endDate);
+
+    // Edit
+    @Modifying
+    @Query("UPDATE User u SET u.name = :name, u.email = :email, u.title = :title, u.profilePicture = :profilePicture, " +
+            "u.coverPicture = :coverPicture, u.description = :description, u.bio = :bio WHERE u.userId = :userId")
+    void editUser(String name, String email, String title, String profilePicture, String coverPicture, String description, String bio, int userId);
 }

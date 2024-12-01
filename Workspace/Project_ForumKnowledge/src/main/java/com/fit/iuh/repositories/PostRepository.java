@@ -49,4 +49,22 @@ public interface PostRepository extends JpaRepository<Post, Integer> {
 	@Query("SELECT p FROM Post p JOIN p.author.followers f WHERE f.followed.userId = :userId")
 	public Page<Post> findForFollowing(Pageable pageable, int userId);
 
+	@Query("SELECT p FROM Post p WHERE p.author.userId = :userId")
+	public Page<Post> findForUser(Pageable pageable, int userId);
+
+	@Query("SELECT p FROM Post p WHERE p.postId = :id")
+	public Post findByID(@Param("id") int id);
+
+	//getPostByAuthor
+	@Query("SELECT p FROM Post p WHERE p.author.name LIKE %:author%")
+	public Page<Post> getPostByAuthor(Pageable pageable, @Param("author") String author);
+
+	//getPostByTopic
+	@Query("SELECT p FROM Post p WHERE p.topic.hashtag LIKE %:topic%")
+	public Page<Post> getPostByTopic(Pageable pageable, @Param("topic") String topic);
+
+	//searchKeyword
+	@Query("SELECT p FROM Post p WHERE p.title LIKE %:keyword% OR p.content LIKE %:keyword%")
+	public Page<Post> searchKeyword(Pageable pageable, @Param("keyword") String keyword);
+
 }

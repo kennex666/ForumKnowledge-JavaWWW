@@ -44,7 +44,12 @@ public class WebSecurityConfig {
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED) // Tạo session khi cần
-                );
+                )
+//            403 hanndle
+                .exceptionHandling(e -> e
+                        .accessDeniedPage("/403")
+                )
+        ;
 
         return http.build();
     }

@@ -61,7 +61,15 @@ public interface PostService {
 
     public Page<Post> findForFollowing(Pageable pageable, int userId);
 
+    public Page<Post> findForUser(Pageable pageable, int userId);
+
     // Method get all article with limit, skip and sort desc
     public Page<Post> findPostsWithCondition(int skip, int limit, boolean isDesc);
+
+    public Page<Post> getPostByAuthor(Pageable pageable, String author);
+
+    public Page<Post> getPostByTopic(Pageable pageable, String topic);
+
+    public Page<Post> searchKeyword(Pageable pageable, String tag);
 
 }

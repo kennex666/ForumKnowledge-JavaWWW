@@ -1,43 +1,8 @@
-<html xmlns:th="http://www.thymeleaf.org">
-<head lang="vi">
-    <title>Profile | iDev4rum</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="/assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- charset utff 8 -->
-    <meta charset="UTF-8">
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-    </style>
-</head>
+<head th:replace="~{/fragments/head :: head}"></head>
 <body class="">
 
 <!-- Nav bar -->
-<header class="bg-white px-20 py-4 flex justify-between items-center">
-    <div class="flex items-center justify-center space-x-10">
-        <a href="/"><h1 class="text-2xl font-bold">iDev4rum</h1></a>
-
-        <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
-            <i class="fas fa-search text-gray-500"></i>
-            <input type="text" placeholder="Tìm kiếm..." class="bg-transparent focus:outline-none ml-4">
-        </div>
-
-    </div>
-    <div class="flex items-center space-x-10">
-        <button class="text-gray-500 focus:outline-none space-x-2">
-            <i class="fas fa-pen"></i>
-            <span>Viết bài</span>
-        </button>
-        <button class="text-gray-500 focus:outline-none">
-            <i class="fas fa-bell"></i>
-        </button>
-        <img src="https://placehold.co/32x32" alt="User profile image, placeholder image" class="rounded-full">
-    </div>
-</header>
-
+<header th:replace="~{/fragments/navigate :: header}"></header>
 <!-- Blog space -->
 <div class="container mx-auto px-12 lg:w-10/12">
     <div class="flex justify-between items-start">
@@ -47,13 +12,13 @@
             <!-- Bar -->
             <!-- Cover and name -->
             <div class="flex flex-col justify-center pt-3 px-5 space-y-8">
-                <img src="https://placehold.co/720x150">
+                <img th:src="${user.coverPicture ?: 'https://placehold.co/720x150'}" data-image="fileCover" accept="image/*" class="h-64 w-full object-cover">
                 <div class="flex flex-row items-center justify-between">
                     <h2 class="text-4xl font-bold" th:text="${user.name}"></h2>
-                    <div class="flex flex-row items-center space-x-4">
-                        <button class="text-gray-500 focus:outline-none">
-                            <i class="fa-solid fa-ellipsis text-xl me-8"></i>
-                        </button>
+                    <div class="flex flex-row space-x-4 items-end justify-content-end">
+                        <a th:href="@{'/author/' + ${user.userId} (tab=edit)}" class="text-gray-500 focus:outline-none">
+                            <i class="fas fa-pen text-lg"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -61,18 +26,16 @@
             <div class="flex flex-row space-x-10 items-center pt-3 text-nowrap scrollbar-custom px-5">
                 <!-- plus icon -->
                 <a class="pb-3 text-gray-500 hover:text-black"
-                   th:href="@{/users/user-profile(id=${user.userId})}">Trang chủ</a>
-                <a class="pb-3 text-gray-500 hover:text-black"
-                   th:href="@{/users/user-posts(id=${user.userId})}">Danh sách</a>
-                <a class="border-black border-b-2"
-                   th:href="@{/users/user-about(id=${user.userId})}">Về tác giả</a>
+                   th:href="@{'/author/' + ${user.userId}}">Trang chủ</a>
+                <a class="border-black border-b-2 pb-3 "
+                   href="#">Về tác giả</a>
             </div>
 
 
             <!-- Post suggest -->
-            <div class="flex flex-col space-y-3" th:each="post : ${user.posts}">
+            <div class="flex flex-col space-y-3">
                 <!-- post item -->
-                <p>Not implemented yet</p>
+                <p th:text="${user.description}">Not implemented yet</p>
             </div>
         </div>
 
@@ -82,9 +45,9 @@
             <div class="mt-8">
                 <div class="flex flex-col space-y-2">
                     <div class="rounded-full">
-                        <img th:src="@{${'/assets/img/avatars/' + user.profilePicture}}"
+                        <img th:src="${user.profilePicture ?: 'https://placehold.co/150x150'}"
                              alt="User profile image"
-                             class="rounded-full w-24 h-24">
+                             class="rounded-full w-24 h-24 object-cover">
                     </div>
                     <div class="flex flex-col space-y-2">
                         <h2 class="font-semibold text-lg" th:text="${user.name}"></h2>
@@ -111,26 +74,25 @@
                     <div class="mb-3 space-y-5" th:each="bookmark : ${user.bookMarks}">
                         <!-- Bookmark item -->
                         <div class="py-2">
-                            <a href="#" class="flex flex-row items-center space-x-2 mb-3 text-sm">
-                                <img th:src="@{${'/assets/img/avatars/' + bookmark.post.author.profilePicture}}"
+                            <a th:href="@{'/author/' + ${bookmark.post.author.userId}}" class="flex flex-row items-center space-x-2 mb-3 text-sm">
+                                <img th:src="${bookmark.post.author.profilePicture}"
                                      alt="User profile image"
                                      class="rounded-full w-6 h-6">
                                 <span class="font-semibold hover:text-gray-500"
-                                      th:href="@{/users/user(id=${bookmark.post.author.userId})}"
                                       th:text="${bookmark.post.author.name}"></span>
                             </a>
-                            <a href="#">
+                            <a th:href="@{'/posts/' + ${bookmark.post.postId}}">
                                 <h2 class="font-semibold" th:text="${bookmark.post.title}"></h2>
                             </a>
                             <div class="flex items-center space-x-2 text-xs mt-2">
                                 <p>
-                                    <a href="#" th:text="${#dates.format(bookmark.post.createdAt, 'MMM dd, yyyy')}"></a>
+                                    <a th:href="@{'/posts/' + ${bookmark.post.postId}}" th:text="${#dates.format(bookmark.post.createdAt, 'MMM dd, yyyy')}"></a>
                                 </p>
 
                                 <p>·</p>
 
                                 <p>
-                                    <a href="#" th:text="${bookmark.post.topic.name}"></a>
+                                    <a th:href="@{'/topic/' + ${bookmark.post.topic.tagId}}" th:text="${bookmark.post.topic.name}"></a>
                                 </p>
                             </div>
                         </div>

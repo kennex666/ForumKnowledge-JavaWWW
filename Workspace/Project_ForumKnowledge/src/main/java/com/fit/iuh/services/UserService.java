@@ -33,4 +33,6 @@ public interface UserService {
 
 
     List<User> getUsersBetweenDates(Date startDate, Date endDate);
+
+    public void edit(User user);
 }

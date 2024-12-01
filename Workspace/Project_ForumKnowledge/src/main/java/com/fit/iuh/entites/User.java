@@ -276,8 +276,32 @@ public class User {
 		this.followings = followings;
 	}
 
+	public String getCoverPicture() {
+		return coverPicture;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setCoverPicture(String coverPicture) {
+		this.coverPicture = coverPicture;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
 	public User(int userId, String name, int role, UserAccountState accountState, String email, String title,
-			String passwordHash, String profilePicture, String bio, Date createdAt, Date updatedAt) {
+				String passwordHash, String profilePicture, String bio, Date createdAt, Date updatedAt) {
 		super();
 		this.userId = userId;
 		this.name = name;
