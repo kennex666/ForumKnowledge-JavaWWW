@@ -37,7 +37,11 @@ public class UserController {
         model.addAttribute("postsPage", postService.findForUser(pageable, user.getUserId()));
         model.addAttribute("user", user);
         model.addAttribute("currentUser", currentUser);
-        model.addAttribute("isFollowing", userService.isFollowing(currentUser.getUserId(), user.getUserId()).size() > 0);
+
+        if (currentUser == null) {
+            model.addAttribute("isFollowing", false);
+        } else
+            model.addAttribute("isFollowing", userService.isFollowing(currentUser.getUserId(), user.getUserId()).size() > 0);
         if (tab != null) {
             if (tab.equals("about")) {
                 return "views_user/user-profile-about";

@@ -5,7 +5,7 @@
                 class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
                 onclick="vote(true)"
         >
-            <i th:class="${(reaction.equals('UPVOTE') ? 'fas' : 'fa-regular') + ' fa-thumbs-up'}" data-elem="upvote"></i>
+            <i th:class="${(reaction != null && reaction.equals('UPVOTE') ? 'fas' : 'fa-regular') + ' fa-thumbs-up'}" data-elem="upvote"></i>
             <span th:text="${post.totalUpVote}" data-name="upvote">1.2k</span>
         </button>
 
@@ -13,7 +13,7 @@
                 class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
                 onclick="vote(false)"
         >
-            <i th:class="${(reaction.equals('DOWNVOTE') ? 'fas' : 'fa-regular') + ' fa-thumbs-down'}" data-elem="downvote"></i>
+            <i th:class="${(reaction != null && reaction.equals('DOWNVOTE') ? 'fas' : 'fa-regular') + ' fa-thumbs-down'}" data-elem="downvote"></i>
             <span th:text="${post.totalDownVote}" data-name="downvote">1.2k</span>
         </button>
         <a href="#comment-view"

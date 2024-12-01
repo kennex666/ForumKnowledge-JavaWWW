@@ -89,19 +89,13 @@ public class PostController {
         }
 
         boolean isFollowing = false;
-        if (currentUser != null){
-            isFollowing = userService.isFollowing(currentUser.getUserId(), post.getAuthor().getUserId()).size() > 0;
-        }
-
-        boolean isOwner = post.getAuthor().getUserId() == currentUser.getUserId();
-
-        model.addAttribute("post", post);
-        model.addAttribute("isFollowing", isFollowing);
-        model.addAttribute("isOwner", isOwner);
-        System.out.println("ID: " + id);
+        boolean isOwner = false;
 
         if (currentUser != null){
             Reaction reaction = reactionService.hasUserVoted(currentUser.getUserId(), post.getPostId());
+
+            isFollowing = userService.isFollowing(currentUser.getUserId(), post.getAuthor().getUserId()).size() > 0;
+            isOwner = post.getAuthor().getUserId() == currentUser.getUserId();
 
             if (reaction != null){
                 model.addAttribute("reaction", reaction.getType().toString());
@@ -109,6 +103,10 @@ public class PostController {
                 model.addAttribute("reaction", "");
             }
         }
+
+        model.addAttribute("post", post);
+        model.addAttribute("isFollowing", isFollowing);
+        model.addAttribute("isOwner", isOwner);
         return "views_user/view-post";
     }
   
