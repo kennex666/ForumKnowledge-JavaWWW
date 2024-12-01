@@ -18,4 +18,12 @@ public interface ReactionService {
     List<Reaction> getReactionsCreatedInWeek();
 
 	List<Reaction> getReactionsBetweenDates(Date startDate, Date endDate);
+
+	Reaction hasUserVoted(int userId, int postId);
+
+	void createVote(int userId, int postId, String type);
+
+	void updateVote(int userId, int postId, String type);
+
+	void removeVote(int userId, int postId);
 }

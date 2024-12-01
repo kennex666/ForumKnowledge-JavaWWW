@@ -1,5 +1,6 @@
 package com.fit.iuh.services.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,5 +42,28 @@ public class ReactionServiceImpl implements ReactionService{
 	@Override
 	public List<Reaction> getReactionsBetweenDates(Date startDate, Date endDate) {
 		return reactionRepository.getReactionsBetweenDates(startDate, endDate);
+	}
+
+	@Override
+	public Reaction hasUserVoted(int userId, int postId) {
+		return reactionRepository.hasUserVoted(userId, postId);
+	}
+
+	@Transactional
+	@Override
+	public void createVote(int userId, int postId, String type) {
+		reactionRepository.createVote(userId, postId, type);
+	}
+
+	@Transactional
+	@Override
+	public void updateVote(int userId, int postId, String type) {
+		reactionRepository.updateVote(userId, postId, type);
+	}
+
+	@Transactional
+	@Override
+	public void removeVote(int userId, int postId) {
+		reactionRepository.removeVote(userId, postId);
 	}
 }
