@@ -119,6 +119,99 @@ public class PostAPIController {
         }
     }
 
+
+    @PostMapping("/edit")
+    public ResponseEntity<Map<String, Object>> editPost(InputStream inputStream) {
+        String currentEmail = SpringContext.getCurrentUserEmail();
+        if (currentEmail.isBlank()){
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "You must login to create post!", "errorCode", 401, "data", null));
+        }
+        try {
+            String message = "";
+            String json = new String(inputStream.readAllBytes());
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(json);
+
+            String title = rootNode.path("title").asText();
+            String content = rootNode.path("content").asText();
+            String description = rootNode.path("description").asText();
+            int tagId = rootNode.path("tag").asInt();
+            String tagCustom = rootNode.path("tag_custom").asText();
+            int postId = rootNode.path("postId").asInt();
+
+            Post post = postService.findById(postId);
+            if (post == null){
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Post not found!", "errorCode", 404, "data", ""));
+            }
+
+            if (!post.getAuthor().getEmail().equals(currentEmail)){
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "You are not the author of this post!", "errorCode", 403, "data", ""));
+            }
+
+            if (tagId == -1 && tagCustom.isEmpty())
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Tag is required!", "errorCode", 400, "data", null));
+            if (title.isEmpty() || content.isEmpty())
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Title and content are required!", "errorCode", 400, "data", null));
+            if (description.isEmpty())
+                return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Description required!", "errorCode", 400, "data", null));
+
+            // Chuyển dữ liệu từ PostDTO vào Post object
+            post.setTitle(title);
+            post.setContent(content);
+            post.setDescription(description);
+            post.setState(PostState.PUBLISHED);
+            post.setAuthor(userService.findUserByEmail(currentEmail));
+
+            String url = StringToUrl.convertToUrlFormat(title + "-" + System.currentTimeMillis());
+
+            post.setUrl(url);
+
+            Topic topic = null;
+            if (tagId != -1) {
+                // Try to find the topic by ID
+                topic = topicService.findById(tagId);
+            } else {
+                topic = new Topic();
+                topic.setName(tagCustom);
+                topic.setHashtag(StringToUrl.convertToUrlFormat(tagCustom));
+                if (topicService.add(topic) == false){
+                    return ResponseEntity.status(HttpStatus.OK)
+                            .body(Map.of("message", "Error: Cannot create new tag!", "errorCode", 500, "data", ""));
+                }
+            }
+
+            if (topic == null) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(Map.of("message", "Tag not found!", "errorCode", 404, "data", ""));
+            }
+
+            post.setTopic(topic);
+
+            // Trước khi lưu để GPT kiểm tra lại:
+            String jsonOpenAI = OpenAI.autoReview(post.getContent(), "post");
+            System.out.println(jsonOpenAI);
+            Map<String, Object> response = OpenAI.parseJson(jsonOpenAI);
+
+            System.out.println(response.get("status"));
+            if (response.containsKey("status")) {
+                Double status = (Double) response.get("status");
+                String statusCode = status.toString();
+                if (!statusCode.contains("200"))
+                    return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + response.get("message"), "errorCode", 500, "data", ""));
+                message = "Đăng bài thành công, AI đã kiểm tra nội dung!";
+            } else {
+                message = "Đăng bài thành công, nhưng AI đang bận, không thể kiểm tra nội dung!";
+            }
+
+            // Lưu bài viết
+            postService.save(post);
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", message, "errorCode", 201, "data", post));
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.OK).body(Map.of("message", "Error: " + e.getMessage(), "errorCode", 500, "data", ""));
+        }
+    }
+
     // Getpost by ID or URL
     @GetMapping(value = "/{id}")
     public ResponseEntity<Map<String, Object>> getPostById(@PathVariable String id){

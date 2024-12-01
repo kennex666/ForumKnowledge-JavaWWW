@@ -116,6 +116,7 @@ public class PostController {
         model.addAttribute("post", post);
         return "test/show_detail_test";
     }
+
     @GetMapping("/report/{postId}")
     public String report(Model model, @PathVariable("postId") int postId) {
         Post post = postService.findById(postId);
