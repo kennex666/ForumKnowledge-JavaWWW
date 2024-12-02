@@ -88,11 +88,14 @@ public class PostController {
             return "redirect:/";
         }
 
-        model.addAttribute("post", post);
-        System.out.println("ID: " + id);
+        boolean isFollowing = false;
+        boolean isOwner = false;
 
         if (currentUser != null){
             Reaction reaction = reactionService.hasUserVoted(currentUser.getUserId(), post.getPostId());
+
+            isFollowing = userService.isFollowing(currentUser.getUserId(), post.getAuthor().getUserId()).size() > 0;
+            isOwner = post.getAuthor().getUserId() == currentUser.getUserId();
 
             if (reaction != null){
                 model.addAttribute("reaction", reaction.getType().toString());
@@ -100,6 +103,10 @@ public class PostController {
                 model.addAttribute("reaction", "");
             }
         }
+
+        model.addAttribute("post", post);
+        model.addAttribute("isFollowing", isFollowing);
+        model.addAttribute("isOwner", isOwner);
         return "views_user/view-post";
     }
   
@@ -109,6 +116,7 @@ public class PostController {
         model.addAttribute("post", post);
         return "test/show_detail_test";
     }
+
     @GetMapping("/report/{postId}")
     public String report(Model model, @PathVariable("postId") int postId) {
         Post post = postService.findById(postId);

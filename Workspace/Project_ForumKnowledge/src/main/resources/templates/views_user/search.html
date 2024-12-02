@@ -1,0 +1,216 @@
+<html xmlns:th="">
+<head th:replace="~{/fragments/head :: head}"></head>
+<body class="">
+
+<!-- Nav bar -->
+<header th:replace="~{/fragments/navigate :: header}"></header>
+
+<style>
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+    .animate-spin {
+        animation: spin 1s linear infinite;
+    }
+</style>
+<!-- Blog space -->
+<div class="container mx-auto px-12 lg:w-10/12">
+    <div class="flex justify-between items-start pt-12">
+
+        <!-- Recommend blog -->
+        <div class="w-2/3">
+            <!-- Bar -->
+            <!-- Cover and name -->
+            <div class="flex flex-col justify-center px-5 space-y-8">
+                <div class="flex flex-row items-center justify-start">
+                    <h2 class="text-4xl text-gray-500">Tìm kiếm cho <span class="text-black" th:text="${param.q}">Java</span></h2>
+                </div>
+            </div>
+
+            <div class="flex flex-row space-x-10 items-center text-nowrap scrollbar-custom px-5 mt-7 mb-6">
+                <!-- plus icon -->
+                <a th:class="${tab.equalsIgnoreCase('keyword') ? 'pb-3 border-black border-b-2' : 'pb-3 text-gray-500 hover:text-black'}" th:href="@{/search(tab='keyword',q=${param.q})}">Bài viết</a>
+                <a th:class="${tab.equalsIgnoreCase('author') ? 'pb-3 border-black border-b-2' : 'pb-3 text-gray-500 hover:text-black'}" th:href="@{/search(tab='author',q=${param.q})}">Tác giả</a>
+                <a  th:class="${tab.equalsIgnoreCase('tag') ? 'pb-3 border-black border-b-2' : 'pb-3 text-gray-500 hover:text-black'}" th:href="@{/search(tab='tag',q=${param.q})}">Chủ đề</a>
+            </div>
+
+            <!-- Post suggest -->
+            <div th:class="${'flex flex-row px-6 py-4 max-w-full ' + (gptContent ? '' : 'items-center justify-center')}" th:if="${searchPosts.content.size() <= 0}">
+                <div th:if="${gptContent}" id="gpt-container">
+                    <svg class="animate-spin h-8 w-8 py-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <circle cx="12" cy="12" r="10" stroke-width="4" class="text-blue-500 opacity-25" />
+                        <path d="M12 6v6m0 0v6m0-6h6m-6 0H6" stroke="currentColor" stroke-width="4" class="text-blue-500" /></svg>
+                    <h2 class="text-2xl font-semibold">Chờ chút!</h2>
+                    <p class="text-gray-500 text-center">iDevAI đang tìm nội dung cho bạn...</p>
+
+                </div>
+                <div th:if="${!gptContent}" class="flex flex-col items-center space-y-4">
+                    <h2 class="text-2xl font-semibold">Không có bài viết nào</h2>
+                    <p class="text-gray-500 text-center">Hãy theo dõi một số tác giả để xem bài viết của họ</p>
+                    <p class="text-gray-500 text-center">Bạn có thể thử hỏi thanh chat của chúng tôi đó ;)</p>
+                </div>
+            </div>
+            <div class="flex flex-col space-y-3" th:each="post : ${searchPosts.content}">
+                <!-- post item -->
+                <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">
+                    <div class="w-4/6">
+                        <div class="flex items-center space-x-2 mb-2">
+                            <div>
+                                <div class="flex flex-row items-center space-x-2 mb-3">
+                                    <a class="font-semibold hover:text-black" th:href="@{'/author/' + ${post.author.userId}}">
+                                        <img th:src="${post.author.profilePicture}" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
+                                    </a>
+                                    <p class="text-sm text-gray-500"><a class="font-semibold hover:text-black" th:href="@{'/author/' + ${post.author.userId}}" th:text="${post.author.name}"></a> với chủ đề <a class="font-semibold hover:text-black" th:href="@{'/topics/' + ${post.author.userId}}" th:text="${post.topic.name}">Java</a></p>
+                                </div>
+                                <div>
+                                    <a th:href="@{'/posts/' + ${post.url}}" class="text-2xl font-bold" th:text="${post.title}">Hướng sự kiện Java cơ bản cùng Netbeans</a>
+                                </div>
+                            </div>
+                        </div>
+                        <a th:href="@{'/posts/' + ${post.url}}" class="" th:text="${post.description}">Trong chủ đề này, tôi sẽ giới thiệu đến bạn Java - Hướng sự kiện trong 05 phút</a>
+                        <a th:href="@{'/posts/' + ${post.url}}" class="flex items-center justify-between mt-4 text-gray-600">
+                            <div class="flex items-center">
+                                <i class="far fa-star"></i>
+                                <span class="ml-2" th:text="${post.getDateFormat()}">Apr 17, 2023</span>
+                            </div>
+                            <div class="flex items-center">
+                                <span th:text="${post.totalUpVote}">18.8K</span>
+                                <i class="far fa-thumbs-up ml-2"></i>
+                                <span class="ml-2" th:text="${post.totalComments}">304</span>
+                                <i class="far fa-comment ml-2"></i>
+                            </div>
+                        </a>
+                    </div>
+                    <a href="#" class="w-2/6 flex flex-row justify-center items-center">
+                        <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-lg w-fit">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Phân trang -->
+            <div class="flex flex-row gap-3 justify-end mb-6 px-4">
+                <ul class="flex flex-row gap-3 items-center">
+                    <li th:if="${searchPosts.hasPrevious()}">
+                        <a th:href="@{/search(page=${searchPosts.number - 1}, tab=${tab}, q=${q})}">Trang trước</a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(0, searchPosts.totalPages - 1)}">
+                        <a th:href="@{/search(page=${i}, tab=${tab}, q=${q})}" th:text="${i + 1}"></a>
+                    </li>
+                    <li th:if="${searchPosts.hasNext()}">
+                        <a th:href="@{/search(page=${searchPosts.number + 1}, tab=${tab}, q=${q})}">Trang sau</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- Spons -->
+        <div class="w-1/3 pl-12 space-y-12">
+
+            <div class="">
+                <h3 class="font-semibold mb-5">Có thể bạn quan tâm</h3>
+                <div class="space-y-5">
+                    <div class="mb-3 space-y-5" th:each="post : ${rcmPost.content}">
+                        <!-- Bookmark item -->
+                        <div class="py-2">
+                            <a th:href="@{'/author/' + ${post.author.userId}}" class="flex flex-row items-center space-x-2 mb-3 text-sm">
+                                <img th:src="${post.author.profilePicture}"
+                                     alt="User profile image"
+                                     class="rounded-full w-6 h-6">
+                                <span class="font-semibold hover:text-gray-500"
+                                      th:text="${post.author.name}"></span>
+                            </a>
+                            <a th:href="@{'/posts/' + ${post.postId}}">
+                                <h2 class="font-semibold" th:text="${post.title}"></h2>
+                            </a>
+                            <div class="flex items-center space-x-2 text-xs mt-2">
+                                <p>
+                                    <a th:href="@{'/posts/' + ${post.postId}}" th:text="${#dates.format(post.createdAt, 'MMM dd, yyyy')}"></a>
+                                </p>
+
+                                <p>·</p>
+
+                                <p>
+                                    <a th:href="@{'/topic/' + ${post.topic.tagId}}" th:text="${post.topic.name}"></a>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <a href="/" class="text-blue-500 text-sm hover:text-blue-400">See the full list</a>
+            </div>
+
+            <!-- Copyright -->
+            <div class="text-left text-gray-500 text-sm">
+                <p>© <script>document.write(new Date().getFullYear())</script> iDev4rum. All rights reserved.</p>
+                <p>Designed by <a href="https://dtbao.io.vn/?s=javawww-baitaplon" class="text-blue-500">Duong Thai Bao</a></p>
+                <p class="text-red-500 mt-6"><strong>Notice: </strong>This project is intended for educational use and may overlap with existing copyrighted designs. If any of our work infringes on your copyright, please let us know so we can remove it.</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="/assets/js/drawdown.js"></script>
+<script th:inline="javascript">
+    var queryString = "";
+    const markdownStyles = {
+        h1: ["text-3xl", "font-bold", "mt-6", "mb-4"],
+        h2: ["text-2xl", "font-semibold", "mt-5", "mb-3"],
+        h3: ["text-xl", "font-medium", "mt-4", "mb-2"],
+        p: ["text-base", "text-gray-700", "mt-2", "mb-4", "leading-relaxed"],
+        ul: ["list-disc", "list-inside", "pl-5", "mt-2", "mb-4"],
+        ol: ["list-decimal", "list-inside", "pl-5", "mt-2", "mb-4"],
+        li: ["text-gray-700", "mb-2"],
+        a: ["text-blue-500", "hover:underline"],
+        code: ["text-red-600", "font-mono", "px-1", "py-0.5", "rounded"],
+        pre: ["bg-gray-100", "p-4", "rounded-md", "overflow-x-auto", "my-4"],
+        blockquote: [
+            "border-l-4",
+            "border-blue-300",
+            "pl-4",
+            "italic",
+            "text-gray-600",
+            "my-4",
+        ],
+    };
+
+    function applyMarkdownStyles(styles, parentElement) {
+        for (const [selector, classList] of Object.entries(styles)) {
+            if (typeof selector === "string" && Array.isArray(classList)) {
+                // Chỉ áp dụng class cho các phần tử con trong parentElement
+                parentElement
+                    .querySelectorAll(selector)
+                    .forEach((el) => el.classList.add(...classList));
+            } else {
+                console.warn(`Invalid selector or classList for: ${selector}`);
+            }
+        }
+        return parentElement.outerHTML;
+    }
+
+    function createContent(content) {
+        const div = document.createElement("div");
+        div.innerHTML = markdown(content);
+
+        div.classList.add("mt-2");
+        return applyMarkdownStyles(markdownStyles, div);
+    }
+
+    window.onload = () => {
+
+        if (document.getElementById("gpt-container") ) {
+            queryString = document.getElementById("form-search").value.trim();
+            if (queryString.length > 0)
+            fetch(`/api/search-gpt?q=${encodeURI(queryString.trim())}`)
+                .then((res) => res.json())
+                .then((data) => {
+                    document.getElementById("gpt-container").innerHTML = createContent(data.data);
+
+                    document.getElementById("gpt-container").classList = "flex flex-col space-y-2";
+                });
+        }
+
+    }
+
+</script>
+</body>
+</html>

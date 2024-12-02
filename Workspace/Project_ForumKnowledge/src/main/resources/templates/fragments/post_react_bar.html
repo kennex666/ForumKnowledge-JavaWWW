@@ -5,7 +5,7 @@
                 class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
                 onclick="vote(true)"
         >
-            <i th:class="${(reaction.equals('UPVOTE') ? 'fas' : 'fa-regular') + ' fa-thumbs-up'}" data-elem="upvote"></i>
+            <i th:class="${(reaction != null && reaction.equals('UPVOTE') ? 'fas' : 'fa-regular') + ' fa-thumbs-up'}" data-elem="upvote"></i>
             <span th:text="${post.totalUpVote}" data-name="upvote">1.2k</span>
         </button>
 
@@ -13,7 +13,7 @@
                 class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
                 onclick="vote(false)"
         >
-            <i th:class="${(reaction.equals('DOWNVOTE') ? 'fas' : 'fa-regular') + ' fa-thumbs-down'}" data-elem="downvote"></i>
+            <i th:class="${(reaction != null && reaction.equals('DOWNVOTE') ? 'fas' : 'fa-regular') + ' fa-thumbs-down'}" data-elem="downvote"></i>
             <span th:text="${post.totalDownVote}" data-name="downvote">1.2k</span>
         </button>
         <a href="#comment-view"
@@ -35,8 +35,12 @@
         </button>
         <button
                 class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none"
+                onclick="window.open('https://www.facebook.com/sharer/sharer.php?u=' + encodeURIComponent(window.location.href), '_blank', 'width=600,height=400,scrollbars=yes,resizable=yes')"
         >
             <i class="fas fa-share"></i>
+        </button>
+        <button th:if="${isOwner}" class="flex flex-row gap-2 items-center text-gray-500 focus:outline-none" onclick="edit()">
+            <i class="fas fa-pen"></i>
         </button>
     </div>
 </div>

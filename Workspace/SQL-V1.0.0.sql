@@ -1,2 +1,0 @@
-CREATE DATABASE iDev4rum
-GO

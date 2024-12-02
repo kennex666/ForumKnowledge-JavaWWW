@@ -1,0 +1,188 @@
+<html>
+<head th:replace="~{/fragments/head :: head}"></head>
+<body class="">
+
+<!-- Nav bar -->
+<header th:replace="~{/fragments/navigate :: header}"></header>
+
+<!-- Blog space -->
+<form th:action="@{/author/edit}" method="POST" th:object="${user}">
+
+  <input type="number" class="hidden" th:value="${user.userId}" th:field="*{userId}">
+
+  <div class="container mx-auto px-12 lg:w-10/12">
+    <div class="flex justify-between items-start">
+
+      <!-- Recommend blog -->
+      <div class="w-2/3 space-y-8 ">
+        <!-- Bar -->
+        <!-- Cover and name -->
+        <div class="flex flex-col justify-center pt-3 px-5 space-y-8">
+          <div class="relative" >
+
+            <img th:src="${user.coverPicture ?: 'https://placehold.co/720x150'}" data-image="fileCover1" accept="image/*" class="h-64 w-full object-cover">
+            <input type="file" id="fileCover1" name="fileCover1" class="hidden" accept="image/*">
+            <input type="text" data-image="fileCover1" class="hidden" th:value="${user.coverPicture}" th:field="*{coverPicture}">
+            <button  type="button" id="btn-upload-cover" class="absolute bottom-2 right-2 bg-black bg-opacity-20 hover:bg-opacity-70 text-white p-2 rounded-full">
+              <i class="fa-solid fa-upload text-white"></i>
+            </button>
+          </div>
+          <div class="flex flex-row items-center justify-between gap-4">
+            <input id="txt-name" class="text-4xl font-bold border border-gray-500 px-2 py-6 h-16 w-full" th:value="${user.name}" name="txtName" th:field="*{name}"></input>
+          </div>
+        </div>
+
+        <div class="flex flex-row space-x-10 items-center pt-3 text-nowrap scrollbar-custom px-5">
+          <!-- plus icon -->
+          <a class="pb-3 text-gray-500 hover:text-black" href="myprofile.html">Trang chủ</a>
+          <a class="pb-3 text-gray-500 hover:text-black" href="myprofile_list.html">Danh sách</a>
+          <a class="pb-3 border-black border-b-2" href="#">Về tác giả</a>
+
+        </div>
+
+
+        <!-- Post suggest -->
+        <div class="flex flex-col space-y-3 ps-6 pe-11 text-lg ">
+          <!-- post item -->
+
+          <textarea class="border border-gray-500 px-2 py-2" rows="6" name="description" id="txt-description" th:value="${user.description}" th:field="*{description}"></textarea>
+        </div>
+
+      </div>
+
+      <!-- Profile -->
+      <div class="w-1/3 p-4 pl-12">
+        <!-- Info -->
+        <div class="mt-8">
+          <div class="flex flex-col space-y-2">
+            <div class="rounded-full">
+              <div class="relative w-24 h-24">
+                <input type="file" id="fileAvt" name="fileAvt" class="hidden" accept="image/*">
+                <input type="text" data-image="fileAvt" class="hidden" th:value="${user.profilePicture}" th:field="*{profilePicture}">
+                <img th:src="${user.profilePicture ?: 'https://placehold.co/150x150'}" data-image="fileAvt" alt="Profile image of Chris Davidson" class="rounded-full w-24 h-24 object-cover" >
+                <button type="button" id="btn-upload-avt" class="absolute z-99 bottom-1 right-1 bg-black bg-opacity-20 hover:bg-opacity-70 text-white rounded-full w-6 h-6">
+                  <i class="fa-solid fa-upload text-white text-xs"></i>
+                </button>
+              </div>
+            </div>
+            <div class="flex flex-col space-y-2">
+              <h2 class="font-semibold text-lg" th:text="${user.name}">Dương Thái Bảo</h2>
+              <!-- <p class="text-gray-500">(nam)</p> -->
+              <p class="text-gray-500">1.2K Followers</p>
+            </div>
+
+            <div class="pb-2 flex flex-row gap-2">
+              <p>Email:</p>
+              <input class="border border-gray-500 w-full text-xs px-2" type="email" required th:value="${user.email}" th:field="*{email}" id="txt-email" name="email"></input>
+            </div>
+            <div class="pb-2">
+              <textarea class="border border-gray-500 w-full" rows="3" name="bio" id="txt-bio" th:text="${user.bio}" th:field="*{bio}">sadkjashlkdashkjdashlkdshjlk</textarea>
+            </div>
+            <div class="flex flex-row space-x-2">
+              <button class="bg-blue-400 rounded-full px-4 py-2 text-white text-sm font-bold" type="submit" id="btn-save">Save</button>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Copyright -->
+        <div class="text-left text-gray-500 text-sm mt-6">
+          <p>© <script>document.write(new Date().getFullYear())</script> iDev4rum. All rights reserved.</p>
+          <p>Designed by <a href="https://dtbao.io.vn/?s=javawww-baitaplon" class="text-blue-500">Duong Thai Bao</a></p>
+          <p class="text-red-500 mt-6"><strong>Notice: </strong>This project is intended for educational use and may overlap with existing copyrighted designs. If any of our work infringes on your copyright, please let us know so we can remove it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</form>
+
+<script>
+  var isChanged = false;
+  function uploadImage(idElem) {
+    document.getElementById(idElem).addEventListener("change", (event) => {
+      const file = event.target.files[0];
+
+      if (file && file.type.startsWith("image/")) {
+        // Tạo FormData để gửi file
+        const formData = new FormData();
+        formData.append("file", file);
+
+        // Gửi request tới server
+        fetch("/api/upload/image", {
+          method: "POST",
+          body: formData,
+        })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.url) {
+                    document.querySelectorAll(`[data-image=${idElem}]`).forEach(elem => {
+                      elem.src = data.url;
+                      elem.value = data.url;
+                    })
+                  } else {
+                    alert("Failed to upload the image.");
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error uploading image:", error);
+                  alert("Error uploading the image.");
+                });
+      } else {
+        alert("Only image files are allowed!");
+      }
+
+      // Reset input file để có thể chọn lại cùng file
+      event.target.value = "";
+    });
+  }
+
+  window.onload = function (){
+    // Handle cover and avt upload button
+    document.getElementById('btn-upload-cover').onclick = function(){
+      document.getElementById('fileCover1').click();
+    }
+    document.getElementById('btn-upload-avt').onclick = function(){
+      document.getElementById('fileAvt').click();
+    }
+
+    uploadImage('fileCover1');
+    uploadImage('fileAvt');
+  }
+
+  //  save
+  document.getElementById("btn-save").onclick = function() {
+    window.onbeforeunload = null;
+    document.querySelector("form").submit();
+  }
+
+  // check if user change some value
+  document.querySelectorAll("input, textarea").forEach(elem => {
+    elem.addEventListener("keyup", function() {
+      isChanged = true;
+    });
+  });
+
+  setInterval(() => {
+    if (isChanged) {
+        const elem = document.getElementById("btn-save")
+        elem.classList.toggle("bg-gray-400", false);
+        elem.classList.toggle("bg-blue-400", true);
+        elem.disabled = false;
+    } else {
+        const elem = document.getElementById("btn-save")
+        elem.classList.toggle("bg-blue-400", false);
+        elem.classList.toggle("bg-gray-400", true);
+        elem.disabled = true;
+    }
+  }, 300);
+
+  // handle windows close
+  window.onbeforeunload = function() {
+    if (isChanged) {
+      return "You have unsaved changes. Do you really want to leave?";
+    }
+  }
+</script>
+</body>
+</html>

@@ -59,7 +59,7 @@ public class UploadController {
             Files.write(path, file.getBytes());
 
             // Construct the file URL
-            String fileUrl = "uploads/images/" + randomFileName;
+            String fileUrl = "/uploads/images/" + randomFileName;
 
             // Return the URL in JSON format
             Map<String, String> response = new HashMap<>();

@@ -142,7 +142,17 @@
             </style>
 
             <script>
+                function getParameterByName(name, url = window.location.href) {
+                    name = name.replace(/[\[\]]/g, "\\$&");
+                    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                        results = regex.exec(url);
+                    if (!results) return null;
+                    if (!results[2]) return "";
+                    return decodeURIComponent(results[2].replace(/\+/g, " "));
+                }
+                var editPostId = 0;
                 window.onload = function () {
+                    const postId = getParameterByName("id");
                     const navSize = document.querySelector("header").offsetHeight;
                     const textStatus = document.getElementById("text-save-status");
                     const title = document.getElementById("title");
@@ -152,6 +162,30 @@
 
                     var editorToolbar = null;
                     var editorStatusbar = null;
+
+                    if (postId) {
+                        fetch(`/api/posts/${postId}`)
+                            .then((response) => response.json())
+                            .then((data) => {
+                                if (data.data){
+                                    const dataPost = data.data.post;
+                                    if (dataPost) {
+                                        title.value = dataPost.title;
+                                        description.value = dataPost.description;
+                                        simplemde.value(dataPost.content);
+                                        editPostId = dataPost.postId;
+                                    } else {
+                                        alert("Không tìm thấy bài viết!");
+                                    }
+
+                                }
+
+                            })
+                            .catch((error) => {
+                                alert("Lỗi fetch bài viết!");
+                                window.location.href = "/";
+                            });
+                    }
 
                     const checkIsSaved = () => {
                         let editorContent = simplemde.value(); // Current content
@@ -382,7 +416,7 @@
 
                             try {
                                 const content = simplemde.value().trim();
-                                fetch("/api/posts/create", {
+                                fetch("/api/posts/" + (editPostId != 0 ? 'edit' : 'create'), {
                                     method: "POST",
                                     headers: {
                                         "Content-Type": "application/json",
@@ -393,6 +427,7 @@
                                         tag: sltTag.value,
                                         tag_custom: txtTag.value,
                                         content: content,
+                                        postId: editPostId,
                                     }),
                                 })
                                     .then((response) => {

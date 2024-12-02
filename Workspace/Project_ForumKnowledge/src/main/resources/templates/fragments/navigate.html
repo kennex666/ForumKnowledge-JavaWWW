@@ -5,7 +5,7 @@
 
         <div class="flex items-center bg-gray-100 rounded-full px-4 py-2">
             <i class="fas fa-search text-gray-500"></i>
-            <input type="text" placeholder="Tìm kiếm..." class="bg-transparent focus:outline-none ml-4 text-black" id="form-search">
+            <input type="text" placeholder="Tìm kiếm..." th:value="${param.q ?: ''}" class="bg-transparent focus:outline-none ml-4 text-black" id="form-search">
             <script>
                 const formSearch = document.getElementById("form-search");
 

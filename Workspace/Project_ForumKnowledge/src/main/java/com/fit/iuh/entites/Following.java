@@ -26,10 +26,12 @@ public class Following {
 	@LastModifiedDate
 	private Date updatedAt;
 
+//	Nguowif theo doi
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="follower_id", referencedColumnName = "user_id")
 	private User follower;
 
+//	Nguoi duoc theo doi
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="followed_id", referencedColumnName = "user_id")
 	private User followed;

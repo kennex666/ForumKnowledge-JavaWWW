@@ -54,7 +54,7 @@
                 <a th:href="@{'/author/' + ${post.author.userId}}" class="text-sm" th:text="${post.author.name}"></a>
                 <!-- dot center -->
                 <span class="text-gray-500">·</span>
-                <button class="text-blue-500 focus:outline-none text-sm">
+                <button class="text-blue-500 focus:outline-none text-sm" th:text="${isFollowing ? 'Huỷ theo dõi': 'Theo dõi'}" onclick="follow(this)">
                     Follow
                 </button>
             </div>
@@ -162,6 +162,39 @@
 </body>
 
 <script type="text/javascript" src="/assets/js/drawdown.js"></script>
+
+<script th:inline="javascript">
+
+    var currentState = [[${isFollowing}]];
+    var followedId = [[${post.author.userId}]];
+    function follow(element){
+
+        fetch('/api/users/following?id=' + followedId, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        }).then(response => response.json())
+            .then(data => {
+                console.log(data);
+                if(data.errorCode == 200){
+                    if(currentState == false){
+                        element.innerText = 'Huỷ theo dõi';
+                        currentState = true;
+                    }else{
+                        element.innerText = 'Theo dõi';
+                        currentState = false;
+                    }
+                } else {
+                    alert(data.message);
+                }
+            }).catch((error) => {
+            console.log(error)
+            alert('Error: ' + error);
+        });
+    }
+</script>
+
 <script th:inline="javascript">
     var isReact = [[${reaction}]];
     var postSearch = 0;
@@ -281,6 +314,9 @@
             });
     };
 
+    function edit(){
+        window.location.href = `/write?id=${postSearch}`;
+    }
     function vote(type){
         fetch(`/api/vote/${postSearch}?type=${type ? 1 : 0}`, {
             method: "GET",

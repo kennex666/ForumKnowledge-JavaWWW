@@ -1,9 +1,11 @@
 package com.fit.iuh.services.impl;
 
+import com.fit.iuh.entites.Following;
 import com.fit.iuh.entites.User;
 import com.fit.iuh.enums.UserAccountState;
 import com.fit.iuh.repositories.UserRepository;
 import com.fit.iuh.services.UserService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -112,5 +114,30 @@ public class UserServiceImpl implements UserService {
 
     public List<User> getUsersBetweenDates(Date startDate, Date endDate) {
         return userRepository.findByCreatedAtBetween(startDate, endDate);
+    }
+
+    @Transactional
+    @Override
+    public void edit(User user) {
+        userRepository.editUser(user.getName(), user.getEmail(), user.getTitle(), user.getProfilePicture(), user.getCoverPicture(), user.getDescription(), user.getBio(), user.getUserId());
+    }
+
+    @Override
+    public List<Following> isFollowing(int currentUserId, int userId){
+        return userRepository.isFollowing(currentUserId, userId);
+    }
+
+    @Override
+    @Transactional
+    public void follow(int currentUserId, int userId) {
+        userRepository.follow(currentUserId, userId);
+        return;
+    }
+
+    @Override
+    @Transactional
+    public void unfollow(int currentUserId, int userId) {
+        userRepository.unfollow(currentUserId, userId);
+        return;
     }
 }

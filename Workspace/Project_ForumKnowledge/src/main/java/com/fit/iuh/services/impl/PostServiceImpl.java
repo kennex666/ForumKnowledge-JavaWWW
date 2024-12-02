@@ -204,5 +204,24 @@ public class PostServiceImpl implements PostService {
 		return postRepository.findForFollowing(pageable, userId);
 	}
 
+	@Override
+	public Page<Post> findForUser(Pageable pageable, int userId) {
+		return postRepository.findForUser(pageable, userId);
+	}
+
+	@Override
+	public Page<Post> getPostByAuthor(Pageable pageable, String author) {
+		return postRepository.getPostByAuthor(pageable, author);
+	}
+
+	@Override
+	public Page<Post> getPostByTopic(Pageable pageable, String topic) {
+		return postRepository.getPostByTopic(pageable, topic);
+	}
+
+	@Override
+	public Page<Post> searchKeyword(Pageable pageable, String tag) {
+		return postRepository.searchKeyword(pageable, tag);
+	}
 
 }

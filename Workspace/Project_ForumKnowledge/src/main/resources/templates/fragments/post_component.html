@@ -1,48 +1,59 @@
-<div class="flex flex-col space-y-3" th:each="post : ${listPost}">
-    <!-- post item -->
-    <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">
-        <div class="w-4/6">
-            <div class="flex items-center space-x-2 mb-2">
-                <div>
-                    <div class="flex flex-row items-center space-x-2 mb-3">
-                        <a class="font-semibold hover:text-black" th:href="@{/users/user(id=${post.author.userId})}">
-                            <img th:src="@{${'/assets/img/avatars/' + post.author.profilePicture}}"
-                                 alt="User profile image"
-                                 class="rounded-full w-6 h-6">
-                        </a>
-                        <p class="text-sm text-gray-500">
-                            <a class="font-semibold hover:text-black"
-                               th:href="@{/users/user(id=${post.author.userId})}"
-                               th:text="${post.author.name}"></a>
-                            với chủ đề
-                            <a class="font-semibold hover:text-black"
-                               th:href="@{/topics/topic(id=${post.author.userId})}"
-                               th:text="${post.topic.name}"></a>
-                        </p>
-                    </div>
+<div class="flex flex-row items-center justify-center" th:if="${postsPage.content.size() <= 0}">
+        <div class="flex flex-col items-center space-y-4">
+            <h2 class="text-2xl font-semibold">Không có bài viết nào</h2>
+            <p class="text-gray-500 text-center">Hãy theo dõi một số tác giả để xem bài viết của họ</p>
+        </div>
+    </div>
+    <div class="flex flex-col space-y-3" th:each="post : ${postsPage.content}">
+        <!-- post item -->
+        <div class="px-6 py-8 flex space-x-4 flex-row items-center border-b border-gray-200">
+            <div class="w-4/6">
+                <div class="flex items-center space-x-2 mb-2">
                     <div>
-                        <a  th:href="@{'/posts/' + ${post.url}}" class="text-2xl font-bold" th:text="${post.title}"></a>
+                        <div class="flex flex-row items-center space-x-2 mb-3">
+                            <a class="font-semibold hover:text-black" th:href="@{'/author/' + ${post.author.userId}}">
+                                <img th:src="${post.author.profilePicture}" alt="Profile image of Chris Davidson" class="rounded-full w-6 h-6">
+                            </a>
+                            <p class="text-sm text-gray-500"><a class="font-semibold hover:text-black" th:href="@{'/author/' + ${post.author.userId}}" th:text="${post.author.name}"></a> với chủ đề <a class="font-semibold hover:text-black" th:href="@{'/topics/' + ${post.author.userId}}" th:text="${post.topic.name}">Java</a></p>
+                        </div>
+                        <div>
+                            <a th:href="@{'/posts/' + ${post.url}}" class="text-2xl font-bold" th:text="${post.title}">Hướng sự kiện Java cơ bản cùng Netbeans</a>
+                        </div>
                     </div>
                 </div>
+                <a th:href="@{'/posts/' + ${post.url}}" class="" th:text="${post.description}">Trong chủ đề này, tôi sẽ giới thiệu đến bạn Java - Hướng sự kiện trong 05 phút</a>
+                <a th:href="@{'/posts/' + ${post.url}}" class="flex items-center justify-between mt-4 text-gray-600">
+                    <div class="flex items-center">
+                        <i class="far fa-star"></i>
+                        <span class="ml-2" th:text="${post.getDateFormat()}">Apr 17, 2023</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span th:text="${post.totalUpVote}">18.8K</span>
+                        <i class="far fa-thumbs-up ml-2"></i>
+                        <span class="ml-2" th:text="${post.totalComments}">304</span>
+                        <i class="far fa-comment ml-2"></i>
+                    </div>
+                </a>
             </div>
-            <a th:href="@{'/posts/' + ${post.url}}" class="" th:text="${post.description}"></a>
-            <a  th:href="@{'/posts/' + ${post.url}}" class="flex items-center justify-between mt-4 text-gray-600">
-                <div class="flex items-center">
-                    <i class="far fa-star"></i>
-                    <span class="ml-2" th:text="${#dates.format(post.createdAt, 'MMM dd, yyyy')}"></span>
-                </div>
-                <div class="flex items-center">
-                    <span th:text="${post.totalUpVote} > 1000 ? ${post.totalUpVote / 1000 + 'K'} : ${post.totalUpVote}"></span>
-                    <i class="far fa-thumbs-up mx-2"></i>
-                    <span th:text="${post.comments.size()} > 1000 ? ${post.comments.size() / 1000 + 'K'} : ${post.comments.size()}"></span>
-                    <i class="far fa-comment ml-2"></i>
-                </div>
+            <a href="#" class="w-2/6 flex flex-row justify-center items-center">
+                <img src="https://placehold.co/150x150" alt="Image of a blog post" class="rounded-lg w-fit">
             </a>
         </div>
-        <a th:href="@{'/posts/' + ${post.url}}" class="w-2/6 flex flex-row justify-center items-center">
-            <img th:src="@{${'/assets/img/dogs/image1.jpeg'}}"
-                 alt="Image of a blog post"
-                 class="rounded-lg w-fit h-48">
-        </a>
+
+
     </div>
-</div>
+
+    <!-- Phân trang -->
+    <div class="flex flex-row gap-3 justify-end mb-6 px-4">
+        <ul class="flex flex-row gap-3 items-center">
+            <li th:if="${postsPage.hasPrevious()}">
+                <a th:href="@{/(page=${postsPage.number - 1})}">Trang trước</a>
+            </li>
+            <li th:each="i : ${#numbers.sequence(0, postsPage.totalPages - 1)}">
+                <a th:href="@{/(page=${i})}" th:text="${i + 1}"></a>
+            </li>
+            <li th:if="${postsPage.hasNext()}">
+                <a th:href="@{/(page=${postsPage.number + 1})}">Trang sau</a>
+            </li>
+        </ul>
+    </div>
