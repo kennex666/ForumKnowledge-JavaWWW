@@ -32,7 +32,7 @@ It provides a space for students to publish articles, share insights, and discus
 10. Git
 
 ## Contributors
-- Lastest update at 6:59 P.M. 24/05/2024
+- Lastest update at 9:15 A.M. 24/12/2024
 
 | No  | Full Name | Title | Student Code | Total commits  | Additions | Deletions | Join time | Disontinued |
 | :--: |:--:| :--: | :--: | --:| --: | --: | :--: | :--: |
