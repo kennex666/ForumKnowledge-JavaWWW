@@ -17,7 +17,7 @@ It provides a space for students to publish articles, share insights, and discus
 - Summary purpose about project: For education.
 
 ## Config/Run project
-- Updatingggggg....!!!
+- No instruction.
 
 ## The technologies, applications, libraries used whole project)
 1. Java Language
@@ -36,8 +36,8 @@ It provides a space for students to publish articles, share insights, and discus
 
 | No  | Full Name | Title | Student Code | Total commits  | Additions | Deletions | Join time | Disontinued |
 | :--: |:--:| :--: | :--: | --:| --: | --: | :--: | :--: |
-| 01. | Dương Thái Bảo | Leader | 21037621  | 0 | 0 | 0 | 01/08/24  | - |
-| 02. | Nguyễn Thành Luân | Contributor | 21123021 | 0 | 0 | 0 | 01/08/24 | - |
-| 03. | Lê Nguyễn Duy Khang | Contributor | 21063601 | 0 | 0 | 0 | 01/08/24 | - |
-| 04. | Nguyễn Thiên Phú | Contributor | 20073871 | 0 | 0 | 0 | 01/08/24 | - |
-| 05. | Bùi Tất Nhựt Minh | Contributor | 21001565 | 0 | 0 | 0 | 01/08/24 | - |
+| 01. | Dương Thái Bảo | Leader | 21037621  | 88 | 16,777 | 7,301 | 08/24  | 12/24 |
+| 02. | Nguyễn Thiên Phú | Contributor | 20073871 | 57 | 3,708 | 891 | 08/24 | 12/24 |
+| 03. | Nguyễn Thành Luân | Contributor | 21123021 | 34 | 4,782 | 2,175 | 08/24 | 12/24 |
+| 04. | Lê Nguyễn Duy Khang | Contributor | 21063601 | 5 | 3,185 | 775 | 08/24 | 12/24 |
+| 05. | Bùi Tất Nhựt Minh | Contributor | 21001565 | 3 | 894 | 121 | 08/24 | 12/24 |
